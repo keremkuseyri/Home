@@ -7,10 +7,10 @@ st.set_page_config(layout='wide')
 option = st.selectbox(
    "Year📅",
    ("2024", "2023", "2022"),
-   index="2024",
+   index=0,
    placeholder="Select Period",
 )
-
+st.write("You have selected ",option)
 
 
 tab1, tab2 = st.tabs(["Quantity📈", "Teu📈"])
