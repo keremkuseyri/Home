@@ -3,16 +3,14 @@ import pandas as pd
 import plotly.graph_objects as go
 
 st.set_page_config(layout='wide')
-
 option = st.selectbox(
    "Year📅",
    ("2024", "2023", "2022"),
    index=0,
    placeholder="Select Period",
 )
-st.write("You have selected ",option)
 
-
+st.write('You selected:', option)
 tab1, tab2 = st.tabs(["Quantity📈", "Teu📈"])
 data= {
     ('2024-01-01', '2024-01-31'): {
@@ -88,7 +86,30 @@ with tab1:
     city_df = pd.DataFrame(table_data)
     st.header("A:")
     st.write(city_df)
+    # Group data by City and Data Type and sum the Export values
+    grouped_data = city_df.groupby(['City', 'From Date']).sum().reset_index()
 
+    # Create figure and add bar chart trace
+    fig = go.Figure()
+
+    for city in grouped_data['City'].unique():
+        city_data = grouped_data[grouped_data['City'] == city]
+        fig.add_trace(go.Bar(
+            x=city_data['From Date'],
+            y=city_data['Export'],
+            name=city
+        ))
+
+    # Update layout
+    fig.update_layout(
+        title="",
+        xaxis_title="Date",
+        yaxis_title="Export",
+        barmode='group'
+    )
+
+    # Display the plot
+    st.plotly_chart(fig)
 
 
 
@@ -116,7 +137,30 @@ with tab1:
     city_df = pd.DataFrame(table_data)
     st.header("B:")
     st.write(city_df)
+    # Group data by City and Data Type and sum the Export values
+    grouped_data = city_df.groupby(['City', 'From Date']).sum().reset_index()
 
+    # Create figure and add bar chart trace
+    fig = go.Figure()
+
+    for city in grouped_data['City'].unique():
+        city_data = grouped_data[grouped_data['City'] == city]
+        fig.add_trace(go.Bar(
+            x=city_data['From Date'],
+            y=city_data['Export'],
+            name=city
+        ))
+
+    # Update layout
+    fig.update_layout(
+        title="",
+        xaxis_title="Date",
+        yaxis_title="Export",
+        barmode='group'
+    )
+
+    # Display the plot
+    st.plotly_chart(fig)
 
 
     table_data = []
@@ -142,7 +186,30 @@ with tab1:
     city_df = pd.DataFrame(table_data)
     st.header("FRW:")
     st.write(city_df)
+    # Group data by City and Data Type and sum the Export values
+    grouped_data = city_df.groupby(['City', 'From Date']).sum().reset_index()
 
+    # Create figure and add bar chart trace
+    fig = go.Figure()
+
+    for city in grouped_data['City'].unique():
+        city_data = grouped_data[grouped_data['City'] == city]
+        fig.add_trace(go.Bar(
+            x=city_data['From Date'],
+            y=city_data['Export'],
+            name=city
+        ))
+
+    # Update layout
+    fig.update_layout(
+        title="",
+        xaxis_title="Date",
+        yaxis_title="Export",
+        barmode='group'
+    )
+
+    # Display the plot
+    st.plotly_chart(fig)
     table_data = []
 
     # Iterate over the data
@@ -286,7 +353,30 @@ with tab2:
     city_df = pd.DataFrame(table_data)
     st.header("A:")
     st.write(city_df)
+    # Group data by City and Data Type and sum the Export values
+    grouped_data = city_df.groupby(['City', 'From Date']).sum().reset_index()
 
+    # Create figure and add bar chart trace
+    fig = go.Figure()
+
+    for city in grouped_data['City'].unique():
+        city_data = grouped_data[grouped_data['City'] == city]
+        fig.add_trace(go.Bar(
+            x=city_data['From Date'],
+            y=city_data['Export'],
+            name=city
+        ))
+
+    # Update layout
+    fig.update_layout(
+        title="",
+        xaxis_title="Date",
+        yaxis_title="Export",
+        barmode='group'
+    )
+
+    # Display the plot
+    st.plotly_chart(fig)
     table_data = []
     for date_range, date_data in data.items():
         for data_type, city_data in date_data.items():
@@ -308,7 +398,30 @@ with tab2:
     city_df = pd.DataFrame(table_data)
     st.header("B:")
     st.write(city_df)
+    # Group data by City and Data Type and sum the Export values
+    grouped_data = city_df.groupby(['City', 'From Date']).sum().reset_index()
 
+    # Create figure and add bar chart trace
+    fig = go.Figure()
+
+    for city in grouped_data['City'].unique():
+        city_data = grouped_data[grouped_data['City'] == city]
+        fig.add_trace(go.Bar(
+            x=city_data['From Date'],
+            y=city_data['Export'],
+            name=city
+        ))
+
+    # Update layout
+    fig.update_layout(
+        title="",
+        xaxis_title="Date",
+        yaxis_title="Export",
+        barmode='group'
+    )
+
+    # Display the plot
+    st.plotly_chart(fig)
 
     table_data = []
     for date_range, date_data in data.items():
@@ -331,7 +444,30 @@ with tab2:
     city_df = pd.DataFrame(table_data)
     st.header("FRW:")
     st.write(city_df)
+    # Group data by City and Data Type and sum the Export values
+    grouped_data = city_df.groupby(['City', 'From Date']).sum().reset_index()
 
+    # Create figure and add bar chart trace
+    fig = go.Figure()
+
+    for city in grouped_data['City'].unique():
+        city_data = grouped_data[grouped_data['City'] == city]
+        fig.add_trace(go.Bar(
+            x=city_data['From Date'],
+            y=city_data['Export'],
+            name=city
+        ))
+
+    # Update layout
+    fig.update_layout(
+        title="",
+        xaxis_title="Date",
+        yaxis_title="Export",
+        barmode='group'
+    )
+
+    # Display the plot
+    st.plotly_chart(fig)
 
     table_data = []
 
