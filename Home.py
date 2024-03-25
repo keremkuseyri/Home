@@ -1139,7 +1139,7 @@ with tab1:
         st.plotly_chart(fig_cross_trade, use_container_width=True, width=100, height=100)
 
 
-    table_data = []
+    """table_data = []
 
     # Iterate over the data
     for date_range, date_data in data.items():
@@ -1234,7 +1234,7 @@ with tab1:
     )
 
     with col3:
-        st.plotly_chart(fig_cross_trade, use_container_width=True, width=100, height=100)
+        st.plotly_chart(fig_cross_trade, use_container_width=True, width=100, height=100)"""
     table_data = []
 
     # Iterate over the data
@@ -1548,7 +1548,7 @@ with tab2:
     with col3:
         st.plotly_chart(fig_cross_trade, use_container_width=True, width=100, height=100)
 
-    table_data = []
+    """table_data = []
     for date_range, date_data in data.items():
         for data_type, city_data in date_data.items():
             for city, city_values in city_data.items():
@@ -1641,7 +1641,7 @@ with tab2:
     )
 
     with col3:
-        st.plotly_chart(fig_cross_trade, use_container_width=True, width=100, height=100)
+        st.plotly_chart(fig_cross_trade, use_container_width=True, width=100, height=100)"""
 
     table_data = []
 
