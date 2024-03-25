@@ -86,77 +86,80 @@ with tab1:
     city_df = pd.DataFrame(table_data)
     st.header("A:")
     st.write(city_df)
-    grouped_data = city_df.groupby(['City', 'From Date']).sum().reset_index()
 
-    # Create figure and add bar chart trace
-    fig = go.Figure()
+    with st.container():
 
-    for city in grouped_data['City'].unique():
-        city_data = grouped_data[grouped_data['City'] == city]
-        fig.add_trace(go.Bar(
-            x=city_data['From Date'],
-            y=city_data['Export'],
-            name=city
-        ))
+        grouped_data = city_df.groupby(['City', 'From Date']).sum().reset_index()
 
-    # Update layout
-    fig.update_layout(
-        title="",
-        xaxis_title="Date",
-        yaxis_title="Export",
-        barmode='group'
-    )
+        # Create figure and add bar chart trace
+        fig = go.Figure()
 
-    # Display the plot
-    st.plotly_chart(fig)
+        for city in grouped_data['City'].unique():
+            city_data = grouped_data[grouped_data['City'] == city]
+            fig.add_trace(go.Bar(
+                x=city_data['From Date'],
+                y=city_data['Export'],
+                name=city
+            ))
 
-    grouped_data_import = city_df.groupby(['City', 'From Date']).sum().reset_index()
+        # Update layout
+        fig.update_layout(
+            title="",
+            xaxis_title="Date",
+            yaxis_title="Export",
+            barmode='group'
+        )
 
-    # Create figure and add bar chart trace for Import data
-    fig_import = go.Figure()
+        # Display the plot
+        st.plotly_chart(fig)
 
-    for city in grouped_data_import['City'].unique():
-        city_data_import = grouped_data_import[grouped_data_import['City'] == city]
-        fig_import.add_trace(go.Bar(
-            x=city_data_import['From Date'],
-            y=city_data_import['Import'],
-            name=city
-        ))
+        grouped_data_import = city_df.groupby(['City', 'From Date']).sum().reset_index()
 
-    # Update layout for Import plot
-    fig_import.update_layout(
-        title="",
-        xaxis_title="Date",
-        yaxis_title="Import",
-        barmode='group'
-    )
+        # Create figure and add bar chart trace for Import data
+        fig_import = go.Figure()
 
-    # Display the plot for Import data
-    st.plotly_chart(fig_import)
+        for city in grouped_data_import['City'].unique():
+            city_data_import = grouped_data_import[grouped_data_import['City'] == city]
+            fig_import.add_trace(go.Bar(
+                x=city_data_import['From Date'],
+                y=city_data_import['Import'],
+                name=city
+            ))
 
-    grouped_data_cross_trade = city_df.groupby(['City', 'From Date']).sum().reset_index()
+        # Update layout for Import plot
+        fig_import.update_layout(
+            title="",
+            xaxis_title="Date",
+            yaxis_title="Import",
+            barmode='group'
+        )
 
-    # Create figure and add bar chart trace for Cross Trade data
-    fig_cross_trade = go.Figure()
+        # Display the plot for Import data
+        st.plotly_chart(fig_import)
 
-    for city in grouped_data_cross_trade['City'].unique():
-        city_data_cross_trade = grouped_data_cross_trade[grouped_data_cross_trade['City'] == city]
-        fig_cross_trade.add_trace(go.Bar(
-            x=city_data_cross_trade['From Date'],
-            y=city_data_cross_trade['Cross Trade'],
-            name=city
-        ))
+        grouped_data_cross_trade = city_df.groupby(['City', 'From Date']).sum().reset_index()
 
-    # Update layout for Cross Trade plot
-    fig_cross_trade.update_layout(
-        title="",
-        xaxis_title="Date",
-        yaxis_title="Cross Trade",
-        barmode='group'
-    )
+        # Create figure and add bar chart trace for Cross Trade data
+        fig_cross_trade = go.Figure()
 
-    # Display the plot for Cross Trade data
-    st.plotly_chart(fig_cross_trade)
+        for city in grouped_data_cross_trade['City'].unique():
+            city_data_cross_trade = grouped_data_cross_trade[grouped_data_cross_trade['City'] == city]
+            fig_cross_trade.add_trace(go.Bar(
+                x=city_data_cross_trade['From Date'],
+                y=city_data_cross_trade['Cross Trade'],
+                name=city
+            ))
+
+        # Update layout for Cross Trade plot
+        fig_cross_trade.update_layout(
+            title="",
+            xaxis_title="Date",
+            yaxis_title="Cross Trade",
+            barmode='group'
+        )
+
+        # Display the plot for Cross Trade data
+        st.plotly_chart(fig_cross_trade)
 
 
 
