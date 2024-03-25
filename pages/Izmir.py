@@ -69,6 +69,7 @@ with tab1:
     st.header("A:")
     st.write(city_df)
 
+    col1, col2, col3 = st.columns(3)
     fig = go.Figure()
 
 # Add bar chart trace
@@ -85,8 +86,8 @@ with tab1:
         yaxis_title="Export"
     )
 
-    # Display the plot
-    st.plotly_chart(fig)
+    with col1:
+        st.plotly_chart(fig, use_container_width=True, width=100, height=100)
 
     fig = go.Figure()
 
@@ -104,8 +105,8 @@ with tab1:
         yaxis_title="Import"
     )
 
-    # Display the plot
-    st.plotly_chart(fig)
+    with col2:
+        st.plotly_chart(fig, use_container_width=True, width=100, height=100)
 
     fig = go.Figure()
 
@@ -123,8 +124,8 @@ with tab1:
         yaxis_title="Cross Trade"
     )
 
-    # Display the plot
-    st.plotly_chart(fig)   
+    with col3:
+        st.plotly_chart(fig, use_container_width=True, width=100, height=100)
 
     table_data = [] 
     for date_range, date_data in data.items():
@@ -144,6 +145,7 @@ with tab1:
     st.header("B:")
     st.write(city_df)                        
 
+    col1, col2, col3 = st.columns(3)
     fig = go.Figure()
 
 # Add bar chart trace
@@ -160,8 +162,8 @@ with tab1:
         yaxis_title="Export"
     )
 
-    # Display the plot
-    st.plotly_chart(fig)
+    with col1:
+        st.plotly_chart(fig, use_container_width=True, width=100, height=100)
 
     fig = go.Figure()
 
@@ -179,8 +181,8 @@ with tab1:
         yaxis_title="Import"
     )
 
-    # Display the plot
-    st.plotly_chart(fig)
+    with col2:
+        st.plotly_chart(fig, use_container_width=True, width=100, height=100)
 
     fig = go.Figure()
 
@@ -198,8 +200,8 @@ with tab1:
         yaxis_title="Cross Trade"
     )
 
-    # Display the plot
-    st.plotly_chart(fig)   
+    with col3:
+        st.plotly_chart(fig, use_container_width=True, width=100, height=100)
 
     table_data = [] 
     for date_range, date_data in data.items():
@@ -219,6 +221,7 @@ with tab1:
     st.header("SUM:")
     st.write(city_df)
 
+    col1, col2, col3 = st.columns(3)
     fig = go.Figure()
 
 # Add bar chart trace
@@ -235,8 +238,8 @@ with tab1:
         yaxis_title="Export"
     )
 
-    # Display the plot
-    st.plotly_chart(fig)
+    with col1:
+        st.plotly_chart(fig, use_container_width=True, width=100, height=100)
 
     fig = go.Figure()
 
@@ -254,8 +257,8 @@ with tab1:
         yaxis_title="Import"
     )
 
-    # Display the plot
-    st.plotly_chart(fig)
+    with col2:
+        st.plotly_chart(fig, use_container_width=True, width=100, height=100)
 
     fig = go.Figure()
 
@@ -273,8 +276,8 @@ with tab1:
         yaxis_title="Cross Trade"
     )
 
-    # Display the plot
-    st.plotly_chart(fig) 
+    with col3:
+        st.plotly_chart(fig, use_container_width=True, width=100, height=100)
 
 
 with tab2:
@@ -315,6 +318,7 @@ with tab2:
     city_df = pd.DataFrame(table_data)
     st.header("A:")
     st.write(city_df)
+    col1, col2, col3 = st.columns(3)
     fig = go.Figure()
 
 # Add bar chart trace
@@ -331,8 +335,8 @@ with tab2:
         yaxis_title="Export"
     )
 
-    # Display the plot
-    st.plotly_chart(fig)
+    with col1:
+        st.plotly_chart(fig, use_container_width=True, width=100, height=100)
 
     fig = go.Figure()
 
@@ -350,8 +354,8 @@ with tab2:
         yaxis_title="Import"
     )
 
-    # Display the plot
-    st.plotly_chart(fig)
+    with col2:
+        st.plotly_chart(fig, use_container_width=True, width=100, height=100)
 
     fig = go.Figure()
 
@@ -369,8 +373,8 @@ with tab2:
         yaxis_title="Cross Trade"
     )
 
-    # Display the plot
-    st.plotly_chart(fig)   
+    with col3:
+        st.plotly_chart(fig, use_container_width=True, width=100, height=100)
 
     table_data = [] 
     for date_range, date_data in data.items():
@@ -389,6 +393,7 @@ with tab2:
     city_df = pd.DataFrame(table_data)
     st.header("B:")
     st.write(city_df)                        
+    col1, col2, col3 = st.columns(3)
     fig = go.Figure()
 
 # Add bar chart trace
@@ -405,8 +410,8 @@ with tab2:
         yaxis_title="Export"
     )
 
-    # Display the plot
-    st.plotly_chart(fig)
+    with col1:
+        st.plotly_chart(fig, use_container_width=True, width=100, height=100)
 
     fig = go.Figure()
 
@@ -424,8 +429,8 @@ with tab2:
         yaxis_title="Import"
     )
 
-    # Display the plot
-    st.plotly_chart(fig)
+    with col2:
+        st.plotly_chart(fig, use_container_width=True, width=100, height=100)
 
     fig = go.Figure()
 
@@ -443,8 +448,8 @@ with tab2:
         yaxis_title="Cross Trade"
     )
 
-    # Display the plot
-    st.plotly_chart(fig)   
+    with col3:
+        st.plotly_chart(fig, use_container_width=True, width=100, height=100)
 
 
     table_data = [] 
@@ -465,6 +470,7 @@ with tab2:
     st.header("SUM:")
     st.write(city_df)
     
+    col1, col2, col3 = st.columns(3)
     fig = go.Figure()
 
 # Add bar chart trace
@@ -481,8 +487,8 @@ with tab2:
         yaxis_title="Export"
     )
 
-    # Display the plot
-    st.plotly_chart(fig)
+    with col1:
+        st.plotly_chart(fig, use_container_width=True, width=100, height=100)
 
     fig = go.Figure()
 
@@ -500,8 +506,8 @@ with tab2:
         yaxis_title="Import"
     )
 
-    # Display the plot
-    st.plotly_chart(fig)
+    with col2:
+        st.plotly_chart(fig, use_container_width=True, width=100, height=100)
 
     fig = go.Figure()
 
@@ -519,5 +525,5 @@ with tab2:
         yaxis_title="Cross Trade"
     )
 
-    # Display the plot
-    st.plotly_chart(fig) 
+    with col3:
+        st.plotly_chart(fig, use_container_width=True, width=100, height=100)
