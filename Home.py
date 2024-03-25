@@ -111,7 +111,7 @@ with tab1:
     )
 
     with col1:
-        st.plotly_chart(fig)
+        st.plotly_chart(fig, use_container_width=True, width=100, height=100)
 
     grouped_data_import = city_df.groupby(['City', 'From Date']).sum().reset_index()
 
