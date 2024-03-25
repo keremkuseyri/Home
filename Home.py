@@ -175,7 +175,7 @@ with tab1:
 
     # Update layout
     fig.update_layout(
-        title="Export",
+        title="",
         xaxis_title="Date",
         yaxis_title="Export",
         barmode='group'
@@ -199,7 +199,7 @@ with tab1:
 
     # Update layout for Import plot
     fig_import.update_layout(
-        title="Import Data by City and Data Type",
+        title="",
         xaxis_title="Date",
         yaxis_title="Import",
         barmode='group'
@@ -223,7 +223,7 @@ with tab1:
 
     # Update layout for Cross Trade plot
     fig_cross_trade.update_layout(
-        title="Cross Trade Data by City and Data Type",
+        title="",
         xaxis_title="Date",
         yaxis_title="Cross Trade",
         barmode='group'
@@ -364,7 +364,7 @@ with tab2:
 
     # Update layout
     fig.update_layout(
-        title="Export Data by City and Data Type",
+        title="",
         xaxis_title="Date",
         yaxis_title="Export",
         barmode='group'
@@ -388,7 +388,7 @@ with tab2:
 
     # Update layout for Import plot
     fig_import.update_layout(
-        title="Import Data by City and Data Type",
+        title="",
         xaxis_title="Date",
         yaxis_title="Import",
         barmode='group'
@@ -412,7 +412,7 @@ with tab2:
 
     # Update layout for Cross Trade plot
     fig_cross_trade.update_layout(
-        title="Cross Trade Data by City and Data Type",
+        title="",
         xaxis_title="Date",
         yaxis_title="Cross Trade",
         barmode='group'
