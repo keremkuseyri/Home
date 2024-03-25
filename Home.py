@@ -89,9 +89,9 @@ with tab1:
 
     row=st.columns(3)
     for col in row:
-       tile = col.container(height=120)
+        tile = col.container(height=120)
    
-       grouped_data = city_df.groupby(['City', 'From Date']).sum().reset_index()
+        grouped_data = city_df.groupby(['City', 'From Date']).sum().reset_index()
 
         # Create figure and add bar chart trace
         fig = go.Figure()
