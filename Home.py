@@ -3,6 +3,7 @@ import pandas as pd
 import plotly.graph_objects as go
 
 st.set_page_config(layout='wide')
+
 option = st.selectbox(
    "Year📅",
    ("2024", "2023", "2022"),
@@ -10,7 +11,8 @@ option = st.selectbox(
    placeholder="Select Period",
 )
 
-st.write('You selected:', option)
+
+
 tab1, tab2 = st.tabs(["Quantity📈", "Teu📈"])
 data= {
     ('2024-01-01', '2024-01-31'): {
