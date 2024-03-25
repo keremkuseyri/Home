@@ -4,7 +4,8 @@ import plotly.graph_objects as go
 
 
 st.set_page_config(layout='wide')
-tab1, tab2 = st.tabs(["Quantity", "Teu"])
+
+tab1, tab2 = st.tabs(["Quantity📈", "Teu📈"])
 data= {
     ('2024-01-01', '2024-01-31'): {
         'data_count': {
@@ -70,7 +71,62 @@ with tab1:
     city_df = pd.DataFrame(table_data)
     st.header("A:")
     st.write(city_df)
+    fig = go.Figure()
 
+# Add bar chart trace
+    fig.add_trace(go.Bar(
+        x=city_df['From Date'],
+        y=city_df['Export'],
+        name='Export'
+    ))
+
+    # Update layout
+    fig.update_layout(
+        title="",
+        xaxis_title="Date",
+        yaxis_title="Export"
+    )
+
+    # Display the plot
+    st.plotly_chart(fig)
+
+    fig = go.Figure()
+
+# Add bar chart trace
+    fig.add_trace(go.Bar(
+        x=city_df['From Date'],
+        y=city_df['Import'],
+        name='Import'
+    ))
+
+    # Update layout
+    fig.update_layout(
+        title="",
+        xaxis_title="Date",
+        yaxis_title="Import"
+    )
+
+    # Display the plot
+    st.plotly_chart(fig)
+
+    fig = go.Figure()
+
+# Add bar chart trace
+    fig.add_trace(go.Bar(
+        x=city_df['From Date'],
+        y=city_df['Cross Trade'],
+        name='Cross Trade'
+    ))
+
+    # Update layout
+    fig.update_layout(
+        title="",
+        xaxis_title="Date",
+        yaxis_title="Cross Trade"
+    )
+
+    # Display the plot
+    st.plotly_chart(fig)   
     table_data = [] 
     for date_range, date_data in data.items():
         for data_type, city_data in date_data.items():
@@ -88,24 +144,63 @@ with tab1:
     city_df = pd.DataFrame(table_data)
     st.header("B:")
     st.write(city_df)                        
+    fig = go.Figure()
 
-    table_data = [] 
-    for date_range, date_data in data.items():
-        for data_type, city_data in date_data.items():
-            for city, city_values in city_data.items():
-                if city == 'mersin':
-                    if data_type == 'data_count':      
-                            row = {
-                                'From Date': date_range[0],
-                                'To Date': date_range[1],
-                                'Export': f"{city_values['FRW']['E']}",
-                                'Import': f"{city_values['FRW']['I']}",
-                                'Cross Trade': f"{city_values['FRW']['T']}"
-                            }
-                            table_data.append(row)
-    city_df = pd.DataFrame(table_data)
-    st.header("FRW:")
-    st.write(city_df)
+# Add bar chart trace
+    fig.add_trace(go.Bar(
+        x=city_df['From Date'],
+        y=city_df['Export'],
+        name='Export'
+    ))
+
+    # Update layout
+    fig.update_layout(
+        title="",
+        xaxis_title="Date",
+        yaxis_title="Export"
+    )
+
+    # Display the plot
+    st.plotly_chart(fig)
+
+    fig = go.Figure()
+
+# Add bar chart trace
+    fig.add_trace(go.Bar(
+        x=city_df['From Date'],
+        y=city_df['Import'],
+        name='Import'
+    ))
+
+    # Update layout
+    fig.update_layout(
+        title="",
+        xaxis_title="Date",
+        yaxis_title="Import"
+    )
+
+    # Display the plot
+    st.plotly_chart(fig)
+
+    fig = go.Figure()
+
+# Add bar chart trace
+    fig.add_trace(go.Bar(
+        x=city_df['From Date'],
+        y=city_df['Cross Trade'],
+        name='Cross Trade'
+    ))
+
+    # Update layout
+    fig.update_layout(
+        title="",
+        xaxis_title="Date",
+        yaxis_title="Cross Trade"
+    )
+
+    # Display the plot
+    st.plotly_chart(fig)   
+
 
     table_data = [] 
     for date_range, date_data in data.items():
@@ -220,7 +315,62 @@ with tab2:
     city_df = pd.DataFrame(table_data)
     st.header("A:")
     st.write(city_df)
+    fig = go.Figure()
 
+# Add bar chart trace
+    fig.add_trace(go.Bar(
+        x=city_df['From Date'],
+        y=city_df['Export'],
+        name='Export'
+    ))
+
+    # Update layout
+    fig.update_layout(
+        title="",
+        xaxis_title="Date",
+        yaxis_title="Export"
+    )
+
+    # Display the plot
+    st.plotly_chart(fig)
+
+    fig = go.Figure()
+
+# Add bar chart trace
+    fig.add_trace(go.Bar(
+        x=city_df['From Date'],
+        y=city_df['Import'],
+        name='Import'
+    ))
+
+    # Update layout
+    fig.update_layout(
+        title="",
+        xaxis_title="Date",
+        yaxis_title="Import"
+    )
+
+    # Display the plot
+    st.plotly_chart(fig)
+
+    fig = go.Figure()
+
+# Add bar chart trace
+    fig.add_trace(go.Bar(
+        x=city_df['From Date'],
+        y=city_df['Cross Trade'],
+        name='Cross Trade'
+    ))
+
+    # Update layout
+    fig.update_layout(
+        title="",
+        xaxis_title="Date",
+        yaxis_title="Cross Trade"
+    )
+
+    # Display the plot
+    st.plotly_chart(fig)   
     table_data = [] 
     for date_range, date_data in data.items():
         for data_type, city_data in date_data.items():
@@ -238,24 +388,63 @@ with tab2:
     city_df = pd.DataFrame(table_data)
     st.header("B:")
     st.write(city_df)                        
+    fig = go.Figure()
 
-    table_data = [] 
-    for date_range, date_data in data.items():
-        for data_type, city_data in date_data.items():
-            for city, city_values in city_data.items():
-                if city == 'mersin':
-                    if data_type == 'teu':      
-                            row = {
-                                'From Date': date_range[0],
-                                'To Date': date_range[1],
-                                'Export': f"{city_values['FRW']['E']}",
-                                'Import': f"{city_values['FRW']['I']}",
-                                'Cross Trade': f"{city_values['FRW']['T']}"
-                            }
-                            table_data.append(row)
-    city_df = pd.DataFrame(table_data)
-    st.header("FRW:")
-    st.write(city_df)
+# Add bar chart trace
+    fig.add_trace(go.Bar(
+        x=city_df['From Date'],
+        y=city_df['Export'],
+        name='Export'
+    ))
+
+    # Update layout
+    fig.update_layout(
+        title="",
+        xaxis_title="Date",
+        yaxis_title="Export"
+    )
+
+    # Display the plot
+    st.plotly_chart(fig)
+
+    fig = go.Figure()
+
+# Add bar chart trace
+    fig.add_trace(go.Bar(
+        x=city_df['From Date'],
+        y=city_df['Import'],
+        name='Import'
+    ))
+
+    # Update layout
+    fig.update_layout(
+        title="",
+        xaxis_title="Date",
+        yaxis_title="Import"
+    )
+
+    # Display the plot
+    st.plotly_chart(fig)
+
+    fig = go.Figure()
+
+# Add bar chart trace
+    fig.add_trace(go.Bar(
+        x=city_df['From Date'],
+        y=city_df['Cross Trade'],
+        name='Cross Trade'
+    ))
+
+    # Update layout
+    fig.update_layout(
+        title="",
+        xaxis_title="Date",
+        yaxis_title="Cross Trade"
+    )
+
+    # Display the plot
+    st.plotly_chart(fig)   
+
 
     table_data = [] 
     for date_range, date_data in data.items():
