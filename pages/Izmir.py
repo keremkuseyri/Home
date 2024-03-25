@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
 
-
 st.set_page_config(layout='wide')
 option = st.selectbox(
    "Year📅",
@@ -918,13 +917,12 @@ if option == "2024":
     data = data2024
 
 
-
 with tab1:
     table_data = []  
     for date_range, date_data in data.items():
         for data_type, city_data in date_data.items():
             for city, city_values in city_data.items():
-                if city == 'mersin':
+                if city == 'izmir':
                     if data_type == 'data_count': 
                             row = {
                                 'From Date': date_range[0],
@@ -942,7 +940,7 @@ with tab1:
     for date_range, date_data in data.items():
         for data_type, city_data in date_data.items():
             for city, city_values in city_data.items():
-                if city == 'mersin':
+                if city == 'izmir':
                     if data_type == 'data_count':      
                             row = {
                                 'From Date': date_range[0],
@@ -955,6 +953,7 @@ with tab1:
     city_df = pd.DataFrame(table_data)
     st.header("A:")
     st.write(city_df)
+
     col1, col2, col3 = st.columns(3)
     fig = go.Figure()
 
@@ -1011,12 +1010,13 @@ with tab1:
     )
 
     with col3:
-        st.plotly_chart(fig, use_container_width=True, width=100, height=100)  
+        st.plotly_chart(fig, use_container_width=True, width=100, height=100)
+
     table_data = [] 
     for date_range, date_data in data.items():
         for data_type, city_data in date_data.items():
             for city, city_values in city_data.items():
-                if city == 'mersin':
+                if city == 'izmir':
                     if data_type == 'data_count':      
                             row = {
                                 'From Date': date_range[0],
@@ -1029,6 +1029,7 @@ with tab1:
     city_df = pd.DataFrame(table_data)
     st.header("B:")
     st.write(city_df)                        
+
     col1, col2, col3 = st.columns(3)
     fig = go.Figure()
 
@@ -1087,12 +1088,11 @@ with tab1:
     with col3:
         st.plotly_chart(fig, use_container_width=True, width=100, height=100)
 
-
     table_data = [] 
     for date_range, date_data in data.items():
         for data_type, city_data in date_data.items():
             for city, city_values in city_data.items():
-                if city == 'mersin':
+                if city == 'izmir':
                     if data_type == 'data_count':      
                             row = {
                                 'From Date': date_range[0],
@@ -1170,7 +1170,7 @@ with tab2:
     for date_range, date_data in data.items():
         for data_type, city_data in date_data.items():
             for city, city_values in city_data.items():
-                if city == 'mersin':
+                if city == 'izmir':
                     if data_type == 'teu':      
                             row = {
                                 'From Date': date_range[0],
@@ -1185,11 +1185,12 @@ with tab2:
     st.write(city_df)
 
 
+
     table_data = [] 
     for date_range, date_data in data.items():
         for data_type, city_data in date_data.items():
             for city, city_values in city_data.items():
-                if city == 'mersin':
+                if city == 'izmir':
                     if data_type == 'teu':      
                             row = {
                                 'From Date': date_range[0],
@@ -1259,11 +1260,12 @@ with tab2:
 
     with col3:
         st.plotly_chart(fig, use_container_width=True, width=100, height=100)
+
     table_data = [] 
     for date_range, date_data in data.items():
         for data_type, city_data in date_data.items():
             for city, city_values in city_data.items():
-                if city == 'mersin':
+                if city == 'izmir':
                     if data_type == 'teu':      
                             row = {
                                 'From Date': date_range[0],
@@ -1339,7 +1341,7 @@ with tab2:
     for date_range, date_data in data.items():
         for data_type, city_data in date_data.items():
             for city, city_values in city_data.items():
-                if city == 'mersin':
+                if city == 'izmir':
                     if data_type == 'teu':      
                             row = {
                                 'From Date': date_range[0],
@@ -1352,7 +1354,7 @@ with tab2:
     city_df = pd.DataFrame(table_data)
     st.header("SUM:")
     st.write(city_df)
-
+    
     col1, col2, col3 = st.columns(3)
     fig = go.Figure()
 
