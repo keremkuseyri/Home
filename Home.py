@@ -87,9 +87,11 @@ with tab1:
     st.header("A:")
     st.write(city_df)
 
-    with st.container():
-
-        grouped_data = city_df.groupby(['City', 'From Date']).sum().reset_index()
+    row=st.columns(3)
+    for col in row:
+       tile = col.container(height=120)
+   
+       grouped_data = city_df.groupby(['City', 'From Date']).sum().reset_index()
 
         # Create figure and add bar chart trace
         fig = go.Figure()
@@ -111,7 +113,7 @@ with tab1:
         )
 
         # Display the plot
-        st.plotly_chart(fig)
+        tile.st.plotly_chart(fig)
 
         grouped_data_import = city_df.groupby(['City', 'From Date']).sum().reset_index()
 
