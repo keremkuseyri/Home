@@ -4,7 +4,7 @@ import plotly.graph_objects as go
 
 st.set_page_config(layout='wide')
 
-st.image('logo-color.png')
+st.image('https://www.geneltransport.com.tr/wp-content/uploads/2021/03/logo-color.png')
 
 option = st.selectbox(
    "Year📅",
