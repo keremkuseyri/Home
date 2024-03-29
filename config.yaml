@@ -1,5 +1,11 @@
 credentials:
   usernames:
+    osakar:
+      email: ozkan.sakar@geneltransport.com.tr
+      failed_login_attempts: 0 # Will be managed automatically
+      logged_in: False # Will be managed automatically
+      name: Özkan Sakar
+      password: 'sATLDn7K' # Will be hashed automatically
     kkuseyri:
       email: kerem.kuseyri@geneltransport.com.tr
       failed_login_attempts: 0 # Will be managed automatically
@@ -14,7 +20,7 @@ credentials:
       password: '123456' # Will be hashed automatically
 cookie:
   expiry_days: 1
-  key: abcdef # Must be string
+  key: abc # Must be string
   name: session_cookie
 pre-authorized:
   emails:
