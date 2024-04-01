@@ -21,9 +21,18 @@ authenticator = stauth.Authenticate(
 
 authenticator.login()
 if st.session_state["authentication_status"]:
-    authenticator.logout("Logout", "sidebar")
-    st.sidebar.write(f'Welcome *{st.session_state["name"]}*')
+
     
+    st.sidebar.page_link("Home.py", label="Home", icon="🏠" )
+    with st.sidebar.expander("Deniz Liste Raporlari"):
+        st.page_link("pages/Istanbul.py", label="Istanbul", icon="🏠")
+        st.page_link("pages/Mersin.py", label="Mersin",  icon="🏠")
+        st.page_link("pages/Izmir.py", label="Izmir",  icon="🏠")    
+
+    st.sidebar.write(f'Welcome *{st.session_state["name"]}*')
+    authenticator.logout("Logout", "sidebar")
+
+
     option = st.selectbox(
     "Year📅",
     ("2024", "2023", "2022"),
