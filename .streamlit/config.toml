@@ -1,3 +1,5 @@
+[browser]
+showSidebarNavigation = false
 [theme]
 
 # The preset Streamlit theme that your custom theme inherits from.
