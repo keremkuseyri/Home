@@ -45,7 +45,7 @@ if st.session_state["authentication_status"]:
 
 
 
-    tab1, tab2 = st.tabs(["Quantity📊", "Teu📊"])
+    tab1, tab2 = st.tabs(["Quantity🔢", "Teu📦"])
     data2022={
         ("2022-01-01", "2022-01-31"): {
             "data_count": {
