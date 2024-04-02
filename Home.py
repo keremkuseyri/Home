@@ -958,9 +958,9 @@ if st.session_state["authentication_status"]:
     # Summing every column data of every row, except for the date column
     pivot_df['Total'] = pivot_df.iloc[:, 1:].sum(axis=1)
     
-    fig = px.line(pivot_df,markers=True, x='From Date', y='Total', title='Total Import/Export/Crosstrade of every city', width=1000)
+    fig = px.line(pivot_df,markers=True, x='From Date', y='Total', title='Total Import/Export/Crosstrade', width=1000)
     fig.update_xaxes(title_text='Date')
-    fig.update_yaxes(title_text='Total')
+    fig.update_yaxes(title_text='Count')
     st.plotly_chart(fig)
     pivot_df['Total_Export'] = pivot_df[['istanbul_Export', 'izmir_Export', 'mersin_Export']].sum(axis=1)
     pivot_df['Total_Import'] = pivot_df[['istanbul_Import', 'izmir_Import','mersin_Import']].sum(axis=1)
@@ -969,15 +969,15 @@ if st.session_state["authentication_status"]:
     fig = go.Figure()
 
     # Add total export trace
-    fig.add_trace(go.Scatter(x=pivot_df['From Date'], y=pivot_df['Total_Export'], mode='lines', name='Total Export'))
+    fig.add_trace(go.Scatter(x=pivot_df['From Date'], y=pivot_df['Total_Export'], mode='lines', name='Export'))
 
     # Add total import trace
-    fig.add_trace(go.Scatter(x=pivot_df['From Date'], y=pivot_df['Total_Import'], mode='lines', name='Total Import'))
+    fig.add_trace(go.Scatter(x=pivot_df['From Date'], y=pivot_df['Total_Import'], mode='lines', name='Import'))
 
     # Update layout
     fig.update_layout(title='Total Import and Export Over Time',
                     xaxis_title='Date',
-                    yaxis_title='Total Value')
+                    yaxis_title='Count')
 
     # Display the chart
     st.plotly_chart(fig,use_container_width=True)
