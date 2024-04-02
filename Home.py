@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
+import plotly.express as px
 import streamlit_authenticator as stauth
 import yaml
 from yaml.loader import SafeLoader
@@ -924,26 +925,67 @@ if st.session_state["authentication_status"]:
     }
 
     table_data = []
-        
+
     for date_range, date_data in yearlessdata.items():
         for data_type, city_data in date_data.items():
             for city, city_values in city_data.items():
                 if data_type == 'data_count':
-                        row = {
-                            'From Date': date_range[0],
-                            'To Date': date_range[1],
-                            'City': city,
-                            'Data Type': data_type,
-                            'Export': f"{city_values['A']['E'] + city_values['B']['E'] + city_values['FRW']['E']}",
-                            'Import': f"{city_values['A']['I'] + city_values['B']['I'] + city_values['FRW']['I']}",
-                            'Cross Trade': f"{city_values['A']['T'] + city_values['B']['T'] + city_values['FRW']['T']}"
-                        }
-                        
-                        table_data.append(row)
+                    row = {
+                        'From Date': date_range[0],
+                        'To Date': date_range[1],
+                        'City': city,
+                        'Export': city_values['A']['E'] + city_values['B']['E'] + city_values['FRW']['E'],
+                        'Import': city_values['A']['I'] + city_values['B']['I'] + city_values['FRW']['I'],
+                        'Cross Trade': city_values['A']['T'] + city_values['B']['T'] + city_values['FRW']['T']
+                    }
+                    table_data.append(row)
 
-
+    # Creating DataFrame from table_data
     city_df = pd.DataFrame(table_data)
-    st.write(city_df)
+
+    # Grouping by 'From Date', 'City', and aggregating using sum
+    city_df_grouped = city_df.groupby(['From Date', 'City']).agg({'Export': 'sum', 'Import': 'sum', 'Cross Trade': 'sum'}).reset_index()
+
+    # Pivoting the DataFrame
+    pivot_df = city_df_grouped.pivot(index='From Date', columns='City', values=['Export', 'Import', 'Cross Trade']).reset_index()
+
+    # Flattening the multi-index columns
+    pivot_df.columns = [col[0] if col[1] == '' else col[1] + '_' + col[0] for col in pivot_df.columns]
+
+    # Filling NaN values with 0
+    pivot_df.fillna(0, inplace=True)
+
+    # Summing every column data of every row, except for the date column
+    pivot_df['Total'] = pivot_df.iloc[:, 1:].sum(axis=1)
+    
+
+    pivot_df['Total_Export'] = pivot_df[['istanbul_Export', 'izmir_Export', 'mersin_Export']].sum(axis=1)
+    pivot_df['Total_Import'] = pivot_df[['istanbul_Import', 'izmir_Import','mersin_Import']].sum(axis=1)
+
+    # Create traces
+    fig = go.Figure()
+
+    # Add total export trace
+    fig.add_trace(go.Scatter(x=pivot_df['From Date'], y=pivot_df['Total_Export'], mode='lines', name='Total Export'))
+
+    # Add total import trace
+    fig.add_trace(go.Scatter(x=pivot_df['From Date'], y=pivot_df['Total_Import'], mode='lines', name='Total Import'))
+
+    # Update layout
+    fig.update_layout(title='Total Import and Export Over Time',
+                    xaxis_title='Date',
+                    yaxis_title='Total Value')
+
+    # Display the chart
+    st.plotly_chart(fig)
+
+    # Displaying the pivoted DataFrame
+    
+    fig = px.line(pivot_df,markers=True, x='From Date', y='Total', title='Total Import/Export/Crosstrade of every city')
+    fig.update_xaxes(title_text='Date')
+    fig.update_yaxes(title_text='Total')
+    st.plotly_chart(fig)
+
     col1, col2, col3 = st.columns(3)
 
     grouped_data = city_df.groupby(['City', 'From Date']).sum().reset_index()
