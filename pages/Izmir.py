@@ -983,6 +983,8 @@ if st.session_state["authentication_status"]:
         st.write(city_df)
 
         col1, col2, col3 = st.columns(3)
+        max_value = city_df[['Export', 'Import', 'Cross Trade']].astype(float).values.max()
+        st.write(max_value)
         fig = go.Figure()
 
     # Add bar chart trace
@@ -996,7 +998,8 @@ if st.session_state["authentication_status"]:
         fig.update_layout(
             title="",
             xaxis_title="Date",
-            yaxis_title="Export"
+            yaxis_title="Export",
+            yaxis=dict(range=[0, max_value])
         )
 
         with col1:
@@ -1015,7 +1018,8 @@ if st.session_state["authentication_status"]:
         fig.update_layout(
             title="",
             xaxis_title="Date",
-            yaxis_title="Import"
+            yaxis_title="Import",
+            yaxis=dict(range=[0, max_value])
         )
 
         with col2:
@@ -1034,11 +1038,12 @@ if st.session_state["authentication_status"]:
         fig.update_layout(
             title="",
             xaxis_title="Date",
-            yaxis_title="Cross Trade"
+            yaxis_title="Cross Trade",
+            yaxis=dict(range=[0, max_value])
         )
 
         with col3:
-            st.plotly_chart(fig, use_container_width=True, width=100, height=100)
+            st.plotly_chart(fig, use_container_width=True, width=100, height=100)  
 
         table_data = [] 
         for date_range, date_data in data.items():
@@ -1059,6 +1064,8 @@ if st.session_state["authentication_status"]:
         st.write(city_df)                        
 
         col1, col2, col3 = st.columns(3)
+        max_value = city_df[['Export', 'Import', 'Cross Trade']].astype(float).values.max()
+        st.write(max_value)
         fig = go.Figure()
 
     # Add bar chart trace
@@ -1072,7 +1079,8 @@ if st.session_state["authentication_status"]:
         fig.update_layout(
             title="",
             xaxis_title="Date",
-            yaxis_title="Export"
+            yaxis_title="Export",
+            yaxis=dict(range=[0, max_value])
         )
 
         with col1:
@@ -1091,7 +1099,8 @@ if st.session_state["authentication_status"]:
         fig.update_layout(
             title="",
             xaxis_title="Date",
-            yaxis_title="Import"
+            yaxis_title="Import",
+            yaxis=dict(range=[0, max_value])
         )
 
         with col2:
@@ -1110,11 +1119,12 @@ if st.session_state["authentication_status"]:
         fig.update_layout(
             title="",
             xaxis_title="Date",
-            yaxis_title="Cross Trade"
+            yaxis_title="Cross Trade",
+            yaxis=dict(range=[0, max_value])
         )
 
         with col3:
-            st.plotly_chart(fig, use_container_width=True, width=100, height=100)
+            st.plotly_chart(fig, use_container_width=True, width=100, height=100)  
 
         table_data = [] 
         for date_range, date_data in data.items():
@@ -1135,6 +1145,8 @@ if st.session_state["authentication_status"]:
         st.write(city_df)
 
         col1, col2, col3 = st.columns(3)
+        max_value = city_df[['Export', 'Import', 'Cross Trade']].astype(float).values.max()
+        st.write(max_value)
         fig = go.Figure()
 
     # Add bar chart trace
@@ -1148,7 +1160,8 @@ if st.session_state["authentication_status"]:
         fig.update_layout(
             title="",
             xaxis_title="Date",
-            yaxis_title="Export"
+            yaxis_title="Export",
+            yaxis=dict(range=[0, max_value])
         )
 
         with col1:
@@ -1167,7 +1180,8 @@ if st.session_state["authentication_status"]:
         fig.update_layout(
             title="",
             xaxis_title="Date",
-            yaxis_title="Import"
+            yaxis_title="Import",
+            yaxis=dict(range=[0, max_value])
         )
 
         with col2:
@@ -1186,11 +1200,12 @@ if st.session_state["authentication_status"]:
         fig.update_layout(
             title="",
             xaxis_title="Date",
-            yaxis_title="Cross Trade"
+            yaxis_title="Cross Trade",
+            yaxis=dict(range=[0, max_value])
         )
 
         with col3:
-            st.plotly_chart(fig, use_container_width=True, width=100, height=100)
+            st.plotly_chart(fig, use_container_width=True, width=100, height=100)  
 
 
     with tab2:
@@ -1232,6 +1247,8 @@ if st.session_state["authentication_status"]:
         st.header("A:")
         st.write(city_df)
         col1, col2, col3 = st.columns(3)
+        max_value = city_df[['Export', 'Import', 'Cross Trade']].astype(float).values.max()
+        st.write(max_value)
         fig = go.Figure()
 
     # Add bar chart trace
@@ -1245,7 +1262,8 @@ if st.session_state["authentication_status"]:
         fig.update_layout(
             title="",
             xaxis_title="Date",
-            yaxis_title="Export"
+            yaxis_title="Export",
+            yaxis=dict(range=[0, max_value])
         )
 
         with col1:
@@ -1264,7 +1282,8 @@ if st.session_state["authentication_status"]:
         fig.update_layout(
             title="",
             xaxis_title="Date",
-            yaxis_title="Import"
+            yaxis_title="Import",
+            yaxis=dict(range=[0, max_value])
         )
 
         with col2:
@@ -1283,11 +1302,12 @@ if st.session_state["authentication_status"]:
         fig.update_layout(
             title="",
             xaxis_title="Date",
-            yaxis_title="Cross Trade"
+            yaxis_title="Cross Trade",
+            yaxis=dict(range=[0, max_value])
         )
 
         with col3:
-            st.plotly_chart(fig, use_container_width=True, width=100, height=100)
+            st.plotly_chart(fig, use_container_width=True, width=100, height=100)  
 
         table_data = [] 
         for date_range, date_data in data.items():
@@ -1307,6 +1327,8 @@ if st.session_state["authentication_status"]:
         st.header("B:")
         st.write(city_df)                        
         col1, col2, col3 = st.columns(3)
+        max_value = city_df[['Export', 'Import', 'Cross Trade']].astype(float).values.max()
+        st.write(max_value)
         fig = go.Figure()
 
     # Add bar chart trace
@@ -1320,7 +1342,8 @@ if st.session_state["authentication_status"]:
         fig.update_layout(
             title="",
             xaxis_title="Date",
-            yaxis_title="Export"
+            yaxis_title="Export",
+            yaxis=dict(range=[0, max_value])
         )
 
         with col1:
@@ -1339,7 +1362,8 @@ if st.session_state["authentication_status"]:
         fig.update_layout(
             title="",
             xaxis_title="Date",
-            yaxis_title="Import"
+            yaxis_title="Import",
+            yaxis=dict(range=[0, max_value])
         )
 
         with col2:
@@ -1358,11 +1382,12 @@ if st.session_state["authentication_status"]:
         fig.update_layout(
             title="",
             xaxis_title="Date",
-            yaxis_title="Cross Trade"
+            yaxis_title="Cross Trade",
+            yaxis=dict(range=[0, max_value])
         )
 
         with col3:
-            st.plotly_chart(fig, use_container_width=True, width=100, height=100)
+            st.plotly_chart(fig, use_container_width=True, width=100, height=100)  
 
 
         table_data = [] 
@@ -1384,6 +1409,8 @@ if st.session_state["authentication_status"]:
         st.write(city_df)
         
         col1, col2, col3 = st.columns(3)
+        max_value = city_df[['Export', 'Import', 'Cross Trade']].astype(float).values.max()
+        st.write(max_value)
         fig = go.Figure()
 
     # Add bar chart trace
@@ -1397,7 +1424,8 @@ if st.session_state["authentication_status"]:
         fig.update_layout(
             title="",
             xaxis_title="Date",
-            yaxis_title="Export"
+            yaxis_title="Export",
+            yaxis=dict(range=[0, max_value])
         )
 
         with col1:
@@ -1416,7 +1444,8 @@ if st.session_state["authentication_status"]:
         fig.update_layout(
             title="",
             xaxis_title="Date",
-            yaxis_title="Import"
+            yaxis_title="Import",
+            yaxis=dict(range=[0, max_value])
         )
 
         with col2:
@@ -1435,11 +1464,12 @@ if st.session_state["authentication_status"]:
         fig.update_layout(
             title="",
             xaxis_title="Date",
-            yaxis_title="Cross Trade"
+            yaxis_title="Cross Trade",
+            yaxis=dict(range=[0, max_value])
         )
 
         with col3:
-            st.plotly_chart(fig, use_container_width=True, width=100, height=100)
+            st.plotly_chart(fig, use_container_width=True, width=100, height=100)  
 
 elif st.session_state["authentication_status"] is False:
     st.error('Username/password is incorrect')
