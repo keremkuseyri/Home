@@ -954,18 +954,18 @@ if st.session_state["authentication_status"]:
 
     for city in grouped_data['City'].unique():
         city_data = grouped_data[grouped_data['City'] == city]
-        fig.add_trace(go.Bar(
+        fig.add_trace(go.Scatter(
                 x=city_data['From Date'],
                 y=city_data['Export'],
+                mode='lines+markers',
                 name=city
             ))
 
-        # Update layout
+    # Update layout for Export plot
     fig.update_layout(
             title="",
             xaxis_title="Date",
             yaxis_title="Export",
-            barmode='group',
             yaxis=dict(range=[0, max_value])
         )
 
@@ -979,18 +979,18 @@ if st.session_state["authentication_status"]:
 
     for city in grouped_data_import['City'].unique():
             city_data_import = grouped_data_import[grouped_data_import['City'] == city]
-            fig_import.add_trace(go.Bar(
+            fig_import.add_trace(go.Scatter(
                 x=city_data_import['From Date'],
                 y=city_data_import['Import'],
+                mode='lines+markers',
                 name=city
             ))
 
-        # Update layout for Import plot
+    # Update layout for Import plot
     fig_import.update_layout(
             title="",
             xaxis_title="Date",
             yaxis_title="Import",
-            barmode='group',
             yaxis=dict(range=[0, max_value])
         )
 
@@ -1004,18 +1004,18 @@ if st.session_state["authentication_status"]:
 
     for city in grouped_data_cross_trade['City'].unique():
         city_data_cross_trade = grouped_data_cross_trade[grouped_data_cross_trade['City'] == city]
-        fig_cross_trade.add_trace(go.Bar(
+        fig_cross_trade.add_trace(go.Scatter(
                 x=city_data_cross_trade['From Date'],
                 y=city_data_cross_trade['Cross Trade'],
+                mode='lines+markers',
                 name=city
             ))
 
-        # Update layout for Cross Trade plot
+    # Update layout for Cross Trade plot
     fig_cross_trade.update_layout(
             title="",
             xaxis_title="Date",
             yaxis_title="Cross Trade",
-            barmode='group',
             yaxis=dict(range=[0, max_value])
         )
 
