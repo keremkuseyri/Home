@@ -37,6 +37,12 @@ if st.session_state["authentication_status"]:
     dataframe1 = pd.read_excel(f'reports/air_export_employee_kpis/price_weigth_per.xlsx')
     st.title("XLSX DENEME")
     st.write(dataframe1)
+    df = pd.DataFrame(dataframe1)
+
+# Create pie chart
+    fig = go.Figure(data=[go.Pie(labels=df['employee_name'], values=df['price_weigth'])])
+    fig.update_layout(title='Pie Chart Example')
+    st.plotly_chart(fig)
     yearlessdata= {("2022-01-01", "2022-01-31"): {
             "data_count": {
                 "istanbul": {
