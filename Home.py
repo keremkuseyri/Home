@@ -34,7 +34,7 @@ if st.session_state["authentication_status"]:
 
     st.sidebar.write(f'Welcome *{st.session_state["name"]}*')
     authenticator.logout("Logout", "sidebar")
-    dataframe1 = pd.read_excel(f'\\reports\\air_export_employee_kpis\\price_weigth_per.xlsx')
+    dataframe1 = pd.read_excel(f'reports/air_export_employee_kpis/price_weigth_per.xlsx')
     st.title("XLSX DENEME")
     st.write(dataframe1)
     yearlessdata= {("2022-01-01", "2022-01-31"): {
