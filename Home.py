@@ -5,6 +5,7 @@ import plotly.express as px
 import streamlit_authenticator as stauth
 import yaml
 from yaml.loader import SafeLoader
+import openpyxl
 
 with open('config.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
@@ -33,7 +34,9 @@ if st.session_state["authentication_status"]:
 
     st.sidebar.write(f'Welcome *{st.session_state["name"]}*')
     authenticator.logout("Logout", "sidebar")
-
+    dataframe1 = pd.read_excel(f'\\reports\\air_export_employee_kpis\\price_weigth_per.xlsx')
+    st.title("XLSX DENEME")
+    st.write(dataframe1)
     yearlessdata= {("2022-01-01", "2022-01-31"): {
             "data_count": {
                 "istanbul": {
@@ -1984,7 +1987,7 @@ if st.session_state["authentication_status"]:
         data = data2023
     if option == "2024":
         data = data2024
-    
+
     with tab1:
 
 
@@ -2647,6 +2650,8 @@ if st.session_state["authentication_status"]:
 
         with col3:
             st.plotly_chart(fig_cross_trade, use_container_width=True, width=100, height=100)
+
+        
 
 elif st.session_state["authentication_status"] is False:
     st.error('Username/password is incorrect')
