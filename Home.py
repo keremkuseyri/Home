@@ -1082,7 +1082,7 @@ if st.session_state["authentication_status"]:
     merged_df['IsFuture'] = merged_df['date'] > pd.Timestamp.now()
 
     # Create plot
-    fig = px.line(merged_df, x='date', y='data', title='Date Quantity Analysis', width=1000, color='IsFuture',
+    fig = px.line(merged_df, x='date', y='data', title='Date Quantity Analysis', width=1300, color='IsFuture',
                 color_discrete_map={True: 'green', False: 'blue'})
     fig.update_xaxes(title_text='Date')
     fig.update_yaxes(title_text='Quantity')
@@ -1107,8 +1107,7 @@ if st.session_state["authentication_status"]:
     merged_df['IsFuture'] = merged_df['date'] > pd.Timestamp.now()
 
     # Create plot
-    fig = px.line(merged_df, x='date', y='data', title='Date TEU Analysis', width=1000, color='IsFuture',
-                color_discrete_map={True: 'green', False: 'blue'})
+    fig = px.line(merged_df, x='date', y='data', title='Date TEU Analysis', width=1300, color='IsFuture', color_discrete_map={True: 'green', False: 'blue'})
     fig.update_xaxes(title_text='Date')
     fig.update_yaxes(title_text='TEU')
 
