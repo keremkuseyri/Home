@@ -63,13 +63,31 @@ if st.session_state["authentication_status"]:
     dataframe1 = pd.read_excel(f'reports/air_import_employee_kpis/'+ employee_selected +'.xlsx')
     df = pd.DataFrame(dataframe1)
     st.write(dataframe1)
-    fig = px.line(df,y='price_weigth', x='date', title='Employee Price-Weight Distribution',width=500)
-    col1, col2 = st.columns(2)
+    fig = px.line(df,y='count', x='date', title='Employee Quantity to Date', width=1450)
+    fig.add_hline(y=df["all_count_mean"][0], line_dash='1 5', line_color='green', annotation_text=f'All Count Mean Value')
+    fig.add_hline(y=df["count_mean"][0], line_dash='1 5', line_color='yellow', annotation_text=f'Count Mean')
+    fig.add_hline(y=df["count_max"][0], line_dash='1 5', line_color='red', annotation_text=f'Count Max')
+    fig.add_hline(y=df["count_min"][0], line_dash='1 5', line_color='purple', annotation_text=f'Count Min')
+
+    st.plotly_chart(fig)
+
+    col1,col2,col3,col4=st.columns(4)
     with col1:
-        st.plotly_chart(fig)
-    fig2= px.line(df,y='count', x='date', title='Employee Quantity to Date',width=500)
+        st.info("All count mean:")
+        st.write(str(df["all_count_mean"][0]))
     with col2:
-        st.plotly_chart(fig2)
+        st.info("Count Mean:")
+        st.write(str(df["count_mean"][0]))
+    with col3:
+        st.info("Count Max:")
+        st.write(str(df["count_max"][0]))
+    with col4:
+        st.info("Count Min:")
+        st.write(str(df["count_min"][0]))
+    fig2= px.line(df,y='price_weigth', x='date', title='Employee Price-Weight Distribution', width=1450)
+
+    st.plotly_chart(fig2)
+
 
 elif st.session_state["authentication_status"] is False:
     st.error('Username/password is incorrect')
