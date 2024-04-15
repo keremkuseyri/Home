@@ -964,7 +964,7 @@ if st.session_state["authentication_status"]:
     fig = px.line(pivot_df,markers=True, x='From Date', y='Total', title='Total Import/Export/Crosstrade', width=1000)
     fig.update_xaxes(title_text='Date')
     fig.update_yaxes(title_text='Count')
-    st.plotly_chart(fig)
+    # st.plotly_chart(fig)
     pivot_df['Total_Export'] = pivot_df[['istanbul_Export', 'izmir_Export', 'mersin_Export']].sum(axis=1)
     pivot_df['Total_Import'] = pivot_df[['istanbul_Import', 'izmir_Import','mersin_Import']].sum(axis=1)
 
@@ -983,7 +983,7 @@ if st.session_state["authentication_status"]:
                     yaxis_title='Count')
 
     # Display the chart
-    st.plotly_chart(fig,use_container_width=True)
+    #st.plotly_chart(fig,use_container_width=True)
 
     # Displaying the pivoted DataFrame
     
@@ -1082,12 +1082,21 @@ if st.session_state["authentication_status"]:
     merged_df['IsFuture'] = merged_df['date'] > pd.Timestamp.now()
 
     # Create plot
-    fig = px.line(merged_df, x='date', y='data', title='Date Quantity Analysis', width=1300, color='IsFuture',
-                color_discrete_map={True: 'green', False: 'blue'})
-    fig.update_xaxes(title_text='Date')
-    fig.update_yaxes(title_text='Quantity')
+    fig = px.line(
+        merged_df, 
+        x='date', 
+        y='data', 
+        title='Date Quantity Analysis', 
+        width=1300, 
+        color='IsFuture',
+        color_discrete_map={True: 'green', False: 'blue'},
+        labels={'IsFuture': ''}
+    )
 
-    # Show plot
+    # Update legend labels
+    fig.for_each_trace(lambda t: t.update(name='Prediction' if t.name == 'True' else 'Historical Data'))
+
+    # Display the plot using Streamlit
     st.plotly_chart(fig)
 
     dataframe1 = pd.read_excel('reports/sea_forecasting/date_teu.xlsx')
@@ -1107,9 +1116,21 @@ if st.session_state["authentication_status"]:
     merged_df['IsFuture'] = merged_df['date'] > pd.Timestamp.now()
 
     # Create plot
-    fig = px.line(merged_df, x='date', y='data', title='Date TEU Analysis', width=1300, color='IsFuture', color_discrete_map={True: 'green', False: 'blue'})
+    fig = px.line(
+        merged_df, 
+        x='date', 
+        y='data', 
+        title='Date TEU Analysis', 
+        width=1300, 
+        color='IsFuture', 
+        color_discrete_map={True: 'green', False: 'blue'},
+        labels={'IsFuture': ''}
+    )
     fig.update_xaxes(title_text='Date')
     fig.update_yaxes(title_text='TEU')
+
+    # Update legend labels
+    fig.for_each_trace(lambda t: t.update(name='Prediction' if t.name == 'True' else 'Historical Data'))
 
     # Show plot
     st.plotly_chart(fig)
