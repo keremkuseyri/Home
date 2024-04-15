@@ -30,6 +30,12 @@ credentials:
       logged_in: False # Will be managed automatically
       name: Üveys Aydemir
       password: 'WPvu94GA' # Will be hashed automatically
+    bayhan:
+      email: baranayhan@geneltransport.com.tr
+      failed_login_attempts: 0 # Will be managed automatically
+      logged_in: False # Will be managed automatically
+      name: Baran Ayhan
+      password: 'NGWhm5Ew'
 cookie:
   expiry_days: 1
   key: abc # Must be string
