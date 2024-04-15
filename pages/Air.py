@@ -45,10 +45,7 @@ if st.session_state["authentication_status"]:
 
     # Display dataframes
     st.title("Price Weight")
-    st.write("Raw Data:")
-    st.write(dataframe1)
-    st.write("Forecasting Data:")
-    st.write(dataframe2)
+
 
     # Merge dataframes
     merged_df = pd.concat([dataframe1, dataframe2], ignore_index=True)
@@ -73,10 +70,7 @@ if st.session_state["authentication_status"]:
 
     # Display dataframes
     st.title("Quantity Analysis")
-    st.write("Forecasting Data:")
-    st.write(dataframe3)
-    st.write("Raw Data:")
-    st.write(dataframe4)
+
 
     # Merge dataframes
     merged_df = pd.concat([dataframe3, dataframe4], ignore_index=True)
