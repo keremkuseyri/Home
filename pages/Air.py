@@ -58,10 +58,11 @@ if st.session_state["authentication_status"]:
 
     # Create plot
     fig = px.line(merged_df, x='date', y='data', title='Date Price Weight', width=1000, color='IsFuture',
-                color_discrete_map={True: 'green', False: 'blue'})
+                color_discrete_map={True: 'green', False: 'blue'},labels={'IsFuture': ''})
     fig.update_xaxes(title_text='Date')
     fig.update_yaxes(title_text='Price Weight')
-
+    # Update legend labels
+    fig.for_each_trace(lambda t: t.update(name='Prediction' if t.name == 'True' else 'Historical Data'))
     # Show plot
     st.plotly_chart(fig)
 
@@ -83,9 +84,11 @@ if st.session_state["authentication_status"]:
 
     # Create plot
     fig = px.line(merged_df, x='date', y='data', title='Date Quantity Analysis', width=1000, color='IsFuture',
-                color_discrete_map={True: 'green', False: 'blue'})
+                color_discrete_map={True: 'green', False: 'blue'},labels={'IsFuture': ''})
     fig.update_xaxes(title_text='Date')
     fig.update_yaxes(title_text='Quantity')
+        # Update legend labels
+    fig.for_each_trace(lambda t: t.update(name='Prediction' if t.name == 'True' else 'Historical Data'))
 
     # Show plot
     st.plotly_chart(fig)
