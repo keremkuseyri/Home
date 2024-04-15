@@ -927,6 +927,76 @@ if st.session_state["authentication_status"]:
         }
     }
 
+
+    dataframe1 = pd.read_excel('reports/sea_forecasting/date_quantity.xlsx')
+    dataframe2 = pd.read_excel('reports/sea_raw_data/date_quantity.xlsx')
+
+    # Display dataframes
+    st.title("Sea Data Analysis")
+
+    # Merge dataframes
+    merged_df = pd.concat([dataframe1, dataframe2], ignore_index=True)
+
+    # Convert 'date' column to datetime format
+    merged_df['date'] = pd.to_datetime(merged_df['date'])
+
+    # Add IsFuture column
+    merged_df['IsFuture'] = merged_df['date'] > pd.Timestamp.now()
+
+    # Create plot
+    fig = px.line(
+        merged_df, 
+        x='date', 
+        y='data', 
+        title='Date Quantity Analysis', 
+        width=1300, 
+        color='IsFuture',
+        color_discrete_map={True: 'green', False: 'blue'},
+        labels={'IsFuture': ''}
+    )
+
+    # Update legend labels
+    fig.for_each_trace(lambda t: t.update(name='Prediction' if t.name == 'True' else 'Historical Data'))
+
+    # Display the plot using Streamlit
+    st.plotly_chart(fig)
+
+    dataframe1 = pd.read_excel('reports/sea_forecasting/date_teu.xlsx')
+    dataframe2 = pd.read_excel('reports/sea_raw_data/date_teu.xlsx')
+
+    # Display dataframes
+    st.title("Sea TEU Analysis")
+
+
+    # Merge dataframes
+    merged_df = pd.concat([dataframe1, dataframe2], ignore_index=True)
+
+    # Convert 'date' column to datetime format
+    merged_df['date'] = pd.to_datetime(merged_df['date'])
+
+    # Add IsFuture column
+    merged_df['IsFuture'] = merged_df['date'] > pd.Timestamp.now()
+
+    # Create plot
+    fig = px.line(
+        merged_df, 
+        x='date', 
+        y='data', 
+        title='Date TEU Analysis', 
+        width=1300, 
+        color='IsFuture', 
+        color_discrete_map={True: 'green', False: 'blue'},
+        labels={'IsFuture': ''}
+    )
+    fig.update_xaxes(title_text='Date')
+    fig.update_yaxes(title_text='TEU')
+
+    # Update legend labels
+    fig.for_each_trace(lambda t: t.update(name='Prediction' if t.name == 'True' else 'Historical Data'))
+
+    # Show plot
+    st.plotly_chart(fig)
+
     table_data = []
 
     for date_range, date_data in yearlessdata.items():
@@ -1066,74 +1136,6 @@ if st.session_state["authentication_status"]:
 
     with col3:
         st.plotly_chart(fig_cross_trade, use_container_width=True, width=100, height=100)
-    dataframe1 = pd.read_excel('reports/sea_forecasting/date_quantity.xlsx')
-    dataframe2 = pd.read_excel('reports/sea_raw_data/date_quantity.xlsx')
-
-    # Display dataframes
-    st.title("Sea Data Analysis")
-
-    # Merge dataframes
-    merged_df = pd.concat([dataframe1, dataframe2], ignore_index=True)
-
-    # Convert 'date' column to datetime format
-    merged_df['date'] = pd.to_datetime(merged_df['date'])
-
-    # Add IsFuture column
-    merged_df['IsFuture'] = merged_df['date'] > pd.Timestamp.now()
-
-    # Create plot
-    fig = px.line(
-        merged_df, 
-        x='date', 
-        y='data', 
-        title='Date Quantity Analysis', 
-        width=1300, 
-        color='IsFuture',
-        color_discrete_map={True: 'green', False: 'blue'},
-        labels={'IsFuture': ''}
-    )
-
-    # Update legend labels
-    fig.for_each_trace(lambda t: t.update(name='Prediction' if t.name == 'True' else 'Historical Data'))
-
-    # Display the plot using Streamlit
-    st.plotly_chart(fig)
-
-    dataframe1 = pd.read_excel('reports/sea_forecasting/date_teu.xlsx')
-    dataframe2 = pd.read_excel('reports/sea_raw_data/date_teu.xlsx')
-
-    # Display dataframes
-    st.title("Sea TEU Analysis")
-
-
-    # Merge dataframes
-    merged_df = pd.concat([dataframe1, dataframe2], ignore_index=True)
-
-    # Convert 'date' column to datetime format
-    merged_df['date'] = pd.to_datetime(merged_df['date'])
-
-    # Add IsFuture column
-    merged_df['IsFuture'] = merged_df['date'] > pd.Timestamp.now()
-
-    # Create plot
-    fig = px.line(
-        merged_df, 
-        x='date', 
-        y='data', 
-        title='Date TEU Analysis', 
-        width=1300, 
-        color='IsFuture', 
-        color_discrete_map={True: 'green', False: 'blue'},
-        labels={'IsFuture': ''}
-    )
-    fig.update_xaxes(title_text='Date')
-    fig.update_yaxes(title_text='TEU')
-
-    # Update legend labels
-    fig.for_each_trace(lambda t: t.update(name='Prediction' if t.name == 'True' else 'Historical Data'))
-
-    # Show plot
-    st.plotly_chart(fig)
     option = st.selectbox(
     "Year📅",
     ("2024", "2023", "2022"),
