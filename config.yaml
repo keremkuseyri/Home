@@ -25,7 +25,7 @@ credentials:
       name: Turgut Erkeskin
       password: 'QhcKjLAz' # Will be hashed automatically
     uaydemir:
-      email: uaydemir@geneltransport.com.tr
+      email: uveysaydemir@geneltransport.com.tr
       failed_login_attempts: 0 # Will be managed automatically
       logged_in: False # Will be managed automatically
       name: Üveys Aydemir
