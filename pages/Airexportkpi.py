@@ -11,7 +11,7 @@ import os
 with open('config.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
 
-st.set_page_config(layout='wide')
+st.set_page_config(page_title='Genel Transport',page_icon="https://www.geneltransport.com.tr/wp-content/uploads/2021/03/favicon.png", layout='wide')
 st.image('https://www.geneltransport.com.tr/wp-content/uploads/2021/03/logo-color.png')
 
 authenticator = stauth.Authenticate(
@@ -26,7 +26,7 @@ authenticator.login()
 if st.session_state["authentication_status"]:
 
 
-    
+
     with st.sidebar.expander("Sea Trend Report ⛴"):
         st.page_link("Home.py", label="Total", icon="📊" )
         st.page_link("pages/Istanbul.py", label="Istanbul", icon="🏙️")

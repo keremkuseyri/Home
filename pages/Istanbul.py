@@ -8,7 +8,7 @@ from yaml.loader import SafeLoader
 with open('config.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
 
-st.set_page_config(layout='wide')
+st.set_page_config(page_title='Genel Transport',page_icon="https://www.geneltransport.com.tr/wp-content/uploads/2021/03/favicon.png", layout='wide')
 st.image('https://www.geneltransport.com.tr/wp-content/uploads/2021/03/logo-color.png')
 
 authenticator = stauth.Authenticate(
