@@ -43,7 +43,32 @@ if st.session_state["authentication_status"]:
     st.sidebar.write(f'Welcome *{st.session_state["name"]}*')
     authenticator.logout("Logout", "sidebar")
 
+    dataframe3 = pd.read_excel('reports/air_forecasting/date_quantity.xlsx')
+    dataframe4 = pd.read_excel('reports/air_raw_data/date_quantity.xlsx')
 
+    # Display dataframes
+    st.title("Quantity Analysis")
+
+
+    # Merge dataframes
+    merged_df = pd.concat([dataframe3, dataframe4], ignore_index=True)
+
+    # Convert 'date' column to datetime format
+    merged_df['date'] = pd.to_datetime(merged_df['date'])
+
+    # Add IsFuture column
+    merged_df['IsFuture'] = merged_df['date'] > pd.Timestamp.now()
+
+    # Create plot
+    fig = px.line(merged_df, x='date', y='data', title='Date Quantity Analysis', width=1200, color='IsFuture',
+                color_discrete_map={True: 'green', False: 'blue'},labels={'IsFuture': ''})
+    fig.update_xaxes(title_text='Date')
+    fig.update_yaxes(title_text='Quantity')
+        # Update legend labels
+    fig.for_each_trace(lambda t: t.update(name='Prediction' if t.name == 'True' else 'Historical Data'))
+
+    # Show plot
+    st.plotly_chart(fig)
 
     dataframe1 = pd.read_excel('reports/air_raw_data/date_price_weigth.xlsx')
     dataframe2 = pd.read_excel('reports/air_forecasting/date_price_weigth.xlsx')
@@ -71,32 +96,7 @@ if st.session_state["authentication_status"]:
     # Show plot
     st.plotly_chart(fig)
 
-    dataframe3 = pd.read_excel('reports/air_forecasting/date_quantity.xlsx')
-    dataframe4 = pd.read_excel('reports/air_raw_data/date_quantity.xlsx')
 
-    # Display dataframes
-    st.title("Quantity Analysis")
-
-
-    # Merge dataframes
-    merged_df = pd.concat([dataframe3, dataframe4], ignore_index=True)
-
-    # Convert 'date' column to datetime format
-    merged_df['date'] = pd.to_datetime(merged_df['date'])
-
-    # Add IsFuture column
-    merged_df['IsFuture'] = merged_df['date'] > pd.Timestamp.now()
-
-    # Create plot
-    fig = px.line(merged_df, x='date', y='data', title='Date Quantity Analysis', width=1200, color='IsFuture',
-                color_discrete_map={True: 'green', False: 'blue'},labels={'IsFuture': ''})
-    fig.update_xaxes(title_text='Date')
-    fig.update_yaxes(title_text='Quantity')
-        # Update legend labels
-    fig.for_each_trace(lambda t: t.update(name='Prediction' if t.name == 'True' else 'Historical Data'))
-
-    # Show plot
-    st.plotly_chart(fig)
 
 elif st.session_state["authentication_status"] is False:
     st.error('Username/password is incorrect')
