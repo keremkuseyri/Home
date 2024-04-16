@@ -116,7 +116,7 @@ if st.session_state["authentication_status"]:
         st.info("Price Weight Min:")
         st.write(str(df["price_weigth_min"][0]))
 
-
+    
 
 elif st.session_state["authentication_status"] is False:
     st.error('Username/password is incorrect')

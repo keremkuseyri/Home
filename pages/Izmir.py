@@ -50,7 +50,7 @@ if st.session_state["authentication_status"]:
 
 
 
-    tab1, tab2 = st.tabs(["Quantity🔢", "Teu📦"])
+    tab1, tab2 = st.tabs(["Shipment Count🔢", "Teu📦"])
     data2022={
         ("2022-01-01", "2022-01-31"): {
             "data_count": {
@@ -971,7 +971,7 @@ if st.session_state["authentication_status"]:
                                 }
                                 table_data.append(row)
         city_df = pd.DataFrame(table_data)
-        st.header("Quantity")
+
         st.write(city_df)
                                 
         table_data = [] 
@@ -989,7 +989,7 @@ if st.session_state["authentication_status"]:
                                 }
                                 table_data.append(row)
         city_df = pd.DataFrame(table_data)
-        st.header("A:")
+        st.header("Ajenta:")
         st.write(city_df)
 
         col1, col2, col3 = st.columns(3)
@@ -1006,7 +1006,7 @@ if st.session_state["authentication_status"]:
 
         # Update layout
         fig.update_layout(
-            title="",
+            title="Ajenta Export",
             xaxis_title="Date",
             yaxis_title="Export",
             yaxis=dict(range=[0, max_value])
@@ -1026,7 +1026,7 @@ if st.session_state["authentication_status"]:
 
         # Update layout
         fig.update_layout(
-            title="",
+            title="Ajenta Import",
             xaxis_title="Date",
             yaxis_title="Import",
             yaxis=dict(range=[0, max_value])
@@ -1046,7 +1046,7 @@ if st.session_state["authentication_status"]:
 
         # Update layout
         fig.update_layout(
-            title="",
+            title="Ajenta Cross Trade",
             xaxis_title="Date",
             yaxis_title="Cross Trade",
             yaxis=dict(range=[0, max_value])
@@ -1070,7 +1070,7 @@ if st.session_state["authentication_status"]:
                                 }
                                 table_data.append(row)
         city_df = pd.DataFrame(table_data)
-        st.header("B:")
+        st.header("Bizim İşimiz:")
         st.write(city_df)                        
 
         col1, col2, col3 = st.columns(3)
@@ -1087,7 +1087,7 @@ if st.session_state["authentication_status"]:
 
         # Update layout
         fig.update_layout(
-            title="",
+            title="Bizim İşimiz Export",
             xaxis_title="Date",
             yaxis_title="Export",
             yaxis=dict(range=[0, max_value])
@@ -1107,7 +1107,7 @@ if st.session_state["authentication_status"]:
 
         # Update layout
         fig.update_layout(
-            title="",
+            title="Bizim İşimiz Import",
             xaxis_title="Date",
             yaxis_title="Import",
             yaxis=dict(range=[0, max_value])
@@ -1127,7 +1127,7 @@ if st.session_state["authentication_status"]:
 
         # Update layout
         fig.update_layout(
-            title="",
+            title="Bizim İşimiz Cross Trade",
             xaxis_title="Date",
             yaxis_title="Cross Trade",
             yaxis=dict(range=[0, max_value])
@@ -1168,7 +1168,7 @@ if st.session_state["authentication_status"]:
 
         # Update layout
         fig.update_layout(
-            title="",
+            title="Total Export",
             xaxis_title="Date",
             yaxis_title="Export",
             yaxis=dict(range=[0, max_value])
@@ -1188,7 +1188,7 @@ if st.session_state["authentication_status"]:
 
         # Update layout
         fig.update_layout(
-            title="",
+            title="Total Import",
             xaxis_title="Date",
             yaxis_title="Import",
             yaxis=dict(range=[0, max_value])
@@ -1208,7 +1208,7 @@ if st.session_state["authentication_status"]:
 
         # Update layout
         fig.update_layout(
-            title="",
+            title="Total Cross Trade",
             xaxis_title="Date",
             yaxis_title="Cross Trade",
             yaxis=dict(range=[0, max_value])
@@ -1234,7 +1234,7 @@ if st.session_state["authentication_status"]:
                                 }
                                 table_data.append(row)
         city_df = pd.DataFrame(table_data)
-        st.header("Teu")
+
         st.write(city_df)
 
 
@@ -1254,7 +1254,7 @@ if st.session_state["authentication_status"]:
                                 }
                                 table_data.append(row)
         city_df = pd.DataFrame(table_data)
-        st.header("A:")
+        st.header("Ajenta:")
         st.write(city_df)
         col1, col2, col3 = st.columns(3)
         max_value = city_df[['Export', 'Import', 'Cross Trade']].astype(float).values.max()
@@ -1270,7 +1270,7 @@ if st.session_state["authentication_status"]:
 
         # Update layout
         fig.update_layout(
-            title="",
+            title="Ajenta Export",
             xaxis_title="Date",
             yaxis_title="Export",
             yaxis=dict(range=[0, max_value])
@@ -1290,7 +1290,7 @@ if st.session_state["authentication_status"]:
 
         # Update layout
         fig.update_layout(
-            title="",
+            title="Ajenta Import",
             xaxis_title="Date",
             yaxis_title="Import",
             yaxis=dict(range=[0, max_value])
@@ -1310,7 +1310,7 @@ if st.session_state["authentication_status"]:
 
         # Update layout
         fig.update_layout(
-            title="",
+            title="Ajenta Cross Trade",
             xaxis_title="Date",
             yaxis_title="Cross Trade",
             yaxis=dict(range=[0, max_value])
@@ -1334,7 +1334,7 @@ if st.session_state["authentication_status"]:
                                 }
                                 table_data.append(row)
         city_df = pd.DataFrame(table_data)
-        st.header("B:")
+        st.header("Bizim İşimiz:")
         st.write(city_df)                        
         col1, col2, col3 = st.columns(3)
         max_value = city_df[['Export', 'Import', 'Cross Trade']].astype(float).values.max()
@@ -1350,7 +1350,7 @@ if st.session_state["authentication_status"]:
 
         # Update layout
         fig.update_layout(
-            title="",
+            title="Bizim İşimiz Export",
             xaxis_title="Date",
             yaxis_title="Export",
             yaxis=dict(range=[0, max_value])
@@ -1370,7 +1370,7 @@ if st.session_state["authentication_status"]:
 
         # Update layout
         fig.update_layout(
-            title="",
+            title="Bizim İşimiz Import",
             xaxis_title="Date",
             yaxis_title="Import",
             yaxis=dict(range=[0, max_value])
@@ -1390,7 +1390,7 @@ if st.session_state["authentication_status"]:
 
         # Update layout
         fig.update_layout(
-            title="",
+            title="Bizim İşimiz Cross Trade",
             xaxis_title="Date",
             yaxis_title="Cross Trade",
             yaxis=dict(range=[0, max_value])
@@ -1432,7 +1432,7 @@ if st.session_state["authentication_status"]:
 
         # Update layout
         fig.update_layout(
-            title="",
+            title="Total Export",
             xaxis_title="Date",
             yaxis_title="Export",
             yaxis=dict(range=[0, max_value])
@@ -1452,7 +1452,7 @@ if st.session_state["authentication_status"]:
 
         # Update layout
         fig.update_layout(
-            title="",
+            title="Total Import",
             xaxis_title="Date",
             yaxis_title="Import",
             yaxis=dict(range=[0, max_value])
@@ -1472,7 +1472,7 @@ if st.session_state["authentication_status"]:
 
         # Update layout
         fig.update_layout(
-            title="",
+            title="Total Cross Trade",
             xaxis_title="Date",
             yaxis_title="Cross Trade",
             yaxis=dict(range=[0, max_value])

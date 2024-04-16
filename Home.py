@@ -1154,7 +1154,7 @@ if st.session_state["authentication_status"]:
 
 
 
-    tab1, tab2 = st.tabs(["Quantity🔢", "Teu📦"])
+    tab1, tab2 = st.tabs(["Shipment Count🔢", "Teu📦"])
     
 
     
@@ -2109,7 +2109,7 @@ if st.session_state["authentication_status"]:
 
 
         city_df = pd.DataFrame(table_data)
-        st.header("A:")
+        st.header("Ajenta:")
         st.write(city_df)
 
         col1, col2, col3 = st.columns(3)
@@ -2214,7 +2214,7 @@ if st.session_state["authentication_status"]:
 
 
         city_df = pd.DataFrame(table_data)
-        st.header("B:")
+        st.header("Bizim İşimiz:")
         st.write(city_df)
 
         col1, col2, col3 = st.columns(3)
@@ -2441,7 +2441,7 @@ if st.session_state["authentication_status"]:
 
 
         city_df = pd.DataFrame(table_data)
-        st.header("A:")
+        st.header("Ajenta:")
         st.write(city_df)
 
         col1, col2, col3 = st.columns(3)
@@ -2541,7 +2541,7 @@ if st.session_state["authentication_status"]:
 
 
         city_df = pd.DataFrame(table_data)
-        st.header("B:")
+        st.header("Bizim İşimiz:")
         st.write(city_df)
 
         col1, col2, col3 = st.columns(3)

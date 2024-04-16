@@ -53,7 +53,7 @@ if st.session_state["authentication_status"]:
 
 
     with col1:
-     st.plotly_chart(fig)
+        st.plotly_chart(fig)
 
     dataframe2 = pd.read_excel('reports/air_import_employee_kpis/price_weigth_per.xlsx')
     df = pd.DataFrame(dataframe2)

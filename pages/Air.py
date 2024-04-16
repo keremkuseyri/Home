@@ -47,7 +47,7 @@ if st.session_state["authentication_status"]:
     dataframe4 = pd.read_excel('reports/air_raw_data/date_quantity.xlsx')
 
     # Display dataframes
-    st.title("Quantity Analysis")
+    st.header("Shipment Count Forecast:")
 
 
     # Merge dataframes
@@ -74,7 +74,7 @@ if st.session_state["authentication_status"]:
     dataframe2 = pd.read_excel('reports/air_forecasting/date_price_weigth.xlsx')
 
     # Display dataframes
-    st.title("Price Weight")
+    st.header("Price Weight Forecast:")
 
 
     # Merge dataframes
