@@ -30,9 +30,10 @@ if st.session_state["authentication_status"]:
         st.page_link("pages/Mersin.py", label="Mersin",  icon="🏙️")
         st.page_link("pages/Izmir.py", label="Izmir",  icon="🏙️")
     with st.sidebar.expander("Air Trend Report ✈️"):
-        st.page_link("pages/Air.py",label="Total", icon="📊") 
-    st.sidebar.page_link("pages/Airexportkpi.py",label="air-export-kpi", icon="📊") 
-    st.sidebar.page_link("pages/Airimportkpi.py",label="air-import-kpi", icon="📊") 
+        st.page_link("pages/Air.py",label="Total", icon="📊")
+    with st.sidebar.expander("Employee KPI 🎯"):
+        st.page_link("pages/Airexportkpi.py",label="air-export-kpi", icon="📊") 
+        st.page_link("pages/Airimportkpi.py",label="air-import-kpi", icon="📊")  
 
     st.sidebar.write(f'Welcome *{st.session_state["name"]}*')
     authenticator.logout("Logout", "sidebar")
