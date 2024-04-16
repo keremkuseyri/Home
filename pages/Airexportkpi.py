@@ -85,8 +85,27 @@ if st.session_state["authentication_status"]:
         st.info("Count Min:")
         st.write(str(df["count_min"][0]))
     fig2= px.line(df,y='price_weigth', x='date', title='Employee Price-Weight Distribution', width=1450)
+    fig2.add_hline(y=df["all_price_weigth_mean"][0], line_dash='1 5', line_color='green', annotation_text=f'All Price Weight Mean Value')
+    fig2.add_hline(y=df["price_weigth_mean"][0], line_dash='1 5', line_color='yellow', annotation_text=f'Price Weight Mean')
+    fig2.add_hline(y=df["price_weigth_max"][0], line_dash='1 5', line_color='red', annotation_text=f'Price Weight Max')
+    fig2.add_hline(y=df["price_weigth_min"][0], line_dash='1 5', line_color='purple', annotation_text=f'Price Weight Min')
 
     st.plotly_chart(fig2)
+
+    col1,col2,col3,col4=st.columns(4)
+    with col1:
+        st.info("All Price Weight Mean Value:")
+        st.write(str(df["all_price_weigth_mean"][0]))
+    with col2:
+        st.info("Price Weight Mean:")
+        st.write(str(df["price_weigth_mean"][0]))
+    with col3:
+        st.info("Price Weight Max:")
+        st.write(str(df["price_weigth_max"][0]))
+    with col4:
+        st.info("Price Weight Min:")
+        st.write(str(df["price_weigth_min"][0]))
+
 
 
 elif st.session_state["authentication_status"] is False:
