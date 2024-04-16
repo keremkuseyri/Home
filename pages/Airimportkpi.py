@@ -6,6 +6,7 @@ import streamlit_authenticator as stauth
 import yaml
 from yaml.loader import SafeLoader
 import openpyxl
+import os
 
 with open('config.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
@@ -57,10 +58,11 @@ if st.session_state["authentication_status"]:
 
     with col2:
         st.plotly_chart(fig)
-    
-    employee_list = ["Aleyna BASAR", "Anil KALAC", "Arianna PILIKOGLU", "Atakan CAKIN", "Bunyamin KELES", "Cansu KIR", "Erdem AKBAS", "Erhan KOSEOGLU", "Ezgi TAS", "Gozde SAHIN", "Gulcin ERDIR", "Kemal HAZNEDAR", "Leman ULAC", "Maide UNAL", "Mehmet ER", "Omer ASIKGUL", "Omer Zeki HAVA", "Ozge SENCAN", "Pelin MUMIN", "Seyma SAHIN", "Ugurcan ADALI", "Zeliha OZUBERK", "Zeynep CALISKAN"]
-    employee_selected=st.selectbox("Select an employee", options= employee_list, index=0)
-    dataframe1 = pd.read_excel(f'reports/air_import_employee_kpis/'+ employee_selected +'.xlsx')
+    filenames = os.listdir('reports/air_import_employee_kpis')
+    filenames.remove('count_per.xlsx')
+    filenames.remove('price_weigth_per.xlsx')
+    filenames_selected=st.selectbox("Select an employee", options= filenames, index=0)
+    dataframe1 = pd.read_excel(f'reports/air_import_employee_kpis/'+ filenames_selected)
     df = pd.DataFrame(dataframe1)
     st.write(dataframe1)
     fig = px.line(df,y='count', x='date', title='Employee Quantity to Date', width=1450)
