@@ -1085,7 +1085,7 @@ if st.session_state["authentication_status"]:
 
     # Update layout for Export plot
     fig.update_layout(
-            title="",
+            title="Total Export by City",
             xaxis_title="Date",
             yaxis_title="Export",
             yaxis=dict(range=[0, max_value])
@@ -1110,7 +1110,7 @@ if st.session_state["authentication_status"]:
 
     # Update layout for Import plot
     fig_import.update_layout(
-            title="",
+            title="Total Import by City",
             xaxis_title="Date",
             yaxis_title="Import",
             yaxis=dict(range=[0, max_value])
@@ -1135,7 +1135,7 @@ if st.session_state["authentication_status"]:
 
     # Update layout for Cross Trade plot
     fig_cross_trade.update_layout(
-            title="",
+            title="Total Cross Trade by City",
             xaxis_title="Date",
             yaxis_title="Cross Trade",
             yaxis=dict(range=[0, max_value])
@@ -2130,7 +2130,7 @@ if st.session_state["authentication_status"]:
 
         # Update layout
         fig.update_layout(
-            title="",
+            title="Ajenta Export",
             xaxis_title="Date",
             yaxis_title="Export",
             barmode='group',
@@ -2155,7 +2155,7 @@ if st.session_state["authentication_status"]:
 
         # Update layout for Import plot
         fig_import.update_layout(
-            title="",
+            title="Ajenta Import",
             xaxis_title="Date",
             yaxis_title="Import",
             barmode='group',
@@ -2180,7 +2180,7 @@ if st.session_state["authentication_status"]:
 
         # Update layout for Cross Trade plot
         fig_cross_trade.update_layout(
-            title="",
+            title="Ajenta Cross Trade",
             xaxis_title="Date",
             yaxis_title="Cross Trade",
             barmode='group',
@@ -2235,7 +2235,7 @@ if st.session_state["authentication_status"]:
 
         # Update layout
         fig.update_layout(
-            title="",
+            title="Bizim İşimiz Export",
             xaxis_title="Date",
             yaxis_title="Export",
             barmode='group',
@@ -2260,7 +2260,7 @@ if st.session_state["authentication_status"]:
 
         # Update layout for Import plot
         fig_import.update_layout(
-            title="",
+            title="Bizim işimiz Import",
             xaxis_title="Date",
             yaxis_title="Import",
             barmode='group',
@@ -2285,7 +2285,7 @@ if st.session_state["authentication_status"]:
 
         # Update layout for Cross Trade plot
         fig_cross_trade.update_layout(
-            title="",
+            title="Bizim İşimiz Cross Trade",
             xaxis_title="Date",
             yaxis_title="Cross Trade",
             barmode='group',
@@ -2339,7 +2339,7 @@ if st.session_state["authentication_status"]:
 
         # Update layout
         fig.update_layout(
-            title="",
+            title="Total Export",
             xaxis_title="Date",
             yaxis_title="Export",
             barmode='group',
@@ -2364,7 +2364,7 @@ if st.session_state["authentication_status"]:
 
         # Update layout for Import plot
         fig_import.update_layout(
-            title="",
+            title="Total Import",
             xaxis_title="Date",
             yaxis_title="Import",
             barmode='group',
@@ -2389,7 +2389,7 @@ if st.session_state["authentication_status"]:
 
         # Update layout for Cross Trade plot
         fig_cross_trade.update_layout(
-            title="",
+            title="Total Cross Trade",
             xaxis_title="Date",
             yaxis_title="Cross Trade",
             barmode='group',
@@ -2462,7 +2462,7 @@ if st.session_state["authentication_status"]:
 
         # Update layout
         fig.update_layout(
-            title="",
+            title="Ajenta Export",
             xaxis_title="Date",
             yaxis_title="Export",
             barmode='group',
@@ -2487,7 +2487,7 @@ if st.session_state["authentication_status"]:
 
         # Update layout for Import plot
         fig_import.update_layout(
-            title="",
+            title="Ajenta Import",
             xaxis_title="Date",
             yaxis_title="Import",
             barmode='group',
@@ -2512,7 +2512,7 @@ if st.session_state["authentication_status"]:
 
         # Update layout for Cross Trade plot
         fig_cross_trade.update_layout(
-            title="",
+            title="Ajenta Cross Trade",
             xaxis_title="Date",
             yaxis_title="Cross Trade",
             barmode='group',
@@ -2562,7 +2562,7 @@ if st.session_state["authentication_status"]:
 
         # Update layout
         fig.update_layout(
-            title="",
+            title="Bizim İşimiz Export",
             xaxis_title="Date",
             yaxis_title="Export",
             barmode='group',
@@ -2587,7 +2587,7 @@ if st.session_state["authentication_status"]:
 
         # Update layout for Import plot
         fig_import.update_layout(
-            title="",
+            title="Bizim İşimiz Import",
             xaxis_title="Date",
             yaxis_title="Import",
             barmode='group',
@@ -2612,7 +2612,7 @@ if st.session_state["authentication_status"]:
 
         # Update layout for Cross Trade plot
         fig_cross_trade.update_layout(
-            title="",
+            title="Bizim İşimiz Cross Trade",
             xaxis_title="Date",
             yaxis_title="Cross Trade",
             barmode='group',
@@ -2667,7 +2667,7 @@ if st.session_state["authentication_status"]:
 
         # Update layout
         fig.update_layout(
-            title="",
+            title="Total Export",
             xaxis_title="Date",
             yaxis_title="Export",
             barmode='group',
@@ -2692,7 +2692,7 @@ if st.session_state["authentication_status"]:
 
         # Update layout for Import plot
         fig_import.update_layout(
-            title="",
+            title="Total Import",
             xaxis_title="Date",
             yaxis_title="Import",
             barmode='group',
@@ -2717,7 +2717,7 @@ if st.session_state["authentication_status"]:
 
         # Update layout for Cross Trade plot
         fig_cross_trade.update_layout(
-            title="",
+            title="Total Cross Trade",
             xaxis_title="Date",
             yaxis_title="Cross Trade",
             barmode='group',
