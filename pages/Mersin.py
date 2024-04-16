@@ -22,6 +22,8 @@ authenticator = stauth.Authenticate(
 authenticator.login()
 if st.session_state["authentication_status"]:
   
+
+  
     with st.sidebar.expander("Sea Trend Report ⛴"):
         st.page_link("Home.py", label="Total", icon="📊" )
         st.page_link("pages/Istanbul.py", label="Istanbul", icon="🏙️")
@@ -29,9 +31,12 @@ if st.session_state["authentication_status"]:
         st.page_link("pages/Izmir.py", label="Izmir",  icon="🏙️")
     with st.sidebar.expander("Air Trend Report ✈️"):
         st.page_link("pages/Air.py",label="Total", icon="📊")
-    with st.sidebar.expander("Employee KPI 🎯"):
-        st.page_link("pages/Airexportkpi.py",label="air-export-kpi", icon="📊") 
-        st.page_link("pages/Airimportkpi.py",label="air-import-kpi", icon="📊") 
+    with st.sidebar.expander("Air Export KPI 🎯📊"):
+        st.page_link("pages/Airexportkpi.py",label="Air Export KPI", icon="📊")
+        st.page_link("pages/Airexporttarget.py", label="Target Export KPI", icon="🎯")
+    with st.sidebar.expander("Air Import KPI 🎯📊"):
+        st.page_link("pages/Airimportkpi.py",label="Air Import KPI", icon="📊")
+        st.page_link("pages/Airimporttarget.py", label="Target Import KPI", icon="🎯")
 
     st.sidebar.write(f'Welcome *{st.session_state["name"]}*')
     authenticator.logout("Logout", "sidebar")
