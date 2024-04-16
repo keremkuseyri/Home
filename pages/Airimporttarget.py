@@ -32,10 +32,10 @@ if st.session_state["authentication_status"]:
         st.page_link("pages/Izmir.py", label="Izmir",  icon="🏙️")
     with st.sidebar.expander("Air Trend Report ✈️"):
         st.page_link("pages/Air.py",label="Total", icon="📊")
-    with st.sidebar.expander("Air Export KPI 🎯📊"):
+    with st.sidebar.expander("Air Export KPI ⬆️📊"):
         st.page_link("pages/Airexportkpi.py",label="Air Export KPI", icon="📊")
         st.page_link("pages/Airexporttarget.py", label="Target Export KPI", icon="🎯")
-    with st.sidebar.expander("Air Import KPI 🎯📊"):
+    with st.sidebar.expander("Air Import KPI ⬇️📊"):
         st.page_link("pages/Airimportkpi.py",label="Air Import KPI", icon="📊")
         st.page_link("pages/Airimporttarget.py", label="Target Import KPI", icon="🎯")
 
