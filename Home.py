@@ -177,8 +177,7 @@ if st.session_state["authentication_status"]:
         city_df = pd.DataFrame(table_data)
 
         # Display DataFrame using st.write
-        st.header("Date-Shipment Count by City")
-        st.write(city_df)
+
 
 
 
@@ -224,9 +223,7 @@ if st.session_state["authentication_status"]:
         combined_df = city_df.groupby(['Date', 'City','Branch']).sum().reset_index()
 
         # Display DataFrame using st.write
-        st.title("Branch:")
-        st.header("Date-Shipment Count by City by Branch")
-        st.write(combined_df)
+
 
 
 
@@ -695,8 +692,7 @@ if st.session_state["authentication_status"]:
         city_df = pd.DataFrame(table_data)
 
         # Display DataFrame using st.write
-        st.header("Date-Shipment Teu by City")
-        st.write(city_df)
+
 
 
 
@@ -742,9 +738,7 @@ if st.session_state["authentication_status"]:
         combined_df = city_df.groupby(['Date', 'City','Branch']).sum().reset_index()
 
         # Display DataFrame using st.write
-        st.title("Branch:")
-        st.header("Date-Shipment Teu by City by Branch")
-        st.write(combined_df)
+
 
 
 
