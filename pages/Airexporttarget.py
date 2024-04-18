@@ -45,8 +45,8 @@ if st.session_state["authentication_status"]:
     filenames = os.listdir('reports/air_export_employee_kpis')
     filenames.remove('count_per.xlsx')
     filenames.remove('price_weigth_per.xlsx')
-    filenames_selected=st.selectbox("Select an employee", options= filenames, index=0)
-    dataframe5 = pd.read_excel(f'reports/air_export_employee_kpis/'+ filenames_selected )
+    filenames_selected=st.selectbox("Select an employee", options= [name[:-5] for name in filenames], index=0)
+    dataframe5 = pd.read_excel(f'reports/air_export_employee_kpis/'+ filenames_selected+ ".xlsx" )
     df5 = pd.DataFrame(dataframe5)
     
 
@@ -56,7 +56,7 @@ if st.session_state["authentication_status"]:
     dataframe3 = pd.read_excel('reports/air_forecasting/date_quantity.xlsx')
     df3 = pd.DataFrame(dataframe3)
 
-    dataframe2 = pd.read_excel('reports/air_export_employee_kpis/'+ filenames_selected)
+    dataframe2 = pd.read_excel('reports/air_export_employee_kpis/'+ filenames_selected+ ".xlsx")
     df2 = pd.DataFrame(dataframe2)
 
     dataframe4 = pd.read_excel('reports/air_import_employee_kpis/Aleyna BASAR.xlsx')
