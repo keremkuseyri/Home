@@ -30,15 +30,12 @@ if st.session_state["authentication_status"]:
 
     with st.sidebar.expander("Sea Trend Report ⛴"):
         st.page_link("Home.py", label="Total", icon="📊" )
-        st.page_link("pages/Istanbul.py", label="Istanbul", icon="🏙️")
-        st.page_link("pages/Mersin.py", label="Mersin",  icon="🏙️")
-        st.page_link("pages/Izmir.py", label="Izmir",  icon="🏙️")
     with st.sidebar.expander("Air Trend Report ✈️"):
         st.page_link("pages/Air.py",label="Total", icon="📊")
-    with st.sidebar.expander("Air Export KPI ⬆️📊"):
+    with st.sidebar.expander("Air Export KPI 🎯"):
         st.page_link("pages/Airexportkpi.py",label="Air Export KPI", icon="📊")
         st.page_link("pages/Airexporttarget.py", label="Target Export KPI", icon="🎯")
-    with st.sidebar.expander("Air Import KPI ⬇️📊"):
+    with st.sidebar.expander("Air Import KPI 🎯"):
         st.page_link("pages/Airimportkpi.py",label="Air Import KPI", icon="📊")
         st.page_link("pages/Airimporttarget.py", label="Target Import KPI", icon="🎯")
 
@@ -271,8 +268,8 @@ if st.session_state["authentication_status"]:
         combined_df = city_df.groupby(['Date', 'City', 'Branch']).sum().reset_index()
 
         # Display DataFrame using st.write
-        st.title("A:")
-        st.header("Date-Shipment Count by City for Branch A")
+
+        st.header("Acenta:")
         st.write(combined_df)
 
         col1, col2, col3 = st.columns(3)
@@ -293,7 +290,7 @@ if st.session_state["authentication_status"]:
 
         # Update layout
         fig.update_layout(
-            title="Ajenta Export",
+            title="Acenta Export",
             xaxis_title="Date",
             yaxis_title="Export",
             barmode='group',
@@ -318,7 +315,7 @@ if st.session_state["authentication_status"]:
 
         # Update layout for Import plot
         fig_import.update_layout(
-            title="Ajenta Import",
+            title="Acenta Import",
             xaxis_title="Date",
             yaxis_title="Import",
             barmode='group',
@@ -343,7 +340,7 @@ if st.session_state["authentication_status"]:
 
         # Update layout for Cross Trade plot
         fig_cross_trade.update_layout(
-            title="Ajenta Cross Trade",
+            title="Acenta Cross Trade",
             xaxis_title="Date",
             yaxis_title="Cross Trade",
             barmode='group',
@@ -399,8 +396,8 @@ if st.session_state["authentication_status"]:
         combined_df = city_df.groupby(['Date', 'City', 'Branch']).sum().reset_index()
 
         # Display DataFrame using st.write
-        st.title("B:")
-        st.header("Date-Shipment Count by City for Branch B")
+
+        st.header("Bizim İşimiz:")
         st.write(combined_df)
 
         col1, col2, col3 = st.columns(3)
@@ -524,8 +521,8 @@ if st.session_state["authentication_status"]:
         combined_df = city_df.groupby(['Date', 'City']).sum().reset_index()
 
         # Display DataFrame using st.write
-        st.title("SUM:")
-        st.header("Date-Shipment Count by City All Branches SUM")
+
+        st.header("SUM:")
         st.write(combined_df)
 
         col1, col2, col3 = st.columns(3)
@@ -786,8 +783,8 @@ if st.session_state["authentication_status"]:
         combined_df = city_df.groupby(['Date', 'City', 'Branch']).sum().reset_index()
 
         # Display DataFrame using st.write
-        st.title("A:")
-        st.header("Date-Shipment Teu by City for Branch A")
+
+        st.header("Acenta:")
         st.write(combined_df)
 
         col1, col2, col3 = st.columns(3)
@@ -808,7 +805,7 @@ if st.session_state["authentication_status"]:
 
         # Update layout
         fig.update_layout(
-            title="Ajenta Export",
+            title="Acenta Export",
             xaxis_title="Date",
             yaxis_title="Export",
             barmode='group',
@@ -833,7 +830,7 @@ if st.session_state["authentication_status"]:
 
         # Update layout for Import plot
         fig_import.update_layout(
-            title="Ajenta Import",
+            title="Acenta Import",
             xaxis_title="Date",
             yaxis_title="Import",
             barmode='group',
@@ -858,7 +855,7 @@ if st.session_state["authentication_status"]:
 
         # Update layout for Cross Trade plot
         fig_cross_trade.update_layout(
-            title="Ajenta Cross Trade",
+            title="Acenta Cross Trade",
             xaxis_title="Date",
             yaxis_title="Cross Trade",
             barmode='group',
@@ -914,8 +911,8 @@ if st.session_state["authentication_status"]:
         combined_df = city_df.groupby(['Date', 'City', 'Branch']).sum().reset_index()
 
         # Display DataFrame using st.write
-        st.title("B:")
-        st.header("Date-Shipment Teu by City for Branch B")
+
+        st.header("Bizim İşimiz:")
         st.write(combined_df)
 
         col1, col2, col3 = st.columns(3)
@@ -1039,8 +1036,8 @@ if st.session_state["authentication_status"]:
         combined_df = city_df.groupby(['Date', 'City']).sum().reset_index()
 
         # Display DataFrame using st.write
-        st.title("SUM:")
-        st.header("Date-Shipment Teu by City All Branches SUM")
+
+        st.header("SUM:")
         st.write(combined_df)
 
         col1, col2, col3 = st.columns(3)

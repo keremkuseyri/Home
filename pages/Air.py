@@ -6,6 +6,7 @@ import streamlit_authenticator as stauth
 import yaml
 from yaml.loader import SafeLoader
 import openpyxl
+import numpy as np
 
 with open('config.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
@@ -28,15 +29,12 @@ if st.session_state["authentication_status"]:
 
     with st.sidebar.expander("Sea Trend Report ⛴"):
         st.page_link("Home.py", label="Total", icon="📊" )
-        st.page_link("pages/Istanbul.py", label="Istanbul", icon="🏙️")
-        st.page_link("pages/Mersin.py", label="Mersin",  icon="🏙️")
-        st.page_link("pages/Izmir.py", label="Izmir",  icon="🏙️")
     with st.sidebar.expander("Air Trend Report ✈️"):
         st.page_link("pages/Air.py",label="Total", icon="📊")
-    with st.sidebar.expander("Air Export KPI ⬆️📊"):
+    with st.sidebar.expander("Air Export KPI 🎯"):
         st.page_link("pages/Airexportkpi.py",label="Air Export KPI", icon="📊")
         st.page_link("pages/Airexporttarget.py", label="Target Export KPI", icon="🎯")
-    with st.sidebar.expander("Air Import KPI ⬇️📊"):
+    with st.sidebar.expander("Air Import KPI 🎯"):
         st.page_link("pages/Airimportkpi.py",label="Air Import KPI", icon="📊")
         st.page_link("pages/Airimporttarget.py", label="Target Import KPI", icon="🎯")
 
@@ -47,7 +45,7 @@ if st.session_state["authentication_status"]:
     dataframe4 = pd.read_excel('reports/air_raw_data/date_quantity.xlsx')
 
     # Display dataframes
-    st.header("Shipment Count Forecast:")
+    st.header("Air Data Analysis:")
 
 
     # Merge dataframes
@@ -60,7 +58,7 @@ if st.session_state["authentication_status"]:
     merged_df['IsFuture'] = merged_df['date'] > pd.Timestamp.now()
 
     # Create plot
-    fig = px.line(merged_df, x='date', y='data', title='Date Quantity Analysis', width=1200, color='IsFuture',
+    fig = px.line(merged_df, x='date', y='data', title='Shipment Count Forecast', width=1200, color='IsFuture',
                 color_discrete_map={True: 'green', False: 'blue'},labels={'IsFuture': ''})
     fig.update_xaxes(title_text='Date')
     fig.update_yaxes(title_text='Quantity')
@@ -74,7 +72,7 @@ if st.session_state["authentication_status"]:
     dataframe2 = pd.read_excel('reports/air_forecasting/date_price_weigth.xlsx')
 
     # Display dataframes
-    st.header("Price Weight Forecast:")
+    st.header("Air Price Weight Analysis:")
 
 
     # Merge dataframes
@@ -87,7 +85,7 @@ if st.session_state["authentication_status"]:
     merged_df['IsFuture'] = merged_df['date'] > pd.Timestamp.now()
 
     # Create plot
-    fig = px.line(merged_df, x='date', y='data', title='Date Price Weight', width=1200, color='IsFuture',
+    fig = px.line(merged_df, x='date', y='data', title='Price Weight Forecast', width=1200, color='IsFuture',
                 color_discrete_map={True: 'green', False: 'blue'},labels={'IsFuture': ''})
     fig.update_xaxes(title_text='Date')
     fig.update_yaxes(title_text='Price Weight')
@@ -95,6 +93,9 @@ if st.session_state["authentication_status"]:
     fig.for_each_trace(lambda t: t.update(name='Prediction' if t.name == 'True' else 'Historical Data'))
     # Show plot
     st.plotly_chart(fig)
+
+
+
 
 
 
