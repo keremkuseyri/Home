@@ -7,5 +7,4 @@ showSidebarNavigation = false
 # base =
 base = "light"
 [server]
-
 runOnSave = true
