@@ -66,7 +66,8 @@ if st.session_state["authentication_status"]:
         width=1300, 
         color='IsFuture',
         color_discrete_map={True: 'green', False: 'blue'},
-        labels={'IsFuture': ''}
+        labels={'IsFuture': ''},
+        markers=True
     )
 
     # Update legend labels
