@@ -100,7 +100,8 @@ if st.session_state["authentication_status"]:
         width=1300, 
         color='IsFuture', 
         color_discrete_map={True: 'green', False: 'blue'},
-        labels={'IsFuture': ''}
+        labels={'IsFuture': ''},
+        markers=True
     )
     fig.update_xaxes(title_text='Date')
     fig.update_yaxes(title_text='TEU')
