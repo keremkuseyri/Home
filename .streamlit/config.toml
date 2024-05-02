@@ -6,3 +6,5 @@ showSidebarNavigation = false
 # One of "light" or "dark".
 # base =
 base = "light"
+[server]
+runOnSave = true
