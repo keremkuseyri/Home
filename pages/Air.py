@@ -49,17 +49,17 @@ if st.session_state["authentication_status"]:
 
 
     # Merge dataframes
-    merged_df = pd.concat([dataframe3, dataframe4], ignore_index=True)
+    merged_df = pd.concat([dataframe4, dataframe3], ignore_index=True)
 
     # Convert 'date' column to datetime format
     merged_df['date'] = pd.to_datetime(merged_df['date'])
-
+    merged_df['data'] = [round(float(data), 0) for data in merged_df['data']]
     # Add IsFuture column
     merged_df['IsFuture'] = merged_df['date'] > pd.Timestamp.now()
 
     # Create plot
     fig = px.line(merged_df, x='date', y='data', title='Shipment Count Forecast', width=1200, color='IsFuture',
-                color_discrete_map={True: 'green', False: 'blue'},labels={'IsFuture': ''})
+                color_discrete_map={True: 'green', False: 'blue'},labels={'IsFuture': ''}, markers=True)
     fig.update_xaxes(title_text='Date')
     fig.update_yaxes(title_text='Quantity')
         # Update legend labels
@@ -80,13 +80,13 @@ if st.session_state["authentication_status"]:
 
     # Convert 'date' column to datetime format
     merged_df['date'] = pd.to_datetime(merged_df['date'])
-
+    merged_df['data'] = [round(float(data), 0) for data in merged_df['data']]
     # Add IsFuture column
     merged_df['IsFuture'] = merged_df['date'] > pd.Timestamp.now()
 
     # Create plot
     fig = px.line(merged_df, x='date', y='data', title='Price Weight Forecast', width=1200, color='IsFuture',
-                color_discrete_map={True: 'green', False: 'blue'},labels={'IsFuture': ''})
+                color_discrete_map={True: 'green', False: 'blue'},labels={'IsFuture': ''}, markers=True)
     fig.update_xaxes(title_text='Date')
     fig.update_yaxes(title_text='Price Weight')
     # Update legend labels

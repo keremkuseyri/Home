@@ -7,6 +7,7 @@ import yaml
 from yaml.loader import SafeLoader
 import openpyxl
 import numpy as np
+from streamlit_lightweight_charts import renderLightweightCharts
 
 
 st.set_page_config(page_title='Genel Transport',page_icon="https://www.geneltransport.com.tr/wp-content/uploads/2021/03/favicon.png", layout='wide')
@@ -49,8 +50,8 @@ if st.session_state["authentication_status"]:
     st.title("Sea Data Analysis")
 
     # Merge dataframes
-    merged_df = pd.concat([dataframe1, dataframe2], ignore_index=True)
-
+    merged_df = pd.concat([dataframe2, dataframe1])
+    merged_df['data'] = [round(float(data), 0) for data in merged_df['data']]
     # Convert 'date' column to datetime format
     merged_df['date'] = pd.to_datetime(merged_df['date'])
 
@@ -68,6 +69,7 @@ if st.session_state["authentication_status"]:
         color_discrete_map={True: 'green', False: 'blue'},
         labels={'IsFuture': ''},
         markers=True
+        
     )
 
     # Update legend labels
@@ -75,6 +77,69 @@ if st.session_state["authentication_status"]:
 
     # Display the plot using Streamlit
     st.plotly_chart(fig)
+    merged_df['date'] = merged_df['date'].dt.strftime('%Y-%m-%d')
+    time_list = merged_df['date'].tolist()
+    value_list = merged_df['data'].tolist()
+
+
+    chartOptions = {
+    "layout": {
+        "textColor": 'black',
+        "background": {
+            "type": 'solid',
+            "color": 'white'
+            }
+        }
+    }
+
+    seriesHistogramChart  = [{
+        "type": 'Line',
+        "data": [
+        {"time": time, "value": value} for time, value in zip(time_list, value_list)
+    ],
+        "options": {}
+    }]
+
+    st.subheader("Line Chart with Watermark")
+
+    renderLightweightCharts([
+        {
+            "chart": chartOptions,
+            "series": seriesHistogramChart
+        }
+    ], 'line')
+    dataframe1['date'] = dataframe1['date'].dt.strftime('%Y-%m-%d')
+    time_list1 = dataframe1['date'].tolist()
+    value_list1 = dataframe1['data'].tolist()
+
+
+    chartOptions = {
+    "layout": {
+        "textColor": 'black',
+        "background": {
+            "type": 'solid',
+            "color": 'white'
+            }
+        }
+    }
+
+    seriesHistogramChart  = [{
+        "type": 'Line',
+        "data": [
+        {"time": time, "value": value} for time, value in zip(time_list1, value_list1)
+    ],
+        "options": {}
+    }]
+
+    st.subheader("Line Chart with Watermark")
+
+    renderLightweightCharts([
+        {
+            "chart": chartOptions,
+            "series": seriesHistogramChart
+        }
+    ], 'line1')
+
 
     dataframe1 = pd.read_excel('reports/sea_forecasting/date_teu.xlsx')
     dataframe2 = pd.read_excel('reports/sea_raw_data/date_teu.xlsx')
@@ -84,11 +149,11 @@ if st.session_state["authentication_status"]:
 
 
     # Merge dataframes
-    merged_df = pd.concat([dataframe1, dataframe2], ignore_index=True)
+    merged_df = pd.concat([dataframe2, dataframe1], ignore_index=True)
 
     # Convert 'date' column to datetime format
     merged_df['date'] = pd.to_datetime(merged_df['date'])
-
+    merged_df['data'] = [round(float(data), 0) for data in merged_df['data']]
     # Add IsFuture column
     merged_df['IsFuture'] = merged_df['date'] > pd.Timestamp.now()
 
