@@ -7,6 +7,7 @@ import yaml
 from yaml.loader import SafeLoader
 import openpyxl
 import numpy as np
+from streamlit_lightweight_charts import renderLightweightCharts
 
 with open('config.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
@@ -44,55 +45,132 @@ if st.session_state["authentication_status"]:
     dataframe3 = pd.read_excel('reports/air_forecasting/date_quantity.xlsx')
     dataframe4 = pd.read_excel('reports/air_raw_data/date_quantity.xlsx')
 
-    # Display dataframes
-    st.header("Air Data Analysis:")
+
 
 
     # Merge dataframes
-    merged_df = pd.concat([dataframe4, dataframe3], ignore_index=True)
-
+    merged_df = pd.concat([dataframe4, dataframe3])
+    merged_df['data'] = [round(float(data), 2) for data in merged_df['data']]
     # Convert 'date' column to datetime format
     merged_df['date'] = pd.to_datetime(merged_df['date'])
-    merged_df['data'] = [round(float(data), 0) for data in merged_df['data']]
+
     # Add IsFuture column
     merged_df['IsFuture'] = merged_df['date'] > pd.Timestamp.now()
 
-    # Create plot
-    fig = px.line(merged_df, x='date', y='data', title='Shipment Count Forecast', width=1200, color='IsFuture',
-                color_discrete_map={True: 'green', False: 'blue'},labels={'IsFuture': ''}, markers=True)
-    fig.update_xaxes(title_text='Date')
-    fig.update_yaxes(title_text='Quantity')
-        # Update legend labels
-    fig.for_each_trace(lambda t: t.update(name='Prediction' if t.name == 'True' else 'Historical Data'))
+    # Define color function based on IsFuture column
+    def get_color(is_future):
+        return 'green' if is_future else 'blue'
 
-    # Show plot
-    st.plotly_chart(fig)
+    # Prepare series data
+    seriesData = [
+        {"time": int(time.timestamp()), "value": value, "color": get_color(is_future)}
+        for time, value, is_future in zip(merged_df['date'], merged_df['data'], merged_df['IsFuture'])
+    ]
+
+    # Chart options
+    chartOptions = {
+        "layout": {
+            "textColor": 'black',
+            "background": {
+                "type": 'solid',
+                "color": 'white'
+            }
+        }
+    }
+
+    # Series data for the chart
+    seriesBaselineChart = [{
+        "type": 'Line',
+        "data": seriesData,
+        "options": {
+            "lineColor": 'rgba(0, 0, 0, 0)',  # Set initial line color as transparent
+            "lineWidth": 2,
+            "topLineColor": 'green',  # Color for future data
+            "bottomLineColor": 'blue',  # Color for historical data
+            "topFillColor1": 'green',  # Fill color for future data
+            "topFillColor2": 'green',  # Fill color for future data
+            "bottomFillColor1": 'blue',  # Fill color for historical data
+            "bottomFillColor2": 'blue'  # Fill color for historical data
+        }
+    }]
+
+    # Render the chart
+    st.title("Air Data Analysis")
+    col1, col2= st.columns(2)
+    with col1:
+        st.info("Historical Data")
+    with col2:
+        st.success("Prediction")
+    renderLightweightCharts([
+        {
+            "chart": chartOptions,
+            "series": seriesBaselineChart
+        }
+    ], 'sea_data_chart')
 
     dataframe1 = pd.read_excel('reports/air_raw_data/date_price_weigth.xlsx')
     dataframe2 = pd.read_excel('reports/air_forecasting/date_price_weigth.xlsx')
 
-    # Display dataframes
-    st.header("Air Price Weight Analysis:")
+
 
 
     # Merge dataframes
-    merged_df = pd.concat([dataframe1, dataframe2], ignore_index=True)
-
+    merged_df = pd.concat([dataframe1, dataframe2])
+    merged_df['data'] = [round(float(data), 2) for data in merged_df['data']]
     # Convert 'date' column to datetime format
     merged_df['date'] = pd.to_datetime(merged_df['date'])
-    merged_df['data'] = [round(float(data), 0) for data in merged_df['data']]
+
     # Add IsFuture column
     merged_df['IsFuture'] = merged_df['date'] > pd.Timestamp.now()
 
-    # Create plot
-    fig = px.line(merged_df, x='date', y='data', title='Price Weight Forecast', width=1200, color='IsFuture',
-                color_discrete_map={True: 'green', False: 'blue'},labels={'IsFuture': ''}, markers=True)
-    fig.update_xaxes(title_text='Date')
-    fig.update_yaxes(title_text='Price Weight')
-    # Update legend labels
-    fig.for_each_trace(lambda t: t.update(name='Prediction' if t.name == 'True' else 'Historical Data'))
-    # Show plot
-    st.plotly_chart(fig)
+
+    # Prepare series data
+    seriesData = [
+        {"time": int(time.timestamp()), "value": value, "color": get_color(is_future)}
+        for time, value, is_future in zip(merged_df['date'], merged_df['data'], merged_df['IsFuture'])
+    ]
+
+    # Chart options
+    chartOptions = {
+        "layout": {
+            "textColor": 'black',
+            "background": {
+                "type": 'solid',
+                "color": 'white'
+            }
+        }
+    }
+
+    # Series data for the chart
+    seriesBaselineChart = [{
+        "type": 'Line',
+        "data": seriesData,
+        "options": {
+            "lineColor": 'rgba(0, 0, 0, 0)',  # Set initial line color as transparent
+            "lineWidth": 2,
+            "topLineColor": 'green',  # Color for future data
+            "bottomLineColor": 'blue',  # Color for historical data
+            "topFillColor1": 'green',  # Fill color for future data
+            "topFillColor2": 'green',  # Fill color for future data
+            "bottomFillColor1": 'blue',  # Fill color for historical data
+            "bottomFillColor2": 'blue'  # Fill color for historical data
+        }
+    }]
+
+    # Render the chart
+    st.title("Sea Price-Weight Analysis")
+    col1, col2= st.columns(2)
+    with col1:
+        st.info("Historical Data")
+    with col2:
+        st.success("Prediction")
+    renderLightweightCharts([
+        {
+            "chart": chartOptions,
+            "series": seriesBaselineChart
+                    
+                    }
+    ], 'sea_priceweight_chart')
 
     tab1, tab2 = st.tabs(["Shipment Count🔢", "Price Weight 📦"])
     

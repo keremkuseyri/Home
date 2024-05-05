@@ -9,6 +9,7 @@ import openpyxl
 import numpy as np
 from streamlit_lightweight_charts import renderLightweightCharts
 
+from datetime import datetime
 
 st.set_page_config(page_title='Genel Transport',page_icon="https://www.geneltransport.com.tr/wp-content/uploads/2021/03/favicon.png", layout='wide')
 st.image('https://www.geneltransport.com.tr/wp-content/uploads/2021/03/logo-color.png')
@@ -43,71 +44,69 @@ if st.session_state["authentication_status"]:
     st.sidebar.write(f'Welcome *{st.session_state["name"]}*')
     authenticator.logout("Logout", "sidebar")
 
+
     dataframe1 = pd.read_excel('reports/sea_forecasting/date_quantity.xlsx')
     dataframe2 = pd.read_excel('reports/sea_raw_data/date_quantity.xlsx')
 
-    # Display dataframes
-    st.title("Sea Data Analysis")
-
     # Merge dataframes
     merged_df = pd.concat([dataframe2, dataframe1])
-    merged_df['data'] = [round(float(data), 0) for data in merged_df['data']]
+    merged_df['data'] = [round(float(data), 2) for data in merged_df['data']]
     # Convert 'date' column to datetime format
     merged_df['date'] = pd.to_datetime(merged_df['date'])
 
     # Add IsFuture column
     merged_df['IsFuture'] = merged_df['date'] > pd.Timestamp.now()
 
-    # Create plot
-    fig = px.line(
-        merged_df, 
-        x='date', 
-        y='data', 
-        title='Date Shipment Count Forecast', 
-        width=1300, 
-        color='IsFuture',
-        color_discrete_map={True: 'green', False: 'blue'},
-        labels={'IsFuture': ''},
-        markers=True
-        
-    )
+    # Define color function based on IsFuture column
+    def get_color(is_future):
+        return 'green' if is_future else 'blue'
 
-    # Update legend labels
-    fig.for_each_trace(lambda t: t.update(name='Prediction' if t.name == 'True' else 'Historical Data'))
+    # Prepare series data
+    seriesData = [
+        {"time": int(time.timestamp()), "value": value, "color": get_color(is_future)}
+        for time, value, is_future in zip(merged_df['date'], merged_df['data'], merged_df['IsFuture'])
+    ]
 
-    # Display the plot using Streamlit
-    st.plotly_chart(fig)
-    merged_df['date'] = merged_df['date'].dt.strftime('%Y-%m-%d')
-    time_list = merged_df['date'].tolist()
-    value_list = merged_df['data'].tolist()
-
-
+    # Chart options
     chartOptions = {
-    "layout": {
-        "textColor": 'black',
-        "background": {
-            "type": 'solid',
-            "color": 'white'
+        "layout": {
+            "textColor": 'black',
+            "background": {
+                "type": 'solid',
+                "color": 'white'
             }
         }
     }
 
-    seriesHistogramChart  = [{
-        "type": 'Baseline',
-        "data": [
-        {"time": time, "value": value} for time, value in zip(time_list, value_list)
-    ],
-        "options": {}
+    # Series data for the chart
+    seriesBaselineChart = [{
+        "type": 'Line',
+        "data": seriesData,
+        "options": {
+            "lineColor": 'rgba(0, 0, 0, 0)',  # Set initial line color as transparent
+            "lineWidth": 2,
+            "topLineColor": 'green',  # Color for future data
+            "bottomLineColor": 'blue',  # Color for historical data
+            "topFillColor1": 'green',  # Fill color for future data
+            "topFillColor2": 'green',  # Fill color for future data
+            "bottomFillColor1": 'blue',  # Fill color for historical data
+            "bottomFillColor2": 'blue'  # Fill color for historical data
+        }
     }]
 
-    st.subheader("Line Chart with Watermark")
-
+    # Render the chart
+    st.title("Sea Data Analysis")
+    col1, col2= st.columns(2)
+    with col1:
+        st.info("Historical Data")
+    with col2:
+        st.success("Prediction")
     renderLightweightCharts([
         {
             "chart": chartOptions,
-            "series": seriesHistogramChart
+            "series": seriesBaselineChart
         }
-    ], 'baseline')
+    ], 'sea_data_chart')
 
 
 
@@ -116,38 +115,62 @@ if st.session_state["authentication_status"]:
 
     # Display dataframes
     st.title("Sea TEU Analysis")
+    col1, col2= st.columns(2)
+    with col1:
+        st.info("Historical Data")
+    with col2:
+        st.success("Prediction")
 
-
-    # Merge dataframes
-    merged_df = pd.concat([dataframe2, dataframe1], ignore_index=True)
-
+     # Merge dataframes
+    merged_df = pd.concat([dataframe2, dataframe1])
+    merged_df['data'] = [round(float(data), 2) for data in merged_df['data']]
     # Convert 'date' column to datetime format
     merged_df['date'] = pd.to_datetime(merged_df['date'])
-    merged_df['data'] = [round(float(data), 0) for data in merged_df['data']]
+
     # Add IsFuture column
     merged_df['IsFuture'] = merged_df['date'] > pd.Timestamp.now()
 
-    # Create plot
-    fig = px.line(
-        merged_df, 
-        x='date', 
-        y='data', 
-        title='Date Teu Forecast', 
-        width=1300, 
-        color='IsFuture', 
-        color_discrete_map={True: 'green', False: 'blue'},
-        labels={'IsFuture': ''},
-        markers=True
-    )
-    fig.update_xaxes(title_text='Date')
-    fig.update_yaxes(title_text='TEU')
+    # Prepare series data
+    seriesData = [
+        {"time": int(time.timestamp()), "value": value, "color": get_color(is_future)}
+        for time, value, is_future in zip(merged_df['date'], merged_df['data'], merged_df['IsFuture'])
+    ]
 
-    # Update legend labels
-    fig.for_each_trace(lambda t: t.update(name='Prediction' if t.name == 'True' else 'Historical Data'))
+    # Chart options
+    chartOptions = {
+        "layout": {
+            "textColor": 'black',
+            "background": {
+                "type": 'solid',
+                "color": 'white'
+            }
+        }
+    }
 
-    # Show plot
-    st.plotly_chart(fig)
+    # Series data for the chart
+    seriesBaselineChart = [{
+        "type": 'Line',
+        "data": seriesData,
+        "options": {
+            "lineColor": 'rgba(0, 0, 0, 0)',  # Set initial line color as transparent
+            "lineWidth": 2,
+            "topLineColor": 'green',  # Color for future data
+            "bottomLineColor": 'blue',  # Color for historical data
+            "topFillColor1": 'green',  # Fill color for future data
+            "topFillColor2": 'green',  # Fill color for future data
+            "bottomFillColor1": 'blue',  # Fill color for historical data
+            "bottomFillColor2": 'blue'  # Fill color for historical data
+        }
+    }]
 
+
+
+    renderLightweightCharts([
+        {
+            "chart": chartOptions,
+            "series": seriesBaselineChart
+        }
+    ], 'sea_teu_chart')
     tab1, tab2 = st.tabs(["Shipment Count🔢", "Teu📦"])
     
 
