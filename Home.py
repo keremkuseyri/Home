@@ -8,7 +8,6 @@ from yaml.loader import SafeLoader
 import openpyxl
 import numpy as np
 from streamlit_lightweight_charts import renderLightweightCharts
-
 from datetime import datetime
 
 st.set_page_config(page_title='Genel Transport',page_icon="https://www.geneltransport.com.tr/wp-content/uploads/2021/03/favicon.png", layout='wide')

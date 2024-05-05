@@ -8,7 +8,6 @@ from yaml.loader import SafeLoader
 import openpyxl
 import numpy as np
 from streamlit_lightweight_charts import renderLightweightCharts
-
 with open('config.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
 
