@@ -93,7 +93,7 @@ if st.session_state["authentication_status"]:
     }
 
     seriesHistogramChart  = [{
-        "type": 'Line',
+        "type": 'Baseline',
         "data": [
         {"time": time, "value": value} for time, value in zip(time_list, value_list)
     ],
@@ -107,38 +107,8 @@ if st.session_state["authentication_status"]:
             "chart": chartOptions,
             "series": seriesHistogramChart
         }
-    ], 'line')
-    dataframe1['date'] = dataframe1['date'].dt.strftime('%Y-%m-%d')
-    time_list1 = dataframe1['date'].tolist()
-    value_list1 = dataframe1['data'].tolist()
+    ], 'baseline')
 
-
-    chartOptions = {
-    "layout": {
-        "textColor": 'black',
-        "background": {
-            "type": 'solid',
-            "color": 'white'
-            }
-        }
-    }
-
-    seriesHistogramChart  = [{
-        "type": 'Line',
-        "data": [
-        {"time": time, "value": value} for time, value in zip(time_list1, value_list1)
-    ],
-        "options": {}
-    }]
-
-    st.subheader("Line Chart with Watermark")
-
-    renderLightweightCharts([
-        {
-            "chart": chartOptions,
-            "series": seriesHistogramChart
-        }
-    ], 'line1')
 
 
     dataframe1 = pd.read_excel('reports/sea_forecasting/date_teu.xlsx')
