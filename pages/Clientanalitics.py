@@ -33,6 +33,7 @@ if st.session_state["authentication_status"]:
         st.page_link("Home.py", label="Total", icon="📊" )
     with st.sidebar.expander("Air Trend Report ✈️"):
         st.page_link("pages/Air.py",label="Total", icon="📊")
+        st.page_link("pages/Clientanalitics.py",label="Client Offer/Success Analysis", icon="📈")
     with st.sidebar.expander("Air Export KPI 🎯"):
         st.page_link("pages/Airexportkpi.py",label="Air Export KPI", icon="📊")
         st.page_link("pages/Airexporttarget.py", label="Target Export KPI", icon="🎯")
