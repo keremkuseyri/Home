@@ -46,15 +46,15 @@ if st.session_state["authentication_status"]:
     st.sidebar.write(f'Welcome *{st.session_state["name"]}*')
     authenticator.logout("Logout", "sidebar")
 
-    filenames = os.listdir('air_offer_outs')
+    filenames = os.listdir('air_customer_outs')
     filenames_selected=st.selectbox("Select an employee", options=filenames, index=0)
-    dataframe8 = pd.read_csv(f'air_offer_outs/'+ filenames_selected )
-    dataframe8['Month'] = pd.to_datetime(dataframe8['Month']).dt.strftime('%Y-%m-%d')
+    dataframe8 = pd.read_csv(f'air_customer_outs/'+ filenames_selected )
+    dataframe8['Date'] = pd.to_datetime(dataframe8['Date']).dt.strftime('%Y-%m-%d')
 
 
     # Now you can use x_values and y_values as you did before
-    x_values = dataframe8['Month'].tolist()
-    y_values = dataframe8['Acceptance Rate'].tolist()
+    x_values = dataframe8['Date'].tolist()
+    y_values = dataframe8['Count'].tolist()
 
 
     chartOptions = {
@@ -75,7 +75,7 @@ if st.session_state["authentication_status"]:
         "options": {}
     }]
 
-    st.subheader(filenames_selected + "Acceptance Rate-Month")
+    st.subheader(filenames_selected + "Date - Count")
 
     renderLightweightCharts([
         {
@@ -84,46 +84,7 @@ if st.session_state["authentication_status"]:
         }
     ], 'line11')
 
-    x_values = dataframe8['Month'].tolist()
-    y_values = dataframe8['Accepted Activities'].tolist()
-    y2_values = dataframe8['Total Activities'].tolist()
 
-    chartOptions = {
-        "layout": {
-            "textColor": 'black',
-            "background": {
-                "type": 'solid',
-                "color": 'white'
-            }
-            
-        }
-    }
-
-    seriesLineChart = [
-        {
-            "type": 'Line',
-            "data": [
-                {"time": x, "value": y} for x, y in zip(x_values, y_values)
-            ],
-            "options": {"title": "Accepted Activities", "color": "orange"}
-        },
-        {
-            "type": 'Line',
-            "data": [
-                {"time": x, "value": y} for x, y in zip(x_values, y2_values)
-            ],
-            "options": {"title": "Total Activities", "color": "blue"}
-        }
-    ]
-
-    st.subheader(filenames_selected + "Activities Comparison - Month")
-
-    renderLightweightCharts([
-        {
-            "chart": chartOptions,
-            "series": seriesLineChart
-        }
-    ], 'line12')
 
 
 
