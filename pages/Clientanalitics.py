@@ -47,7 +47,7 @@ if st.session_state["authentication_status"]:
     authenticator.logout("Logout", "sidebar")
 
     filenames = os.listdir('air_offer_outs')
-    filenames_selected=st.selectbox("Select an employee", options=filenames, index=0)
+    filenames_selected=st.selectbox("Select Branch - Direction", options=filenames, index=0)
     dataframe8 = pd.read_csv(f'air_offer_outs/'+ filenames_selected )
     dataframe8['Month'] = pd.to_datetime(dataframe8['Month']).dt.strftime('%Y-%m-%d')
 
