@@ -32,8 +32,7 @@ st.image('https://www.geneltransport.com.tr/wp-content/uploads/2021/03/logo-colo
         st.page_link("pages/Clientanalitics.py",label="Client Offer/Success Analysis", icon="📈")
         st.page_link("pages/Clientaircustomer.py",label="Client Air Customer Offer Analysis", icon="📈")
 
-    st.sidebar.write(f'Welcome *{st.session_state["name"]}*')
-    authenticator.logout("Logout", "sidebar")
+  
 
 
     filenames = os.listdir('reports/air_import_employee_kpis')
