@@ -1,4 +1,4 @@
-import streamlit as st
+5import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
 import plotly.express as px
@@ -17,16 +17,8 @@ with open('config.yaml') as file:
 st.cache_data.clear()
 
 
-authenticator = stauth.Authenticate(
-    config['credentials'],
-    config['cookie']['name'],
-    config['cookie']['key'],
-    config['cookie']['expiry_days'],
-    config['pre-authorized']
-)
 
-authenticator.login()
-if st.session_state["authentication_status"]:
+
 
     
 
@@ -45,8 +37,7 @@ if st.session_state["authentication_status"]:
         st.page_link("pages/Clientaircustomer.py",label="Client Air Customer Offer Analysis", icon="📈")
     
 
-    st.sidebar.write(f'Welcome *{st.session_state["name"]}*')
-    authenticator.logout("Logout", "sidebar")
+    
 
 
     dataframe1 = pd.read_excel('reports/sea_forecasting/date_quantity.xlsx')
@@ -1215,9 +1206,4 @@ if st.session_state["authentication_status"]:
 
         
 
-elif st.session_state["authentication_status"] is False:
-    st.error('Username/password is incorrect')
 
-elif st.session_state["authentication_status"] is None:
-    st.warning('Please enter your username and password')
-    
