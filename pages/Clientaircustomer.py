@@ -34,8 +34,7 @@ with open('config.yaml') as file:
         st.page_link("pages/Clientanalitics.py",label="Client Offer/Success Analysis", icon="📈")
         st.page_link("pages/Clientaircustomer.py",label="Client Air Customer Offer Analysis", icon="📈")
 
-    st.sidebar.write(f'Welcome *{st.session_state["name"]}*')
-    authenticator.logout("Logout", "sidebar")
+   
 
     filenames = os.listdir('air_customer_outs')
     filenames_selected=st.selectbox("Select customer", options=filenames, index=0)
