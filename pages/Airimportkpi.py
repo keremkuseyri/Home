@@ -14,16 +14,7 @@ with open('config.yaml') as file:
 st.set_page_config(page_title='Genel Transport',page_icon="https://www.geneltransport.com.tr/wp-content/uploads/2021/03/favicon.png", layout='wide')
 st.image('https://www.geneltransport.com.tr/wp-content/uploads/2021/03/logo-color.png')
 
-authenticator = stauth.Authenticate(
-    config['credentials'],
-    config['cookie']['name'],
-    config['cookie']['key'],
-    config['cookie']['expiry_days'],
-    config['pre-authorized']
-)
 
-authenticator.login()
-if st.session_state["authentication_status"]:
     
     
     with st.sidebar.expander("Sea Trend Report ⛴"):
@@ -39,9 +30,6 @@ if st.session_state["authentication_status"]:
     with st.sidebar.expander("Air Customer Report ✈️"):
         st.page_link("pages/Clientanalitics.py",label="Client Offer/Success Analysis", icon="📈")
         st.page_link("pages/Clientaircustomer.py",label="Client Air Customer Offer Analysis", icon="📈")
-
-    st.sidebar.write(f'Welcome *{st.session_state["name"]}*')
-    authenticator.logout("Logout", "sidebar")
 
     col1, col2 = st.columns(2)
 
@@ -114,8 +102,3 @@ if st.session_state["authentication_status"]:
         st.success(round(df["price_weigth_min"][0],1))
 
 
-elif st.session_state["authentication_status"] is False:
-    st.error('Username/password is incorrect')
-
-elif st.session_state["authentication_status"] is None:
-    st.warning('Please enter your username and password')
