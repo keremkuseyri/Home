@@ -17,7 +17,16 @@ with open('config.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
 
 
+authenticator = stauth.Authenticate(
+    config['credentials'],
+    config['cookie']['name'],
+    config['cookie']['key'],
+    config['cookie']['expiry_days'],
+    config['pre-authorized']
+)
 
+authenticator.login()
+if st.session_state["authentication_status"]:
 
 
     
@@ -37,7 +46,8 @@ with open('config.yaml') as file:
         st.page_link("pages/Clientaircustomer.py",label="Client Air Customer Offer Analysis", icon="📈")
 
   
-
+    st.sidebar.write(f'Welcome *{st.session_state["name"]}*')
+    authenticator.logout("Logout", "sidebar")
 
     filenames = os.listdir('reports/air_import_employee_kpis')
     filenames.remove('count_per.xlsx')
@@ -97,7 +107,11 @@ with open('config.yaml') as file:
         st.write("<h1 style='font-size: 28px;'>All Count Mean:</h1>",unsafe_allow_html=True)
         st.error(round(df2["all_count_mean"][0],1))
     
+elif st.session_state["authentication_status"] is False:
+    st.error('Username/password is incorrect')
 
+elif st.session_state["authentication_status"] is None:
+    st.warning('Please enter your username and password')
 
 
 
