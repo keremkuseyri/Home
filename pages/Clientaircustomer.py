@@ -16,7 +16,16 @@ with open('config.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
 
 
+authenticator = stauth.Authenticate(
+    config['credentials'],
+    config['cookie']['name'],
+    config['cookie']['key'],
+    config['cookie']['expiry_days'],
+    config['pre-authorized']
+)
 
+authenticator.login()
+if st.session_state["authentication_status"]:
 
     
 
@@ -34,7 +43,8 @@ with open('config.yaml') as file:
         st.page_link("pages/Clientanalitics.py",label="Client Offer/Success Analysis", icon="📈")
         st.page_link("pages/Clientaircustomer.py",label="Client Air Customer Offer Analysis", icon="📈")
 
-   
+    st.sidebar.write(f'Welcome *{st.session_state["name"]}*')
+    authenticator.logout("Logout", "sidebar")
 
     filenames = os.listdir('air_customer_outs')
     filenames_selected=st.selectbox("Select customer", options=filenames, index=0)
@@ -74,7 +84,11 @@ with open('config.yaml') as file:
         }
     ], 'line11')
 
+elif st.session_state["authentication_status"] is False:
+    st.error('Username/password is incorrect')
 
+elif st.session_state["authentication_status"] is None:
+    st.warning('Please enter your username and password')
 
 
 
