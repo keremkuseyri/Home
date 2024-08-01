@@ -17,7 +17,16 @@ with open('config.yaml') as file:
     st.cache_data.clear()
 
 
+authenticator = stauth.Authenticate(
+    config['credentials'],
+    config['cookie']['name'],
+    config['cookie']['key'],
+    config['cookie']['expiry_days'],
+    config['pre-authorized']
+)
 
+authenticator.login()
+if st.session_state["authentication_status"]:
 
 
     
@@ -36,7 +45,8 @@ with open('config.yaml') as file:
         st.page_link("pages/Clientanalitics.py",label="Client Offer/Success Analysis", icon="📈")
         st.page_link("pages/Clientaircustomer.py",label="Client Air Customer Offer Analysis", icon="📈")
     
-
+    st.sidebar.write(f'Welcome *{st.session_state["name"]}*')
+    authenticator.logout("Logout", "sidebar")
     
 
 
@@ -1205,5 +1215,9 @@ with open('config.yaml') as file:
             st.plotly_chart(fig_cross_trade, use_container_width=True)
 
         
+elif st.session_state["authentication_status"] is False:
+    st.error('Username/password is incorrect')
 
+elif st.session_state["authentication_status"] is None:
+    st.warning('Please enter your username and password')
 
