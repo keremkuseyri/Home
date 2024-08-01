@@ -44,7 +44,7 @@ credentials:
       password: 'TuwZJdjx'
 cookie:
   expiry_days: 0
-  key: abc
+  key: 
   name: session_cookie
 pre-authorized:
   emails: kerem.kuseyri@geneltransport.com.tr
