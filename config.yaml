@@ -47,4 +47,4 @@ cookie:
   key: abc
   name: session_cookie
 pre-authorized:
-  emails: kerem.kuseyri@geneltransport.com.tr
+  emails: 
