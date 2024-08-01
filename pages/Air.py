@@ -15,10 +15,18 @@ st.image('https://www.geneltransport.com.tr/wp-content/uploads/2021/03/logo-colo
 with open('config.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
 
+authenticator = stauth.Authenticate(
+    config['credentials'],
+    config['cookie']['name'],
+    config['cookie']['key'],
+    config['cookie']['expiry_days'],
+    config['pre-authorized']
+)
+
+authenticator.login()
+if st.session_state["authentication_status"]:
 
 
-
-    
 
     with st.sidebar.expander("Sea Trend Report ⛴"):
         st.page_link("Home.py", label="Total", icon="📊" )
@@ -34,7 +42,8 @@ with open('config.yaml') as file:
         st.page_link("pages/Clientanalitics.py",label="Client Offer/Success Analysis", icon="📈")
         st.page_link("pages/Clientaircustomer.py",label="Client Air Customer Offer Analysis", icon="📈")
 
-   
+    st.sidebar.write(f'Welcome *{st.session_state["name"]}*')
+    authenticator.logout("Logout", "sidebar")   
 
     dataframe3 = pd.read_excel('reports/air_forecasting/date_quantity.xlsx')
     dataframe4 = pd.read_excel('reports/air_raw_data/date_quantity.xlsx')
@@ -1497,3 +1506,8 @@ with open('config.yaml') as file:
         with col3:
             st.plotly_chart(fig_cross_trade, use_container_width=True)
 
+elif st.session_state["authentication_status"] is False:
+    st.error('Username/password is incorrect')
+
+elif st.session_state["authentication_status"] is None:
+    st.warning('Please enter your username and password')
