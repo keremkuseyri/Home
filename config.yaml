@@ -45,6 +45,6 @@ credentials:
 cookie:
   expiry_days: 10
   key: abc
-  name: session
+  name: cookie
 pre-authorized:
   emails: 
