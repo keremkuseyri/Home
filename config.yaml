@@ -1,7 +1,7 @@
 cookie:
-  expiry_days: 10
+  expiry_days: 0
   key: abc
-  name: cookie
+  name: session_cookie
 credentials:
   usernames:
     osakar:
