@@ -13,13 +13,13 @@ credentials:
     kkuseyri:
       email: kerem.kuseyri@geneltransport.com.tr
       failed_login_attempts: 0 # Will be managed automatically
-      logged_in: True # Will be managed automatically
+      logged_in: False # Will be managed automatically
       name: Kerem Kuseyri
       password: '123456' # Will be hashed automatically
     kcebeci:
       email: kubilay.cebeci@geneltransport.com.tr
       failed_login_attempts: 0 # Will be managed automatically
-      logged_in: True # Will be managed automatically
+      logged_in: False # Will be managed automatically
       name: Kubilay Cebeci
       password: '123456' # Will be hashed automatically
     terkeskin:
