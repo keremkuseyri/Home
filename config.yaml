@@ -1,3 +1,7 @@
+cookie:
+  expiry_days: 10
+  key: abc
+  name: cookie
 credentials:
   usernames:
     osakar:
@@ -42,9 +46,6 @@ credentials:
       logged_in: False # Will be managed automatically
       name: Senem Çelik
       password: 'TuwZJdjx'
-cookie:
-  expiry_days: 10
-  key: abc
-  name: cookie
+
 pre-authorized:
   emails: 
