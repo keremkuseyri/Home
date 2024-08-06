@@ -43,8 +43,8 @@ credentials:
       name: Senem Çelik
       password: 'TuwZJdjx'
 cookie:
-  expiry_days: 1
+  expiry_days: 10
   key: abc
-  name: session_cookie
+  name: session
 pre-authorized:
   emails: 
