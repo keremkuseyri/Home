@@ -14,7 +14,7 @@ st.set_page_config(page_title='Genel Transport',page_icon="https://www.geneltran
 st.image('https://www.geneltransport.com.tr/wp-content/uploads/2021/03/logo-color.png')
 with open('config.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
-    st.cache_data.clear(cookie)
+    st.cache_data.clear(session_cookie)
 
 
 authenticator = stauth.Authenticate(
