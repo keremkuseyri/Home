@@ -9,7 +9,11 @@ import openpyxl
 import numpy as np
 from streamlit_lightweight_charts import renderLightweightCharts
 from datetime import datetime
-
+with st.empty():
+    for seconds in range(5):
+        st.write(f"⏳ {seconds} seconds have passed")
+        time.sleep(1)
+    st.write("✔️ 5 sec over!")
 st.set_page_config(page_title='Genel Transport',page_icon="https://www.geneltransport.com.tr/wp-content/uploads/2021/03/favicon.png", layout='wide')
 st.image('https://www.geneltransport.com.tr/wp-content/uploads/2021/03/logo-color.png')
 with open('config.yaml') as file:
@@ -1217,13 +1221,13 @@ if st.session_state["authentication_status"]:
 
         
 elif st.session_state["authentication_status"] is False:
-    @st.cache_data
-    st.cache_data.clear()
+
+
     st.error('Username/password is incorrect')
 
 
 elif st.session_state["authentication_status"] is None:
-    @st.cache_data
-    st.cache_data.clear()
+
+
     st.warning('Please enter your username and password')
 
