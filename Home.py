@@ -28,7 +28,7 @@ authenticator = stauth.Authenticate(
 
 
 authenticator.login()
-st.write(st.session_state["session_cookie"])
+st.write(st.session_state.key)
 if st.session_state["authentication_status"]:
 
 
