@@ -28,6 +28,7 @@ authenticator = stauth.Authenticate(
 
 
 authenticator.login()
+st.experimental_singleton.clear()
 if st.session_state["authentication_status"]:
 
 
