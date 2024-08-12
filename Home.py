@@ -28,7 +28,7 @@ authenticator = stauth.Authenticate(
 
 
 authenticator.login()
-st.cache_resource.clear()
+
 if st.session_state["authentication_status"]:
 
 
@@ -1222,7 +1222,7 @@ elif st.session_state["authentication_status"] is False:
 
 
     st.error('Username/password is incorrect')
-    
+    st.cache_resource.clear()
 
 elif st.session_state["authentication_status"] is None:
 
