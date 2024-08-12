@@ -1223,11 +1223,11 @@ elif st.session_state["authentication_status"] is False:
 
     st.error('Username/password is incorrect')
     st.session_state.clear()  # Clears the entire session state
-    st.experimental_rerun()  # Force rerun after clearing state
+    st.session_state["rerun_trigger"] = True
 
 elif st.session_state["authentication_status"] is None:
 
 
     st.warning('Please enter your username and password')
     st.session_state.clear()  # Clears the entire session state
-    st.experimental_rerun()  # Force rerun after clearing state
+    st.session_state["rerun_trigger"] = True
