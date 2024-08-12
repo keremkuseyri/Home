@@ -9,6 +9,7 @@ import openpyxl
 import numpy as np
 from streamlit_lightweight_charts import renderLightweightCharts
 from datetime import datetime
+import time
 with st.empty():
     for seconds in range(5):
         st.write(f"⏳ {seconds} seconds have passed")
