@@ -28,7 +28,7 @@ authenticator = stauth.Authenticate(
 
 
 authenticator.login()
-if st.session_state["authentication_status"] is True:
+if st.session_state["authentication_status"]:
 
 
     
@@ -49,7 +49,7 @@ if st.session_state["authentication_status"] is True:
     
     st.sidebar.write(f'Welcome *{st.session_state["name"]}*')
     authenticator.logout("Logout", "sidebar")
-    
+
 
 
     dataframe1 = pd.read_excel('reports/sea_forecasting/date_quantity.xlsx')
@@ -1221,7 +1221,7 @@ elif st.session_state["authentication_status"] is False:
 
 
     st.error('Username/password is incorrect')
-
+    st.session_state['failed_login_attempts']
 
 elif st.session_state["authentication_status"] is None:
 
