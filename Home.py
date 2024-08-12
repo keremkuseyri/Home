@@ -1221,7 +1221,7 @@ elif st.session_state["authentication_status"] is False:
 
 
     st.error('Username/password is incorrect')
-    st.session_state['failed_login_attempts']
+    st.write(st.session_state['failed_login_attempts'])
 
 elif st.session_state["authentication_status"] is None:
 
