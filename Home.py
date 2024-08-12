@@ -28,7 +28,7 @@ authenticator = stauth.Authenticate(
 
 
 authenticator.login()
-st.experimental_rerun()
+
 if st.session_state["authentication_status"]:
 
 
