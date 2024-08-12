@@ -16,6 +16,7 @@ with open('config.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
 
 
+
 authenticator = stauth.Authenticate(
     config['credentials'],
     config['cookie']['name'],
@@ -24,8 +25,8 @@ authenticator = stauth.Authenticate(
     config['pre-authorized']
 )
 
-@st.cache_data
-    authenticator.login()
+st.cache_data.clear()
+authenticator.login()
 if st.session_state["authentication_status"]:
 
 
