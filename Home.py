@@ -1217,10 +1217,13 @@ if st.session_state["authentication_status"]:
 
         
 elif st.session_state["authentication_status"] is False:
-    st.error('Username/password is incorrect')
+    @st.cache_data
     st.cache_data.clear()
+    st.error('Username/password is incorrect')
+
 
 elif st.session_state["authentication_status"] is None:
+    @st.cache_data
     st.cache_data.clear()
     st.warning('Please enter your username and password')
 
