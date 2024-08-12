@@ -25,10 +25,10 @@ authenticator = stauth.Authenticate(
     config['pre-authorized']
 )
 
-st.cache_data.clear()
+
 authenticator.login()
 if st.session_state["authentication_status"]:
-
+    st.cache_data.clear()
 
     
 
