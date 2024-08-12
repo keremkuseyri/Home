@@ -23,7 +23,7 @@ authenticator = stauth.Authenticate(
     config['cookie']['expiry_days'],
     config['pre-authorized']
 )
-
+@st.cache_data
 authenticator.login()
 if st.session_state["authentication_status"]:
 
