@@ -17,11 +17,7 @@ with open('config.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
 
 
-with st.empty():
-    for seconds in range(5):
-        st.write(f"⏳ {seconds} seconds have passed")
-        time.sleep(1)
-    st.write("✔️ 5 sec over!")
+
 authenticator = stauth.Authenticate(
     config['credentials'],
     config['cookie']['name'],
@@ -32,7 +28,7 @@ authenticator = stauth.Authenticate(
 
 
 authenticator.login()
-if st.session_state["authentication_status"]:
+if st.session_state["authentication_status"] is True:
 
 
     
