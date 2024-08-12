@@ -26,7 +26,7 @@ authenticator = stauth.Authenticate(
 
 authenticator.login()
 if st.session_state["authentication_status"]:
-    authenticator.logout("Logout", "sidebar")
+
 
     
 
@@ -45,7 +45,7 @@ if st.session_state["authentication_status"]:
         st.page_link("pages/Clientaircustomer.py",label="Client Air Customer Offer Analysis", icon="📈")
     
     st.sidebar.write(f'Welcome *{st.session_state["name"]}*')
-
+    authenticator.logout("Logout", "sidebar")
     
 
 
