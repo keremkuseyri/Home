@@ -9,7 +9,7 @@ import openpyxl
 import numpy as np
 from streamlit_lightweight_charts import renderLightweightCharts
 from datetime import datetime
-import time
+
 
 st.set_page_config(page_title='Genel Transport',page_icon="https://www.geneltransport.com.tr/wp-content/uploads/2021/03/favicon.png", layout='wide')
 st.image('https://www.geneltransport.com.tr/wp-content/uploads/2021/03/logo-color.png')
@@ -1221,7 +1221,7 @@ elif st.session_state["authentication_status"] is False:
 
 
     st.error('Username/password is incorrect')
-    st.write(st.session_state['failed_login_attempts'])
+    
 
 elif st.session_state["authentication_status"] is None:
 
