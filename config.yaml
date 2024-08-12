@@ -1,5 +1,5 @@
 cookie:
-  expiry_days: 0
+  expiry_days: 1
   key: abc
   name: session_cookie
 credentials:
