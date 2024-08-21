@@ -2,3 +2,4 @@ plotly
 streamlit-authenticator
 openpyxl
 streamlit_lightweight_charts
+pymongo
