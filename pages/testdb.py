@@ -8,18 +8,17 @@ mongo_uri = "mongodb+srv://kkuseyri:GTTest2024@clusterv0.uwkchdi.mongodb.net/?re
 client = MongoClient(mongo_uri)
 
 # Use a default database and collection (will be created if they don't exist)
-db = client["TestDatabaseV0"]  # Default database name
-collection = db["TestCollectionV0"]  # Default collection name
+db = client["GTProductImpExp"]
+collection = db["Import"]
+collection2 = db["Export"]
 
 # Streamlit app
-st.title("MongoDB Data Viewer (Default Database)")
+st.write("MongoDB Data Viewer:")
 
 # Check if collection is empty
-items = list(collection.find({}))
+items = list(collection+collection2.find({}))
 
 
-# Retrieve and display all items
-items = list(collection.find({}))
 
 if items:
     for item in items:
