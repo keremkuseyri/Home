@@ -16,7 +16,7 @@ collection2 = db["Export"]
 st.write("MongoDB Data Viewer:")
 
 # Check if collection is empty
-items = list(collection+collection2.find({}))
+items = list(collection,collection2.find({}))
 
 
 
