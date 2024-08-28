@@ -18,10 +18,23 @@ st.write("MongoDB Data Viewer:")
 # Check if collection is empty
 items = list(collection.find({})) + list(collection2.find({}))
 
+def flatten_dict(d, parent_key='', sep='_'):
+    items = []
+    for k, v in d.items():
+        new_key = f"{parent_key}{sep}{k}" if parent_key else k
+        if isinstance(v, dict):
+            items.extend(flatten_dict(v, new_key, sep=sep).items())
+        else:
+            items.append((new_key, v))
+    return dict(items)
 
-
+# Check if there are any items
 if items:
-    for item in items:
-        st.write(item)
+    # Flatten each item and convert to DataFrame
+    flattened_items = [flatten_dict(item) for item in items]
+    df = pd.DataFrame(flattened_items)
+    
+    # Display the dataframe in Streamlit
+    st.dataframe(df)
 else:
     st.write("No items found in the collection.")
