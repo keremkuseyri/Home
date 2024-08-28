@@ -1,5 +1,6 @@
 import streamlit as st
 from pymongo import MongoClient
+import pandas as pd
 
 # MongoDB connection string
 mongo_uri = "mongodb+srv://kkuseyri:GTTest2024@clusterv0.uwkchdi.mongodb.net/?retryWrites=true&w=majority"
