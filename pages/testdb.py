@@ -16,26 +16,51 @@ collection2 = db["Export"]
 # Streamlit app
 st.write("MongoDB Data Viewer:")
 
-# Check if collection is empty
-items = list(collection.find({})) + list(collection2.find({}))
+# Fetch all documents from both collections
+items_import = list(collection.find({}))
+items_export = list(collection2.find({}))
 
-def flatten_dict(d, parent_key='', sep='_'):
-    items = []
-    for k, v in d.items():
-        new_key = f"{parent_key}{sep}{k}" if parent_key else k
-        if isinstance(v, dict):
-            items.extend(flatten_dict(v, new_key, sep=sep).items())
-        else:
-            items.append((new_key, v))
-    return dict(items)
+# Function to flatten the nested dictionary structure and arrange it into a table format
+def parse_item(item):
+    data = {}
+    for main_key, main_value in item.items():
+        if isinstance(main_value, dict):
+            for sub_key, sub_value in main_value.items():
+                if isinstance(sub_value, dict):
+                    for metric, values in sub_value.items():
+                        if metric not in data:
+                            data[metric] = {}
+                        for period, value in values.items():
+                            if period not in data[metric]:
+                                data[metric][period] = {}
+                            data[metric][period][sub_key] = value
+    return data
 
-# Check if there are any items
-if items:
-    # Flatten each item and convert to DataFrame
-    flattened_items = [flatten_dict(item) for item in items]
-    df = pd.DataFrame(flattened_items)
-    
-    # Display the dataframe in Streamlit
-    st.dataframe(df)
+def convert_to_dataframe(parsed_data):
+    dfs = []
+    for metric, periods in parsed_data.items():
+        df = pd.DataFrame.from_dict(periods, orient='index')
+        df.index.name = 'Period'
+        df.columns = pd.MultiIndex.from_product([[metric], df.columns])
+        dfs.append(df)
+    return pd.concat(dfs, axis=1)
+
+# Check if there are any items in import collection
+if items_import:
+    parsed_data_import = [parse_item(item) for item in items_import]
+    combined_import_data = {k: v for d in parsed_data_import for k, v in d.items()}
+    df_import = convert_to_dataframe(combined_import_data)
+    st.write("Import Data")
+    st.dataframe(df_import)
 else:
-    st.write("No items found in the collection.")
+    st.write("No items found in the Import collection.")
+
+# Check if there are any items in export collection
+if items_export:
+    parsed_data_export = [parse_item(item) for item in items_export]
+    combined_export_data = {k: v for d in parsed_data_export for k, v in d.items()}
+    df_export = convert_to_dataframe(combined_export_data)
+    st.write("Export Data")
+    st.dataframe(df_export)
+else:
+    st.write("No items found in the Export collection.")
