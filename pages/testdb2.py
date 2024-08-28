@@ -42,11 +42,12 @@ def convert_to_dataframe(parsed_data):
             df = pd.DataFrame.from_dict(data, orient='index')
             df.index.name = 'Period'
             
-            # Set MultiIndex for columns: Metric (revenue/profit/amount_of_cargo) and Type (budget/actual/percentage)
-            df.columns = pd.MultiIndex.from_product([[category], df.columns, ['budget', 'actual', 'percentage']])
-            
-            # Reshape the dataframe to align with desired column structure
-            df = df.stack(level=1).swaplevel(0, 1, axis=1).sort_index(axis=1)
+            # Flatten the dictionary inside each cell
+            df = pd.concat([df[col].apply(pd.Series) for col in df], axis=1, keys=df.columns)
+            df.columns = df.columns.map(lambda x: (x[0], x[1]))
+
+            # Rename columns to the final format: budget, actual, percentage
+            df.columns = pd.MultiIndex.from_product([df.columns.levels[0], ['budget', 'actual', 'percentage']])
             
             dfs[category] = df
     return dfs
