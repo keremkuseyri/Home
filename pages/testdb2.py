@@ -39,8 +39,8 @@ def create_category_df(data, category):
     
     return rows
 
-# Function to create DataFrames for different row groups
-def create_separated_dfs(data):
+# Function to structure the data into a single DataFrame
+def create_combined_df(data):
     # Extracting the data for each category
     revenue_ours = create_category_df(data.get("revenue", {}), "ours")
     revenue_agency = create_category_df(data.get("revenue", {}), "agency")
@@ -54,20 +54,7 @@ def create_separated_dfs(data):
     cargo_agency = create_category_df(data.get("amount_of_cargo", {}), "agency")
     cargo_total = create_category_df(data.get("amount_of_cargo", {}), "total")
 
-    # Define row groups
-    month_rows = ["January", "February", "March", "April", "May", "June", 
-                  "July", "August", "September", "October", "November", "December"]
-    quarter_rows = ["Q1", "Q2", "Q3", "Q4"]
-    half_year_rows = ["H1", "H2"]
-    year_row = ["Year"]
-
-    # Create DataFrames for each row group
-    def create_df_for_rows(row_labels, data):
-        # Adjust the row labels to match the length of data
-        rows = [data[i:i+len(row_labels)] for i in range(0, len(data), len(row_labels))]
-        return pd.DataFrame(rows, columns=columns, index=row_labels)
-    
-    # Combine data for each row group
+    # Combining the data
     combined_data = []
     for r_ours, r_agency, r_total, p_ours, p_agency, p_total, c_ours, c_agency, c_total in zip(
         revenue_ours, revenue_agency, revenue_total,
@@ -75,7 +62,7 @@ def create_separated_dfs(data):
         cargo_ours, cargo_agency, cargo_total
     ):
         combined_data.append(r_ours + r_agency + r_total + p_ours + p_agency + p_total + c_ours + c_agency + c_total)
-    
+
     # Define the multi-index for columns
     column_tuples = [
         ("Revenue", "Ours", "Budget"), ("Revenue", "Ours", "Actual"), ("Revenue", "Ours", "Percentage"),
@@ -90,22 +77,17 @@ def create_separated_dfs(data):
     ]
     columns = pd.MultiIndex.from_tuples(column_tuples)
 
-    # Create DataFrames for each row group
-    month_df = create_df_for_rows(month_rows, combined_data[:12])
-    quarter_df = create_df_for_rows(quarter_rows, combined_data[12:16])
-    half_year_df = create_df_for_rows(half_year_rows, combined_data[16:18])
-    year_df = create_df_for_rows(year_row, combined_data[18:19])
-    
-    return {
-        "Month": month_df,
-        "Quarter": quarter_df,
-        "Half-Year": half_year_df,
-        "Year": year_df
-    }
+    # Define the row labels
+    row_labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", 
+                  "Q1", "Q2", "Q3", "Q4", "H1", "H2", "Year"]
+
+    # Create the DataFrame
+    df = pd.DataFrame(combined_data, columns=columns, index=row_labels)
+    return df
 
 # Create DataFrames for Import and Export data
-import_dfs = create_separated_dfs(import_data[0])
-export_dfs = create_separated_dfs(export_data[0])
+import_combined_df = create_combined_df(import_data[0])
+export_combined_df = create_combined_df(export_data[0])
 
 # Function to apply styling to DataFrame
 def style_dataframe(df):
@@ -129,27 +111,13 @@ def style_dataframe(df):
     
     return styled_df
 
-# Apply styling to the DataFrames and display in Streamlit
-st.write("Import - Monthly Data:")
-st.dataframe(style_dataframe(import_dfs["Month"]), use_container_width=True)
+# Apply styling to the DataFrames
+import_styled_df = style_dataframe(import_combined_df)
+export_styled_df = style_dataframe(export_combined_df)
 
-st.write("Import - Quarterly Data:")
-st.dataframe(style_dataframe(import_dfs["Quarter"]), use_container_width=True)
+# Display the styled DataFrames in Streamlit
+st.write("Import :")
+st.dataframe(import_styled_df, use_container_width=True)
 
-st.write("Import - Half-Yearly Data:")
-st.dataframe(style_dataframe(import_dfs["Half-Year"]), use_container_width=True)
-
-st.write("Import - Yearly Data:")
-st.dataframe(style_dataframe(import_dfs["Year"]), use_container_width=True)
-
-st.write("Export - Monthly Data:")
-st.dataframe(style_dataframe(export_dfs["Month"]), use_container_width=True)
-
-st.write("Export - Quarterly Data:")
-st.dataframe(style_dataframe(export_dfs["Quarter"]), use_container_width=True)
-
-st.write("Export - Half-Yearly Data:")
-st.dataframe(style_dataframe(export_dfs["Half-Year"]), use_container_width=True)
-
-st.write("Export - Yearly Data:")
-st.dataframe(style_dataframe(export_dfs["Year"]), use_container_width=True)
+st.write("Export :")
+st.dataframe(export_styled_df, use_container_width=True)
