@@ -117,7 +117,7 @@ export_styled_df = style_dataframe(export_combined_df)
 
 # Display the styled DataFrames in Streamlit
 st.write("Import :")
-st.dataframe(import_styled_df, use_container_width=True, height= 800)
+st.dataframe(import_styled_df, use_container_width=True, height= 770)
 
 st.write("Export :")
-st.dataframe(export_styled_df, use_container_width=True,  height= 800)
+st.dataframe(export_styled_df, use_container_width=True,  height= 770)
