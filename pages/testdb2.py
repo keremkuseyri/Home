@@ -75,29 +75,7 @@ def create_combined_df(data):
 
     # Create the DataFrame
     df = pd.DataFrame(combined_data, columns=columns, index=row_labels)
-
-    # Insert blank rows before "Q1", "H1", and "Year"
-    blank_row = [""] * len(df.columns)  # Blank row with empty strings
-    new_index = []
-    new_data = []
-
-    for idx, row in enumerate(df.index):
-        new_index.append(row)
-        new_data.append(df.iloc[idx].tolist())
-        # Insert blank rows
-        if row == "Dec":
-            new_index.append("")
-            new_data.append(blank_row)
-        elif row == "Q4":
-            new_index.append("")
-            new_data.append(blank_row)
-        elif row == "H2":
-            new_index.append("")
-            new_data.append(blank_row)
-
-    df_with_blanks = pd.DataFrame(new_data, columns=df.columns, index=new_index)
-
-    return df_with_blanks
+    return df
 
 # Create DataFrames for Import and Export data
 import_combined_df = create_combined_df(import_data[0])
@@ -114,13 +92,11 @@ def style_dataframe(df):
             return ['background-color: #00B050'] * len(col)
         return [''] * len(col)
 
-    def style_blank_row(row):
-        if row.name == "":
-            return ['border: none'] * len(row)
-        return [''] * len(row)
+    def highlight_index(row):
+        return ['background-color: #FFC000'] * len(row)
 
     # Apply the styling
-    styled_df = df.style.apply(highlight_columns, axis=0).apply(style_blank_row, axis=1)
+    styled_df = df.style.apply(highlight_columns, axis=0)
     
     # Set other style options (optional)
     styled_df.set_properties(**{'text-align': 'center'})
