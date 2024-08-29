@@ -33,25 +33,34 @@ def create_category_df(data, category):
 
 # Function to structure the data into a single DataFrame
 def create_combined_df(data):
-    # Extracting the data
-    revenue_data = create_category_df(data.get("revenue", {}), "ours") + \
-                   create_category_df(data.get("revenue", {}), "agency") + \
-                   create_category_df(data.get("revenue", {}), "total")
+    # Extracting the data for each category
+    revenue_ours = create_category_df(data.get("revenue", {}), "ours")
+    revenue_agency = create_category_df(data.get("revenue", {}), "agency")
+    revenue_total = create_category_df(data.get("revenue", {}), "total")
 
-    profit_data = create_category_df(data.get("profit", {}), "ours") + \
-                  create_category_df(data.get("profit", {}), "agency") + \
-                  create_category_df(data.get("profit", {}), "total")
+    profit_ours = create_category_df(data.get("profit", {}), "ours")
+    profit_agency = create_category_df(data.get("profit", {}), "agency")
+    profit_total = create_category_df(data.get("profit", {}), "total")
 
-    cargo_data = create_category_df(data.get("amount_of_cargo", {}), "ours") + \
-                 create_category_df(data.get("amount_of_cargo", {}), "agency") + \
-                 create_category_df(data.get("amount_of_cargo", {}), "total")
+    cargo_ours = create_category_df(data.get("amount_of_cargo", {}), "ours")
+    cargo_agency = create_category_df(data.get("amount_of_cargo", {}), "agency")
+    cargo_total = create_category_df(data.get("amount_of_cargo", {}), "total")
 
-    # Combining revenue, profit, and cargo data
+    # Check the lengths of the rows to ensure consistency
+    assert len(revenue_ours) == len(revenue_agency) == len(revenue_total), "Revenue data length mismatch!"
+    assert len(profit_ours) == len(profit_agency) == len(profit_total), "Profit data length mismatch!"
+    assert len(cargo_ours) == len(cargo_agency) == len(cargo_total), "Cargo data length mismatch!"
+
+    # Combining the data
     combined_data = []
-    for r, p, c in zip(revenue_data, profit_data, cargo_data):
-        combined_data.append(r + p + c)
+    for r_ours, r_agency, r_total, p_ours, p_agency, p_total, c_ours, c_agency, c_total in zip(
+        revenue_ours, revenue_agency, revenue_total,
+        profit_ours, profit_agency, profit_total,
+        cargo_ours, cargo_agency, cargo_total
+    ):
+        combined_data.append(r_ours + r_agency + r_total + p_ours + p_agency + p_total + c_ours + c_agency + c_total)
 
-    # Create a multi-index for columns as per the Excel format
+    # Define the multi-index for columns
     column_tuples = [
         ("Revenue", "Ours", "Budget"), ("Revenue", "Ours", "Actual"), ("Revenue", "Ours", "Percentage"),
         ("Revenue", "Agency", "Budget"), ("Revenue", "Agency", "Actual"), ("Revenue", "Agency", "Percentage"),
