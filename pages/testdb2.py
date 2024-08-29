@@ -33,6 +33,7 @@ def create_category_df(data, category):
 
 # Function to structure the data into a single DataFrame
 def create_combined_df(data):
+    # Extracting the data
     revenue_data = create_category_df(data.get("revenue", {}), "ours") + \
                    create_category_df(data.get("revenue", {}), "agency") + \
                    create_category_df(data.get("revenue", {}), "total")
@@ -45,8 +46,10 @@ def create_combined_df(data):
                  create_category_df(data.get("amount_of_cargo", {}), "agency") + \
                  create_category_df(data.get("amount_of_cargo", {}), "total")
 
-    # Combine all data into a single list of rows
-    combined_rows = [rev + prof + cargo for rev, prof, cargo in zip(revenue_data, profit_data, cargo_data)]
+    # Combining revenue, profit, and cargo data
+    combined_data = []
+    for r, p, c in zip(revenue_data, profit_data, cargo_data):
+        combined_data.append(r + p + c)
 
     # Create a multi-index for columns as per the Excel format
     column_tuples = [
@@ -67,7 +70,7 @@ def create_combined_df(data):
                   "Q1", "Q2", "Q3", "Q4", "H1", "H2", "Year"]
 
     # Create the DataFrame
-    df = pd.DataFrame(combined_rows, columns=columns, index=row_labels)
+    df = pd.DataFrame(combined_data, columns=columns, index=row_labels)
     return df
 
 # Create DataFrames for Import and Export data
