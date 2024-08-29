@@ -122,7 +122,8 @@ def style_dataframe(df):
         return [''] * len(row)
 
     # Apply the styling
-    styled_df = df.style.apply(highlight_columns, axis=0).apply(style_blank_rows, axis=1)
+    styled_df = df.style.apply(highlight_columns, axis=0)
+    styled_df = styled_df.apply(style_blank_rows, axis=1)
     
     # Set other style options (optional)
     styled_df.set_properties(**{'text-align': 'center'})
