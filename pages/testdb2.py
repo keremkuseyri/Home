@@ -57,7 +57,7 @@ def create_combined_df(data):
     ):
         combined_data.append(r_ours + r_agency + r_total + p_ours + p_agency + p_total + c_ours + c_agency + c_total)
 
-    # Define the multi-index for columns without unwanted elements
+    # Define the multi-index for columns
     column_tuples = [
         ("Revenue", "Ours", "Budget"), ("Revenue", "Ours", "Actual"), ("Revenue", "Ours", "Percentage"),
         ("Revenue", "Agency", "Budget"), ("Revenue", "Agency", "Actual"), ("Revenue", "Agency", "Percentage"),
