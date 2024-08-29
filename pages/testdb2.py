@@ -78,7 +78,10 @@ def create_combined_df(data):
 
     # Insert blank rows before "Q1", "H1", and "Year"
     blank_row = [""] * len(df.columns)  # Blank row with empty strings
-    df = pd.concat([
+    # Get index positions for inserting blank rows
+    blank_rows_index = df.index[df.index.get_loc("Q1"):].get_indexer_for(["Q1", "H1", "Year"]) + 1
+    # Rebuild DataFrame with blank rows
+    df_with_blanks = pd.concat([
         df.iloc[:12],  # Keep the first 12 rows
         pd.DataFrame([blank_row], columns=df.columns, index=[""]),  # Blank row before "Q1"
         df.iloc[12:16],  # Keep rows for "Q1" to "H1"
@@ -86,9 +89,9 @@ def create_combined_df(data):
         df.iloc[16:19],  # Keep rows for "H1" to "Year"
         pd.DataFrame([blank_row], columns=df.columns, index=[""]),  # Blank row before "Year"
         df.iloc[19:]  # Keep rows after "Year"
-    ], ignore_index=True)
+    ], ignore_index=False)
 
-    return df
+    return df_with_blanks
 
 # Create DataFrames for Import and Export data
 import_combined_df = create_combined_df(import_data[0])
