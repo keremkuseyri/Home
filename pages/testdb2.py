@@ -75,18 +75,6 @@ def create_combined_df(data):
 
     # Create the DataFrame
     df = pd.DataFrame(combined_data, columns=columns, index=row_labels)
-
-    # Insert blank rows before "Q1", "H1", "Year"
-    blank_row = [pd.NA] * len(df.columns)
-    df.loc[""] = blank_row  # Add a blank row
-    df = df.sort_index().reset_index(drop=True)  # Reset index after adding a blank row
-
-    # Insert blank rows at specific places
-    df.loc[13.5] = blank_row  # Before "Q1"
-    df.loc[16.5] = blank_row  # Before "H1"
-    df.loc[19.5] = blank_row  # Before "Year"
-    df = df.sort_index().reset_index(drop=True)  # Sort and reset index
-
     return df
 
 # Create DataFrames for Import and Export data
@@ -108,7 +96,7 @@ def style_dataframe(df):
         return ['background-color: #FFC000'] * len(row)
 
     # Apply the styling
-    styled_df = df.style.apply(highlight_columns, axis=0).apply(highlight_index, axis=1)
+    styled_df = df.style.apply(highlight_columns, axis=0)
     
     # Set other style options (optional)
     styled_df.set_properties(**{'text-align': 'center'})
@@ -121,14 +109,7 @@ export_styled_df = style_dataframe(export_combined_df)
 
 # Display the styled DataFrames in Streamlit
 st.write("Import Data Combined:")
-st.dataframe(import_combined_df, use_container_width=True)  # Display plain DataFrame for comparison
-
-st.write("Export Data Combined:")
-st.dataframe(export_combined_df, use_container_width=True)  # Display plain DataFrame for comparison
-
-# If plain DataFrames look fine, switch back to styled DataFrames
-st.write("Import Data Combined Styled:")
 st.dataframe(import_styled_df, use_container_width=True)
 
-st.write("Export Data Combined Styled:")
+st.write("Export Data Combined:")
 st.dataframe(export_styled_df, use_container_width=True)
