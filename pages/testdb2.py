@@ -2,6 +2,7 @@ import pandas as pd
 from pymongo import MongoClient
 import streamlit as st
 
+st.set_page_config(page_title='Genel Transport',page_icon="https://www.geneltransport.com.tr/wp-content/uploads/2021/03/favicon.png", layout='wide')
 # MongoDB connection string
 mongo_uri = "mongodb+srv://kkuseyri:GTTest2024@clusterv0.uwkchdi.mongodb.net/?retryWrites=true&w=majority"
 client = MongoClient(mongo_uri)
