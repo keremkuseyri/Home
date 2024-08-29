@@ -2,7 +2,6 @@ import pandas as pd
 from pymongo import MongoClient
 import streamlit as st
 
-st.set_page_config(page_title='Genel Transport',page_icon="https://www.geneltransport.com.tr/wp-content/uploads/2021/03/favicon.png", layout='wide')
 # MongoDB connection string
 mongo_uri = "mongodb+srv://kkuseyri:GTTest2024@clusterv0.uwkchdi.mongodb.net/?retryWrites=true&w=majority"
 client = MongoClient(mongo_uri)
@@ -47,11 +46,6 @@ def create_combined_df(data):
     cargo_agency = create_category_df(data.get("amount_of_cargo", {}), "agency")
     cargo_total = create_category_df(data.get("amount_of_cargo", {}), "total")
 
-    # Check the lengths of the rows to ensure consistency
-    assert len(revenue_ours) == len(revenue_agency) == len(revenue_total), "Revenue data length mismatch!"
-    assert len(profit_ours) == len(profit_agency) == len(profit_total), "Profit data length mismatch!"
-    assert len(cargo_ours) == len(cargo_agency) == len(cargo_total), "Cargo data length mismatch!"
-
     # Combining the data
     combined_data = []
     for r_ours, r_agency, r_total, p_ours, p_agency, p_total, c_ours, c_agency, c_total in zip(
@@ -87,9 +81,35 @@ def create_combined_df(data):
 import_combined_df = create_combined_df(import_data[0])
 export_combined_df = create_combined_df(export_data[0])
 
-# Display in Streamlit
+# Function to apply styling to DataFrame
+def style_dataframe(df):
+    def highlight_columns(col):
+        if col.name[0] == "Revenue":
+            return ['background-color: #00B0F0'] * len(col)
+        elif col.name[0] == "Profit":
+            return ['background-color: #92D050'] * len(col)
+        elif col.name[0] == "Cargo":
+            return ['background-color: #00B050'] * len(col)
+        return [''] * len(col)
+
+    def highlight_index(row):
+        return ['background-color: #FFC000'] * len(row)
+
+    # Apply the styling
+    styled_df = df.style.apply(highlight_columns, axis=0).apply(highlight_index, axis=1, subset=pd.IndexSlice[:, :])
+    
+    # Set other style options (optional)
+    styled_df.set_properties(**{'text-align': 'center'})
+    
+    return styled_df
+
+# Apply styling to the DataFrames
+import_styled_df = style_dataframe(import_combined_df)
+export_styled_df = style_dataframe(export_combined_df)
+
+# Display the styled DataFrames in Streamlit
 st.write("Import Data Combined:")
-st.dataframe(import_combined_df)
+st.dataframe(import_styled_df, use_container_width=True)
 
 st.write("Export Data Combined:")
-st.dataframe(export_combined_df)
+st.dataframe(export_styled_df, use_container_width=True)
