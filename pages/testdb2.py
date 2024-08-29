@@ -2,8 +2,7 @@ import pandas as pd
 from pymongo import MongoClient
 import streamlit as st
 
-st.set_page_config(page_title='Genel Transport', page_icon="https://www.geneltransport.com.tr/wp-content/uploads/2021/03/favicon.png", layout='wide')
-
+st.set_page_config(page_title='Genel Transport',page_icon="https://www.geneltransport.com.tr/wp-content/uploads/2021/03/favicon.png", layout='wide')
 # MongoDB connection string
 mongo_uri = "mongodb+srv://kkuseyri:GTTest2024@clusterv0.uwkchdi.mongodb.net/?retryWrites=true&w=majority"
 client = MongoClient(mongo_uri)
@@ -23,19 +22,13 @@ def create_category_df(data, category):
     for month in ["january", "february", "march", "april", "may", "june", 
                   "july", "august", "september", "october", "november", "december"]:
         month_data = data.get(category, {}).get(month, {})
-        budget = month_data.get("budget", 0)
-        actual = month_data.get("actual", 0)
-        percentage = f"{month_data.get('percentage', 0)}%"
-        rows.append([budget, actual, percentage])
+        rows.append([month_data.get("budget", 0), month_data.get("actual", 0), month_data.get("percentage", 0)])
     
     # Adding quarterly, half-yearly, and yearly data
     for period in ["quarter_1", "quarter_2", "quarter_3", "quarter_4", 
                    "half_1", "half_2", "year"]:
         period_data = data.get(category, {}).get(period, {})
-        budget = period_data.get("budget", 0)
-        actual = period_data.get("actual", 0)
-        percentage = f"{period_data.get('percentage', 0)}%"
-        rows.append([budget, actual, percentage])
+        rows.append([period_data.get("budget", 0), period_data.get("actual", 0), period_data.get("percentage", 0)])
     
     return rows
 
@@ -65,9 +58,15 @@ def create_combined_df(data):
 
     # Define the multi-index for columns
     column_tuples = [
-        ("Revenue", "Ours"), ("Revenue", "Agency"), ("Revenue", "Total"),
-        ("Profit", "Ours"), ("Profit", "Agency"), ("Profit", "Total"),
-        ("Cargo", "Ours"), ("Cargo", "Agency"), ("Cargo", "Total"),
+        ("Revenue", "Ours", "Budget"), ("Revenue", "Ours", "Actual"), ("Revenue", "Ours", "Percentage"),
+        ("Revenue", "Agency", "Budget"), ("Revenue", "Agency", "Actual"), ("Revenue", "Agency", "Percentage"),
+        ("Revenue", "Total", "Budget"), ("Revenue", "Total", "Actual"), ("Revenue", "Total", "Percentage"),
+        ("Profit", "Ours", "Budget"), ("Profit", "Ours", "Actual"), ("Profit", "Ours", "Percentage"),
+        ("Profit", "Agency", "Budget"), ("Profit", "Agency", "Actual"), ("Profit", "Agency", "Percentage"),
+        ("Profit", "Total", "Budget"), ("Profit", "Total", "Actual"), ("Profit", "Total", "Percentage"),
+        ("Cargo", "Ours", "Budget"), ("Cargo", "Ours", "Actual"), ("Cargo", "Ours", "Percentage"),
+        ("Cargo", "Agency", "Budget"), ("Cargo", "Agency", "Actual"), ("Cargo", "Agency", "Percentage"),
+        ("Cargo", "Total", "Budget"), ("Cargo", "Total", "Actual"), ("Cargo", "Total", "Percentage"),
     ]
     columns = pd.MultiIndex.from_tuples(column_tuples)
 
@@ -77,18 +76,7 @@ def create_combined_df(data):
 
     # Create the DataFrame
     df = pd.DataFrame(combined_data, columns=columns, index=row_labels)
-
-    # Concatenate Budget, Actual, and Percentage columns
-    def format_column(col):
-        if col.name[0] in ["Revenue", "Profit", "Cargo"]:
-            category = col.name[0]
-            return df[category].apply(lambda x: f"{x[0]}, {x[1]}, {x[2]}")
-        return df[col.name]
-
-    formatted_df = df.apply(format_column, axis=0)
-    formatted_df.columns = pd.MultiIndex.from_product([["Revenue", "Profit", "Cargo"], ["Ours", "Agency", "Total"]])
-
-    return formatted_df
+    return df
 
 # Create DataFrames for Import and Export data
 import_combined_df = create_combined_df(import_data[0])
@@ -121,8 +109,8 @@ import_styled_df = style_dataframe(import_combined_df)
 export_styled_df = style_dataframe(export_combined_df)
 
 # Display the styled DataFrames in Streamlit
-st.write("Import Data Combined:")
+st.write("Import :")
 st.dataframe(import_styled_df, use_container_width=True)
 
-st.write("Export Data Combined:")
+st.write("Export :")
 st.dataframe(export_styled_df, use_container_width=True)
