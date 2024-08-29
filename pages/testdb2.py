@@ -78,18 +78,24 @@ def create_combined_df(data):
 
     # Insert blank rows before "Q1", "H1", and "Year"
     blank_row = [""] * len(df.columns)  # Blank row with empty strings
-    # Get index positions for inserting blank rows
-    blank_rows_index = df.index[df.index.get_loc("Q1"):].get_indexer_for(["Q1", "H1", "Year"]) + 1
-    # Rebuild DataFrame with blank rows
-    df_with_blanks = pd.concat([
-        df.iloc[:12],  # Keep the first 12 rows
-        pd.DataFrame([blank_row], columns=df.columns, index=[""]),  # Blank row before "Q1"
-        df.iloc[12:16],  # Keep rows for "Q1" to "H1"
-        pd.DataFrame([blank_row], columns=df.columns, index=[""]),  # Blank row before "H1"
-        df.iloc[16:19],  # Keep rows for "H1" to "Year"
-        pd.DataFrame([blank_row], columns=df.columns, index=[""]),  # Blank row before "Year"
-        df.iloc[19:]  # Keep rows after "Year"
-    ], ignore_index=False)
+    new_index = []
+    new_data = []
+
+    for idx, row in enumerate(df.index):
+        new_index.append(row)
+        new_data.append(df.iloc[idx].tolist())
+        # Insert blank rows
+        if row == "Dec":
+            new_index.append("")
+            new_data.append(blank_row)
+        elif row == "Q4":
+            new_index.append("")
+            new_data.append(blank_row)
+        elif row == "H2":
+            new_index.append("")
+            new_data.append(blank_row)
+
+    df_with_blanks = pd.DataFrame(new_data, columns=df.columns, index=new_index)
 
     return df_with_blanks
 
@@ -109,7 +115,6 @@ def style_dataframe(df):
         return [''] * len(col)
 
     def style_blank_row(row):
-        # Make blank rows borderless
         if row.name == "":
             return ['border: none'] * len(row)
         return [''] * len(row)
