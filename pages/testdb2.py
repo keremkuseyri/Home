@@ -2,7 +2,8 @@ import pandas as pd
 from pymongo import MongoClient
 import streamlit as st
 
-st.set_page_config(page_title='Genel Transport',page_icon="https://www.geneltransport.com.tr/wp-content/uploads/2021/03/favicon.png", layout='wide')
+st.set_page_config(page_title='Genel Transport', page_icon="https://www.geneltransport.com.tr/wp-content/uploads/2021/03/favicon.png", layout='wide')
+
 # MongoDB connection string
 mongo_uri = "mongodb+srv://kkuseyri:GTTest2024@clusterv0.uwkchdi.mongodb.net/?retryWrites=true&w=majority"
 client = MongoClient(mongo_uri)
@@ -22,13 +23,19 @@ def create_category_df(data, category):
     for month in ["january", "february", "march", "april", "may", "june", 
                   "july", "august", "september", "october", "november", "december"]:
         month_data = data.get(category, {}).get(month, {})
-        rows.append([month_data.get("budget", 0), month_data.get("actual", 0), month_data.get("percentage", 0)])
+        budget = month_data.get("budget", 0)
+        actual = month_data.get("actual", 0)
+        percentage = f"{month_data.get('percentage', 0)}%"  # Format percentage with "%"
+        rows.append([budget, actual, percentage])
     
     # Adding quarterly, half-yearly, and yearly data
     for period in ["quarter_1", "quarter_2", "quarter_3", "quarter_4", 
                    "half_1", "half_2", "year"]:
         period_data = data.get(category, {}).get(period, {})
-        rows.append([period_data.get("budget", 0), period_data.get("actual", 0), period_data.get("percentage", 0)])
+        budget = period_data.get("budget", 0)
+        actual = period_data.get("actual", 0)
+        percentage = f"{period_data.get('percentage', 0)}%"  # Format percentage with "%"
+        rows.append([budget, actual, percentage])
     
     return rows
 
