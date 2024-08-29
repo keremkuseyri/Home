@@ -2,8 +2,7 @@ import pandas as pd
 from pymongo import MongoClient
 import streamlit as st
 
-st.set_page_config(page_title='Genel Transport', page_icon="https://www.geneltransport.com.tr/wp-content/uploads/2021/03/favicon.png", layout='wide')
-
+st.set_page_config(page_title='Genel Transport',page_icon="https://www.geneltransport.com.tr/wp-content/uploads/2021/03/favicon.png", layout='wide')
 # MongoDB connection string
 mongo_uri = "mongodb+srv://kkuseyri:GTTest2024@clusterv0.uwkchdi.mongodb.net/?retryWrites=true&w=majority"
 client = MongoClient(mongo_uri)
@@ -72,34 +71,12 @@ def create_combined_df(data):
     columns = pd.MultiIndex.from_tuples(column_tuples)
 
     # Define the row labels
-    row_labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", 
-                  "Q1", "Q2", "Q3", "Q4", "H1", "H2", "Year"]
+    row_labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec","", 
+                  "Q1", "Q2", "Q3", "Q4","",  "H1", "H2","",  "Year"]
 
     # Create the DataFrame
     df = pd.DataFrame(combined_data, columns=columns, index=row_labels)
-
-    # Insert blank rows after "Dec", "Q4", and "H2"
-    blank_row = [""] * len(df.columns)
-    new_index = []
-    new_data = []
-
-    for idx, row in enumerate(df.index):
-        new_index.append(row)
-        new_data.append(df.iloc[idx].tolist())
-        # Insert blank rows
-        if row == "Dec":
-            new_index.append("")
-            new_data.append(blank_row)
-        elif row == "Q4":
-            new_index.append("")
-            new_data.append(blank_row)
-        elif row == "H2":
-            new_index.append("")
-            new_data.append(blank_row)
-
-    df_with_blanks = pd.DataFrame(new_data, columns=df.columns, index=new_index)
-
-    return df_with_blanks
+    return df
 
 # Create DataFrames for Import and Export data
 import_combined_df = create_combined_df(import_data[0])
@@ -116,14 +93,11 @@ def style_dataframe(df):
             return ['background-color: #00B050'] * len(col)
         return [''] * len(col)
 
-    def style_blank_rows(row):
-        if row.name == "":
-            return ['border: none'] * len(row)
-        return [''] * len(row)
+    def highlight_index(row):
+        return ['background-color: #FFC000'] * len(row)
 
     # Apply the styling
     styled_df = df.style.apply(highlight_columns, axis=0)
-    styled_df = styled_df.apply(style_blank_rows, axis=1)
     
     # Set other style options (optional)
     styled_df.set_properties(**{'text-align': 'center'})
