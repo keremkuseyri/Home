@@ -1,82 +1,105 @@
-import streamlit as st
-from pymongo import MongoClient
 import pandas as pd
-st.set_page_config(page_title='Genel Transport',page_icon="https://www.geneltransport.com.tr/wp-content/uploads/2021/03/favicon.png", layout='wide')
+from pymongo import MongoClient
+import streamlit as st
+
 # MongoDB connection string
 mongo_uri = "mongodb+srv://kkuseyri:GTTest2024@clusterv0.uwkchdi.mongodb.net/?retryWrites=true&w=majority"
-
-# Connect to MongoDB
 client = MongoClient(mongo_uri)
 
-# Use a default database and collection (will be created if they don't exist)
+# Access the database and collections
 db = client["GTProductImpExp"]
-collection = db["Import"]
-collection2 = db["Export"]
+collection_import = db["Import"]
+collection_export = db["Export"]
 
-# Streamlit app
-st.write("MongoDB Data Viewer:")
+# Fetch data from collections
+import_data = list(collection_import.find({}))
+export_data = list(collection_export.find({}))
 
-# Fetch all documents from both collections
-items_import = list(collection.find({}))
-items_export = list(collection2.find({}))
+# Function to create DataFrames for 'ours', 'agency', and 'total'
+def create_category_df(data, category):
+    rows = []
+    for month in ["january", "february", "march", "april", "may", "june", 
+                  "july", "august", "september", "october", "november", "december"]:
+        month_data = data.get(category, {}).get(month, {})
+        rows.append([month_data.get("budget", 0), month_data.get("actual", 0), month_data.get("percentage", 0)])
+    
+    # Adding quarterly, half-yearly, and yearly data
+    for period in ["quarter_1", "quarter_2", "quarter_3", "quarter_4", 
+                   "half_1", "half_2", "year"]:
+        period_data = data.get(category, {}).get(period, {})
+        rows.append([period_data.get("budget", 0), period_data.get("actual", 0), period_data.get("percentage", 0)])
+    
+    # Convert to DataFrame with appropriate row labels
+    row_labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", 
+                  "Q1", "Q2", "Q3", "Q4", "H1", "H2", "Year"]
+    df = pd.DataFrame(rows, columns=["Budget", "Actual", "Percentage"], index=row_labels)
+    return df
 
-# Function to flatten the nested dictionary structure and arrange it into a table format
-def parse_item(item):
-    data = {'ours': {}, 'agency': {}, 'total': {}}
-    for main_key, main_value in item.items():
-        if isinstance(main_value, dict):
-            for category, sub_value in main_value.items():  # 'ours', 'agency', 'total'
-                if category in data:
-                    for period, values in sub_value.items():
-                        if period not in data[category]:
-                            data[category][period] = {}
-                        data[category][period][main_key] = values
-    return data
+# Function to split data into Revenue, Profit, and Cargo DataFrames
+def split_dataframes(data):
+    revenue_df_ours = create_category_df(data.get("revenue", {}), "ours")
+    revenue_df_agency = create_category_df(data.get("revenue", {}), "agency")
+    revenue_df_total = create_category_df(data.get("revenue", {}), "total")
+    
+    profit_df_ours = create_category_df(data.get("profit", {}), "ours")
+    profit_df_agency = create_category_df(data.get("profit", {}), "agency")
+    profit_df_total = create_category_df(data.get("profit", {}), "total")
+    
+    cargo_df_ours = create_category_df(data.get("amount_of_cargo", {}), "ours")
+    cargo_df_agency = create_category_df(data.get("amount_of_cargo", {}), "agency")
+    cargo_df_total = create_category_df(data.get("amount_of_cargo", {}), "total")
+    
+    return {
+        "Revenue_Ours": revenue_df_ours,
+        "Revenue_Agency": revenue_df_agency,
+        "Revenue_Total": revenue_df_total,
+        "Profit_Ours": profit_df_ours,
+        "Profit_Agency": profit_df_agency,
+        "Profit_Total": profit_df_total,
+        "Cargo_Ours": cargo_df_ours,
+        "Cargo_Agency": cargo_df_agency,
+        "Cargo_Total": cargo_df_total
+    }
 
-def convert_to_dataframe(parsed_data):
-    dfs = {}
-    for category in ['ours', 'agency', 'total']:
-        data = parsed_data.get(category, {})
-        if data:
-            # Convert nested dictionary to dataframe
-            df = pd.DataFrame.from_dict(data, orient='index')
-            df.index.name = 'Period'
-            
-            # Flatten the dictionary inside each cell
-            df = pd.concat([df[col].apply(pd.Series) for col in df], axis=1, keys=df.columns)
-            df.columns = df.columns.map(lambda x: (x[0], x[1]))
+# Create DataFrames for Import and Export data
+import_dfs = split_dataframes(import_data[0])
+export_dfs = split_dataframes(export_data[0])
 
-            # Rename columns to the final format: budget, actual, percentage
-            df.columns = pd.MultiIndex.from_product([df.columns.levels[0], ['budget', 'actual', 'percentage']])
-            
-            dfs[category] = df
-    return dfs
+# Concatenate all import dataframes horizontally
+import_combined = pd.concat([
+    import_dfs["Revenue_Ours"], import_dfs["Revenue_Agency"], import_dfs["Revenue_Total"],
+    import_dfs["Profit_Ours"], import_dfs["Profit_Agency"], import_dfs["Profit_Total"],
+    import_dfs["Cargo_Ours"], import_dfs["Cargo_Agency"], import_dfs["Cargo_Total"]
+], axis=1)
 
-def display_dataframes(dfs, title):
-    for category, df in dfs.items():
-        st.write(f"{title} - {category.capitalize()}")
-        st.dataframe(df)
+# Concatenate all export dataframes horizontally
+export_combined = pd.concat([
+    export_dfs["Revenue_Ours"], export_dfs["Revenue_Agency"], export_dfs["Revenue_Total"],
+    export_dfs["Profit_Ours"], export_dfs["Profit_Agency"], export_dfs["Profit_Total"],
+    export_dfs["Cargo_Ours"], export_dfs["Cargo_Agency"], export_dfs["Cargo_Total"]
+], axis=1)
 
-# Process and display import collection data
-if items_import:
-    parsed_data_import = [parse_item(item) for item in items_import]
-    combined_import_data = {'ours': {}, 'agency': {}, 'total': {}}
-    for parsed_data in parsed_data_import:
-        for category in combined_import_data:
-            combined_import_data[category].update(parsed_data.get(category, {}))
-    dfs_import = convert_to_dataframe(combined_import_data)
-    display_dataframes(dfs_import, "Import Data")
-else:
-    st.write("No items found in the Import collection.")
+# Optionally, rename the columns to make them more descriptive
+column_names = [
+    "Revenue_Ours_Budget", "Revenue_Ours_Actual", "Revenue_Ours_Percentage",
+    "Revenue_Agency_Budget", "Revenue_Agency_Actual", "Revenue_Agency_Percentage",
+    "Revenue_Total_Budget", "Revenue_Total_Actual", "Revenue_Total_Percentage",
+    "Profit_Ours_Budget", "Profit_Ours_Actual", "Profit_Ours_Percentage",
+    "Profit_Agency_Budget", "Profit_Agency_Actual", "Profit_Agency_Percentage",
+    "Profit_Total_Budget", "Profit_Total_Actual", "Profit_Total_Percentage",
+    "Cargo_Ours_Budget", "Cargo_Ours_Actual", "Cargo_Ours_Percentage",
+    "Cargo_Agency_Budget", "Cargo_Agency_Actual", "Cargo_Agency_Percentage",
+    "Cargo_Total_Budget", "Cargo_Total_Actual", "Cargo_Total_Percentage"
+]
 
-# Process and display export collection data
-if items_export:
-    parsed_data_export = [parse_item(item) for item in items_export]
-    combined_export_data = {'ours': {}, 'agency': {}, 'total': {}}
-    for parsed_data in parsed_data_export:
-        for category in combined_export_data:
-            combined_export_data[category].update(parsed_data.get(category, {}))
-    dfs_export = convert_to_dataframe(combined_export_data)
-    display_dataframes(dfs_export, "Export Data")
-else:
-    st.write("No items found in the Export collection.")
+import_combined.columns = column_names
+export_combined.columns = column_names
+
+
+
+
+st.write("Import Data Combined:")
+st.dataframe(import_combined)
+
+st.write("Export Data Combined:")
+st.dataframe(export_combined)
