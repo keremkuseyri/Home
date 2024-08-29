@@ -71,8 +71,8 @@ def create_combined_df(data):
     columns = pd.MultiIndex.from_tuples(column_tuples)
 
     # Define the row labels
-    row_labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec","", 
-                  "Q1", "Q2", "Q3", "Q4","",  "H1", "H2","",  "Year"]
+    row_labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", 
+                  "Q1", "Q2", "Q3", "Q4", "H1", "H2", "Year"]
 
     # Create the DataFrame
     df = pd.DataFrame(combined_data, columns=columns, index=row_labels)
