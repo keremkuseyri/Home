@@ -83,7 +83,6 @@ def create_combined_df(data):
 
     # Create the DataFrame
     df = pd.DataFrame(combined_data, columns=columns, index=row_labels)
-    return df.T  # Transpose the DataFrame to match Excel layout
 
 # Create DataFrames for Import and Export data
 import_combined_df = create_combined_df(import_data[0])
