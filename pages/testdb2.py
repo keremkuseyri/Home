@@ -2,6 +2,7 @@ import pandas as pd
 from pymongo import MongoClient
 import streamlit as st
 
+# Set up Streamlit page configuration
 st.set_page_config(page_title='Genel Transport', page_icon="https://www.geneltransport.com.tr/wp-content/uploads/2021/03/favicon.png", layout='wide')
 
 # MongoDB connection string
@@ -90,36 +91,15 @@ def create_combined_df(data):
 import_combined_df = create_combined_df(import_data[0])
 export_combined_df = create_combined_df(export_data[0])
 
-# Function to apply styling to DataFrame
-def style_dataframe(df, title):
-    def highlight_columns(col):
-        if col.name[0] == "Revenue":
-            return ['background-color: #00B0F0'] * len(col)
-        elif col.name[0] == "Profit":
-            return ['background-color: #92D050'] * len(col)
-        elif col.name[0] == "Cargo":
-            return ['background-color: #00B050'] * len(col)
-        return [''] * len(col)
-
-    def highlight_index(row):
-        return ['background-color: #FFC000'] * len(row)
-
-    # Apply the styling
-    styled_df = df.style.apply(highlight_columns, axis=1)
-    
-    # Add a title that spans all columns
-    styled_df.set_caption(f"<h1 style='text-align: center; color: black'>{title}</h1>")
-    
-    return styled_df
-
+# Function to create an HTML table with specified styling
 def create_html_table(df, title):
     html = f"<h2 style='text-align: center;'>{title}</h2>"
     html += "<table border='1' style='border-collapse: collapse; width: 100%;'>"
     
     # Add the header row
     html += "<thead><tr>"
-    html += "<th rowspan='2' style='text-align: center;'></th>"
-    html += "<th rowspan='2' style='text-align: center;'></th>"
+    html += "<th rowspan='2' style='text-align: center; font-weight: normal;'>Period</th>"
+    html += "<th rowspan='2' style='text-align: center; font-weight: normal;'>Status</th>"
     for col in df.columns:
         category, type_ = col
         if category == "Revenue":
@@ -148,7 +128,7 @@ def create_html_table(df, title):
                 html = html.replace(f"ROWSPAN_{prev_period}", str(rowspan))
             rowspan = 1
             prev_period = period
-            html += f"<tr><td rowspan='ROWSPAN_{period}' style='text-align: center;'>{period}</td><td style='text-align: center;'>{status}</td>"
+            html += f"<tr><td rowspan='ROWSPAN_{period}' style='text-align: center; font-weight: bold;'>{period}</td><td style='text-align: center;'>{status}</td>"
         else:
             rowspan += 1
             html += f"<tr><td style='text-align: center;'>{status}</td>"
@@ -165,7 +145,7 @@ def create_html_table(df, title):
     
     return html
 
-# Generate the styled HTML tables
+# Generate the HTML tables
 import_html_table = create_html_table(import_combined_df, "Import 2024")
 export_html_table = create_html_table(export_combined_df, "Export 2024")
 
