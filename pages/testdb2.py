@@ -20,22 +20,22 @@ export_data = list(collection_export.find({}))
 # Function to create DataFrames for 'ours', 'agency', and 'total'
 def create_category_df(data, category):
     rows = []
-    for month in ["january", "february", "march", "april", "may", "june", 
-                  "july", "august", "september", "october", "november", "december"]:
-        month_data = data.get(category, {}).get(month, {})
-        budget = f"{month_data.get("budget", 0)}"
-        actual = f"{month_data.get("actual", 0)}"
-        percentage = f"{month_data.get('percentage', 0)}%"  # Format percentage with "%"
-        rows.append([budget, actual, percentage])
+    for month in ["January", "February", "March", "April", "May", "June", 
+                  "July", "August", "September", "October", "November", "December"]:
+        month_data = data.get(category, {}).get(month.lower(), {})
+        budget = month_data.get("budget", 0)
+        actual = month_data.get("actual", 0)
+        percentage = month_data.get("percentage", 0)
+        rows.extend([(month, 'Budget', budget), (month, 'Actual', actual), (month, '+/- %', f"{percentage}%")])
     
     # Adding quarterly, half-yearly, and yearly data
-    for period in ["quarter_1", "quarter_2", "quarter_3", "quarter_4", 
-                   "half_1", "half_2", "year"]:
-        period_data = data.get(category, {}).get(period, {})
-        budget = f"{period_data.get("budget", 0)}"
-        actual = f"{period_data.get("actual", 0)}"
-        percentage = f"{period_data.get('percentage', 0)}%"  # Format percentage with "%"
-        rows.append([budget, actual, percentage])
+    for period in [("Q1", "quarter_1"), ("Q2", "quarter_2"), ("Q3", "quarter_3"), ("Q4", "quarter_4"), 
+                   ("H1", "half_1"), ("H2", "half_2"), ("Year", "year")]:
+        period_data = data.get(category, {}).get(period[1], {})
+        budget = period_data.get("budget", 0)
+        actual = period_data.get("actual", 0)
+        percentage = period_data.get("percentage", 0)
+        rows.extend([(period[0], 'Budget', budget), (period[0], 'Actual', actual), (period[0], '+/- %', f"{percentage}%")])
     
     return rows
 
@@ -61,28 +61,29 @@ def create_combined_df(data):
         profit_ours, profit_agency, profit_total,
         cargo_ours, cargo_agency, cargo_total
     ):
-        combined_data.append(r_ours + r_agency + r_total + p_ours + p_agency + p_total + c_ours + c_agency + c_total)
+        combined_data.append([r_ours[2], r_agency[2], r_total[2], 
+                              p_ours[2], p_agency[2], p_total[2], 
+                              c_ours[2], c_agency[2], c_total[2]])
 
     # Define the multi-index for columns
     column_tuples = [
-        ("Revenue", "Ours", "Budget"), ("Revenue", "Ours", "Actual"), ("Revenue", "Ours", "Percentage"),
-        ("Revenue", "Agency", "Budget"), ("Revenue", "Agency", "Actual"), ("Revenue", "Agency", "Percentage"),
-        ("Revenue", "Total", "Budget"), ("Revenue", "Total", "Actual"), ("Revenue", "Total", "Percentage"),
-        ("Profit", "Ours", "Budget"), ("Profit", "Ours", "Actual"), ("Profit", "Ours", "Percentage"),
-        ("Profit", "Agency", "Budget"), ("Profit", "Agency", "Actual"), ("Profit", "Agency", "Percentage"),
-        ("Profit", "Total", "Budget"), ("Profit", "Total", "Actual"), ("Profit", "Total", "Percentage"),
-        ("Cargo", "Ours", "Budget"), ("Cargo", "Ours", "Actual"), ("Cargo", "Ours", "Percentage"),
-        ("Cargo", "Agency", "Budget"), ("Cargo", "Agency", "Actual"), ("Cargo", "Agency", "Percentage"),
-        ("Cargo", "Total", "Budget"), ("Cargo", "Total", "Actual"), ("Cargo", "Total", "Percentage"),
+        ("Revenue", "Ours"), ("Revenue", "Agency"), ("Revenue", "Total"),
+        ("Profit", "Ours"), ("Profit", "Agency"), ("Profit", "Total"),
+        ("Cargo", "Ours"), ("Cargo", "Agency"), ("Cargo", "Total")
     ]
-    columns = pd.MultiIndex.from_tuples(column_tuples)
+    columns = pd.MultiIndex.from_tuples(column_tuples, names=["Category", "Type"])
 
-    # Define the row labels
-    row_labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", 
-                  "Q1", "Q2", "Q3", "Q4", "H1", "H2", "Year"]
+    # Define the multi-index for rows
+    row_tuples = [
+        (month, status) for month in ["January", "February", "March", "April", "May", "June", 
+                                      "July", "August", "September", "October", "November", "December", 
+                                      "Q1", "Q2", "Q3", "Q4", "H1", "H2", "Year"]
+        for status in ['Budget', 'Actual', '+/- %']
+    ]
+    rows = pd.MultiIndex.from_tuples(row_tuples, names=["Period", "Status"])
 
     # Create the DataFrame
-    df = pd.DataFrame(combined_data, columns=columns, index=row_labels)
+    df = pd.DataFrame(combined_data, columns=columns, index=rows)
     return df
 
 # Create DataFrames for Import and Export data
@@ -90,7 +91,7 @@ import_combined_df = create_combined_df(import_data[0])
 export_combined_df = create_combined_df(export_data[0])
 
 # Function to apply styling to DataFrame
-def style_dataframe(df):
+def style_dataframe(df, title):
     def highlight_columns(col):
         if col.name[0] == "Revenue":
             return ['background-color: #00B0F0'] * len(col)
@@ -106,18 +107,18 @@ def style_dataframe(df):
     # Apply the styling
     styled_df = df.style.apply(highlight_columns, axis=1)
     
-    # Set other style options (optional)
-    styled_df.set_properties(**{'text-align': 'center'})
+    # Add a title that spans all columns
+    styled_df.set_caption(f"<h1 style='text-align: center; color: black'>{title}</h1>")
     
     return styled_df
 
 # Apply styling to the DataFrames
-import_styled_df = style_dataframe(import_combined_df)  
-export_styled_df = style_dataframe(export_combined_df)  
+import_styled_df = style_dataframe(import_combined_df, "Import 2024")  
+export_styled_df = style_dataframe(export_combined_df, "Export 2024")  
 
 # Display the styled DataFrames in Streamlit
-st.write("Import :")
+st.write("Import:")
 st.dataframe(import_styled_df, use_container_width=True, height=775)
 
-st.write("Export :")
+st.write("Export:")
 st.dataframe(export_styled_df, use_container_width=True, height=775)
