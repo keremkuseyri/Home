@@ -90,17 +90,16 @@ def create_combined_df(data):
                                       "Q1", "Q2", "Q3", "Q4", "H1", "H2", "Year"]
         for status in ['Budget', 'Actual', '+/- %']
     ]
-    rows = pd.MultiIndex.from_tuples(row_tuples, names=["Period", "Status"])
 
     # Ensure there are no NaNs in the row or column data
-    if any(pd.isna(row).any() for row in row_tuples):
+    if any(pd.isna(element) for row in row_tuples for element in row):
         raise ValueError("NaN detected in row data")
 
-    if any(pd.isna(col).any() for col in column_tuples):
+    if any(pd.isna(element) for col in column_tuples for element in col):
         raise ValueError("NaN detected in column data")
 
     # Create the DataFrame
-    df = pd.DataFrame(combined_data, columns=columns, index=rows)
+    df = pd.DataFrame(combined_data, columns=columns, index=row_tuples)
     
     # Adding 2024 header
     df.columns = pd.MultiIndex.from_product([["2024"], df.columns])
