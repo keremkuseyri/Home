@@ -104,7 +104,7 @@ def style_dataframe(df):
         return ['background-color: #FFC000'] * len(row)
 
     # Apply the styling
-    styled_df = df.style.apply(highlight_columns, axis=4)
+    styled_df = df.style.apply(highlight_columns, axis=1)
     
     # Set other style options (optional)
     styled_df.set_properties(**{'text-align': 'center'})
