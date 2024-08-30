@@ -109,6 +109,9 @@ def style_dataframe(df):
     # Set other style options (optional)
     styled_df.set_properties(**{'text-align': 'center'})
     
+    styled_df.set_caption(f"<h1 style='text-align: center; color: black'>{title}</h1>")
+    
+
     return styled_df
 
 # Apply styling to the DataFrames
