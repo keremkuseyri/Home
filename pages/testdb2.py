@@ -96,10 +96,19 @@ def create_html_table(df, title):
     html = f"<h2 style='text-align: center;'>{title}</h2>"
     html += "<table border='1' style='border-collapse: collapse; width: 100%;'>"
     
-    # Add the header row
+    # Add the header row with merged cells
     html += "<thead><tr>"
     html += "<th rowspan='2' style='text-align: center; font-weight: normal;'></th>"
     html += "<th rowspan='2' style='text-align: center; font-weight: normal;'></th>"
+    
+    # First row of column headers
+    html += "<th colspan='3' style='text-align: center; background-color: #D9EAD3;'>Revenue</th>"
+    html += "<th colspan='3' style='text-align: center; background-color: #D0E0E3;'>Profit</th>"
+    html += "<th colspan='3' style='text-align: center; background-color: #F9CB9C;'>Cargo</th>"
+    html += "</tr>"
+    
+    # Second row of column headers
+    html += "<tr>"
     for col in df.columns:
         category, type_ = col
         if category == "Revenue":
@@ -111,7 +120,7 @@ def create_html_table(df, title):
         else:
             color = "#FFFFFF"  # Default
         
-        html += f"<th style='text-align: center; background-color: {color};'>{category}<br>({type_})</th>"
+        html += f"<th style='text-align: center; background-color: {color};'>{type_}</th>"
     html += "</tr></thead>"
     
     # Add the rows with merged cells
