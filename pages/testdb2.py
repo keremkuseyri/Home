@@ -90,35 +90,13 @@ def create_combined_df(data):
 import_combined_df = create_combined_df(import_data[0])
 export_combined_df = create_combined_df(export_data[0])
 
-# Function to apply styling to DataFrame
-def style_dataframe(df):
-    def highlight_columns(col):
-        if col.name[0] == "Revenue":
-            return ['background-color: #00B0F0'] * len(col)
-        elif col.name[0] == "Profit":
-            return ['background-color: #92D050'] * len(col)
-        elif col.name[0] == "Cargo":
-            return ['background-color: #00B050'] * len(col)
-        return [''] * len(col)
 
-    def highlight_index(row):
-        return ['background-color: #FFC000'] * len(row)
 
-    # Apply the styling
-    styled_df = df.style.apply(highlight_columns, axis=0)
-    
-    # Set other style options (optional)
-    styled_df.set_properties(**{'text-align': 'center'})
-    
-    return styled_df
 
-# Apply styling to the DataFrames
-import_styled_df = style_dataframe(import_combined_df)
     # Transpose the DataFrame to swap rows and columns
-df_transposed_import = import_styled_df.T  
+df_transposed_import = import_combined_df.T  
 
-export_styled_df = style_dataframe(export_combined_df)
-df_transposed_export = export_styled_df.T 
+df_transposed_export = export_combined_df.T 
 # Display the styled DataFrames in Streamlit
 st.write("Import :")
 st.dataframe(df_transposed_import, use_container_width=True, height=775)
