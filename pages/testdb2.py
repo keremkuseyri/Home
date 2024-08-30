@@ -98,8 +98,8 @@ def create_html_table(df, title):
     
     # Add the header row
     html += "<thead><tr>"
-    html += "<th rowspan='2' style='text-align: center; font-weight: normal;'>Period</th>"
-    html += "<th rowspan='2' style='text-align: center; font-weight: normal;'>Status</th>"
+    html += "<th rowspan='2' style='text-align: center; font-weight: normal;'></th>"
+    html += "<th rowspan='2' style='text-align: center; font-weight: normal;'></th>"
     for col in df.columns:
         category, type_ = col
         if category == "Revenue":
