@@ -121,7 +121,17 @@ def create_html_table(df, title):
     html += "<th rowspan='2' style='text-align: center;'>Period</th>"
     html += "<th rowspan='2' style='text-align: center;'>Status</th>"
     for col in df.columns:
-        html += f"<th style='text-align: center;'>{col[0]}<br>({col[1]})</th>"
+        category, type_ = col
+        if category == "Revenue":
+            color = "#D9EAD3"  # Light Blue
+        elif category == "Profit":
+            color = "#D0E0E3"  # Light Green
+        elif category == "Cargo":
+            color = "#F9CB9C"  # Light Yellow
+        else:
+            color = "#FFFFFF"  # Default
+        
+        html += f"<th style='text-align: center; background-color: {color};'>{category}<br>({type_})</th>"
     html += "</tr></thead>"
     
     # Add the rows with merged cells
