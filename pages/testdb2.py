@@ -23,8 +23,8 @@ def create_category_df(data, category):
     for month in ["january", "february", "march", "april", "may", "june", 
                   "july", "august", "september", "october", "november", "december"]:
         month_data = data.get(category, {}).get(month, {})
-        budget = f"{month_data.get('budget', 0)}"
-        actual = f"{month_data.get('actual', 0)}"
+        budget = f"{month_data.get("budget", 0)}"
+        actual = f"{month_data.get("actual", 0)}"
         percentage = f"{month_data.get('percentage', 0)}%"  # Format percentage with "%"
         rows.append([budget, actual, percentage])
     
@@ -32,8 +32,8 @@ def create_category_df(data, category):
     for period in ["quarter_1", "quarter_2", "quarter_3", "quarter_4", 
                    "half_1", "half_2", "year"]:
         period_data = data.get(category, {}).get(period, {})
-        budget = f"{period_data.get('budget', 0)}"
-        actual = f"{period_data.get('actual', 0)}"
+        budget = f"{period_data.get("budget", 0)}"
+        actual = f"{period_data.get("actual", 0)}"
         percentage = f"{period_data.get('percentage', 0)}%"  # Format percentage with "%"
         rows.append([budget, actual, percentage])
     
@@ -83,23 +83,41 @@ def create_combined_df(data):
 
     # Create the DataFrame
     df = pd.DataFrame(combined_data, columns=columns, index=row_labels)
-    
-
+    return df
 
 # Create DataFrames for Import and Export data
 import_combined_df = create_combined_df(import_data[0])
 export_combined_df = create_combined_df(export_data[0])
 
+# Function to apply styling to DataFrame
+def style_dataframe(df):
+    def highlight_columns(col):
+        if col.name[0] == "Revenue":
+            return ['background-color: #00B0F0'] * len(col)
+        elif col.name[0] == "Profit":
+            return ['background-color: #92D050'] * len(col)
+        elif col.name[0] == "Cargo":
+            return ['background-color: #00B050'] * len(col)
+        return [''] * len(col)
 
+    def highlight_index(row):
+        return ['background-color: #FFC000'] * len(row)
 
+    # Apply the styling
+    styled_df = df.style.apply(highlight_columns, axis=0)
+    
+    # Set other style options (optional)
+    styled_df.set_properties(**{'text-align': 'center'})
+    
+    return styled_df
 
-    # Transpose the DataFrame to swap rows and columns
-df_transposed_import = import_combined_df.T  
+# Apply styling to the DataFrames
+import_styled_df = style_dataframe(import_combined_df)
+export_styled_df = style_dataframe(export_combined_df)
 
-df_transposed_export = export_combined_df.T 
 # Display the styled DataFrames in Streamlit
 st.write("Import :")
-st.dataframe(df_transposed_import, use_container_width=True, height=775)
+st.dataframe(import_styled_df, use_container_width=True, height= 775)
 
 st.write("Export :")
-st.dataframe(df_transposed_export, use_container_width=True, height=775)
+st.dataframe(export_styled_df, use_container_width=True,  height= 775)
