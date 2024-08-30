@@ -25,8 +25,8 @@ def create_category_df(data, category):
         month_data = data.get(category, {}).get(month.lower(), {})
         budget = month_data.get("budget", 0)
         actual = month_data.get("actual", 0)
-        percentage = month_data.get("percentage", 0)
-        rows.extend([(month, 'Budget', budget), (month, 'Actual', actual), (month, '+/- %', f"{percentage}%")])
+        percentage = month_data.get("percentage", "0%")
+        rows.extend([(month, 'Budget', budget), (month, 'Actual', actual), (month, '+/- %', percentage)])
     
     # Adding quarterly, half-yearly, and yearly data
     for period in [("Q1", "quarter_1"), ("Q2", "quarter_2"), ("Q3", "quarter_3"), ("Q4", "quarter_4"), 
@@ -34,8 +34,8 @@ def create_category_df(data, category):
         period_data = data.get(category, {}).get(period[1], {})
         budget = period_data.get("budget", 0)
         actual = period_data.get("actual", 0)
-        percentage = period_data.get("percentage", 0)
-        rows.extend([(period[0], 'Budget', budget), (period[0], 'Actual', actual), (period[0], '+/- %', f"{percentage}%")])
+        percentage = period_data.get("percentage", "0%")
+        rows.extend([(period[0], 'Budget', budget), (period[0], 'Actual', actual), (period[0], '+/- %', percentage)])
     
     return rows
 
@@ -65,6 +65,16 @@ def create_combined_df(data):
                               p_ours[2], p_agency[2], p_total[2], 
                               c_ours[2], c_agency[2], c_total[2]])
 
+    # Convert percentage strings to numbers where possible
+    for i in range(len(combined_data)):
+        for j in range(len(combined_data[i])):
+            if isinstance(combined_data[i][j], str) and combined_data[i][j].endswith('%'):
+                combined_data[i][j] = combined_data[i][j][:-1]  # Remove % symbol
+            try:
+                combined_data[i][j] = float(combined_data[i][j])  # Convert to float
+            except ValueError:
+                continue  # If conversion fails, keep the original value
+
     # Define the multi-index for columns
     column_tuples = [
         ("Revenue", "Ours"), ("Revenue", "Agency"), ("Revenue", "Total"),
@@ -84,6 +94,10 @@ def create_combined_df(data):
 
     # Create the DataFrame
     df = pd.DataFrame(combined_data, columns=columns, index=rows)
+    
+    # Adding 2024 header
+    df.columns = pd.MultiIndex.from_product([["2024"], columns])
+
     return df
 
 # Create DataFrames for Import and Export data
@@ -93,16 +107,13 @@ export_combined_df = create_combined_df(export_data[0])
 # Function to apply styling to DataFrame
 def style_dataframe(df, title):
     def highlight_columns(col):
-        if col.name[0] == "Revenue":
+        if col.name[1][0] == "Revenue":
             return ['background-color: #00B0F0'] * len(col)
-        elif col.name[0] == "Profit":
+        elif col.name[1][0] == "Profit":
             return ['background-color: #92D050'] * len(col)
-        elif col.name[0] == "Cargo":
+        elif col.name[1][0] == "Cargo":
             return ['background-color: #00B050'] * len(col)
         return [''] * len(col)
-
-    def highlight_index(row):
-        return ['background-color: #FFC000'] * len(row)
 
     # Apply the styling
     styled_df = df.style.apply(highlight_columns, axis=1)
