@@ -112,12 +112,12 @@ def style_dataframe(df):
     return styled_df
 
 # Apply styling to the DataFrames
-import_styled_df = style_dataframe(import_combined_df)
-export_styled_df = style_dataframe(export_combined_df)
+import_styled_df = style_dataframe(import_combined_df.T)  # Transpose the Import DataFrame
+export_styled_df = style_dataframe(export_combined_df.T)  # Transpose the Export DataFrame
 
 # Display the styled DataFrames in Streamlit
 st.write("Import :")
-st.dataframe(import_styled_df, use_container_width=True, height= 775)
+st.dataframe(import_styled_df, use_container_width=True, height=775)
 
 st.write("Export :")
-st.dataframe(export_styled_df, use_container_width=True,  height= 775)
+st.dataframe(export_styled_df, use_container_width=True, height=775)
