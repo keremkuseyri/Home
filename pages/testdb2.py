@@ -84,10 +84,7 @@ def create_combined_df(data):
     # Create the DataFrame
     df = pd.DataFrame(combined_data, columns=columns, index=row_labels)
     
-    # Transpose the DataFrame to swap rows and columns
-    df_transposed = df.T
-    
-    return df_transposed
+
 
 # Create DataFrames for Import and Export data
 import_combined_df = create_combined_df(import_data[0])
@@ -117,11 +114,14 @@ def style_dataframe(df):
 
 # Apply styling to the DataFrames
 import_styled_df = style_dataframe(import_combined_df)
-export_styled_df = style_dataframe(export_combined_df)
+    # Transpose the DataFrame to swap rows and columns
+df_transposed_import = import_styled_df.T  
 
+export_styled_df = style_dataframe(export_combined_df)
+df_transposed_export = export_styled_df.T 
 # Display the styled DataFrames in Streamlit
 st.write("Import :")
-st.dataframe(import_styled_df, use_container_width=True, height=775)
+st.dataframe(df_transposed_import, use_container_width=True, height=775)
 
 st.write("Export :")
-st.dataframe(export_styled_df, use_container_width=True, height=775)
+st.dataframe(df_transposed_export, use_container_width=True, height=775)
