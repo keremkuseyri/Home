@@ -92,11 +92,18 @@ def create_combined_df(data):
     ]
     rows = pd.MultiIndex.from_tuples(row_tuples, names=["Period", "Status"])
 
+    # Ensure there are no NaNs in the row or column data
+    if any(pd.isna(row).any() for row in row_tuples):
+        raise ValueError("NaN detected in row data")
+
+    if any(pd.isna(col).any() for col in column_tuples):
+        raise ValueError("NaN detected in column data")
+
     # Create the DataFrame
     df = pd.DataFrame(combined_data, columns=columns, index=rows)
     
     # Adding 2024 header
-    df.columns = pd.MultiIndex.from_product([["2024"], columns])
+    df.columns = pd.MultiIndex.from_product([["2024"], df.columns])
 
     return df
 
