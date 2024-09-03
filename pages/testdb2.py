@@ -200,8 +200,8 @@ export_html_table = create_html_table(export_combined_df, "Export 2024")
 st.markdown(import_html_table, unsafe_allow_html=True)
 st.markdown(export_html_table, unsafe_allow_html=True)
 
-elif st.session_state["authentication_status"] is False:
+    elif st.session_state["authentication_status"] is False:
     st.error('Username/password is incorrect')
 
-elif st.session_state["authentication_status"] is None:
+    elif st.session_state["authentication_status"] is None:
     st.warning('Please enter your username and password')
