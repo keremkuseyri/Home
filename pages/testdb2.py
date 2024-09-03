@@ -1,9 +1,47 @@
 import pandas as pd
 from pymongo import MongoClient
 import streamlit as st
-
+import yaml
+from yaml.loader import SafeLoader
+import streamlit_authenticator as stauth
+import os
 # Set up Streamlit page configuration
 st.set_page_config(page_title='Genel Transport', page_icon="https://www.geneltransport.com.tr/wp-content/uploads/2021/03/favicon.png", layout='wide')
+st.image('https://www.geneltransport.com.tr/wp-content/uploads/2021/03/logo-color.png')
+with open('config.yaml') as file:
+    config = yaml.load(file, Loader=SafeLoader)
+
+
+authenticator = stauth.Authenticate(
+    config['credentials'],
+    config['cookie']['name'],
+    config['cookie']['key'],
+    config['cookie']['expiry_days'],
+    config['pre-authorized']
+)
+
+authenticator.login()
+if st.session_state["authentication_status"]:
+    
+
+    with st.sidebar.expander("Sea Trend Report ⛴"):
+        st.page_link("Home.py", label="Total", icon="📊" )
+    with st.sidebar.expander("Air Trend Report ✈️"):
+        st.page_link("pages/Air.py",label="Total", icon="📊")
+    with st.sidebar.expander("Air Export KPI 🎯"):
+        st.page_link("pages/Airexportkpi.py",label="Air Export KPI", icon="📊")
+        st.page_link("pages/Airexporttarget.py", label="Target Export KPI", icon="🎯")
+    with st.sidebar.expander("Air Import KPI 🎯"):
+        st.page_link("pages/Airimportkpi.py",label="Air Import KPI", icon="📊")
+        st.page_link("pages/Airimporttarget.py", label="Target Import KPI", icon="🎯")
+    with st.sidebar.expander("Air Customer Report ✈️"):
+        st.page_link("pages/Clientanalitics.py",label="Client Offer/Success Analysis", icon="📈")
+        st.page_link("pages/Clientaircustomer.py",label="Client Air Customer Offer Analysis", icon="📈")
+    with st.sidebar.expander("Air Import/Export Yearly 📊"):
+         st.page_link("pages/testdb2.py", label="Air Import/Export Yearly 📊")
+
+    st.sidebar.write(f'Welcome *{st.session_state["name"]}*')
+    authenticator.logout("Logout", "sidebar")
 
 # MongoDB connection string
 mongo_uri = "mongodb+srv://kkuseyri:GTTest2024@clusterv0.uwkchdi.mongodb.net/?retryWrites=true&w=majority"
@@ -161,3 +199,9 @@ export_html_table = create_html_table(export_combined_df, "Export 2024")
 # Display the HTML tables in Streamlit
 st.markdown(import_html_table, unsafe_allow_html=True)
 st.markdown(export_html_table, unsafe_allow_html=True)
+
+elif st.session_state["authentication_status"] is False:
+    st.error('Username/password is incorrect')
+
+elif st.session_state["authentication_status"] is None:
+    st.warning('Please enter your username and password')
