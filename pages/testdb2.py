@@ -130,28 +130,32 @@ if st.session_state["authentication_status"]:
     export_combined_df = create_combined_df(export_data[0])
     
     # Function to create an HTML table with specified styling
-# Modified Function to create an HTML table with specified styling
+    # Modified Function to create an HTML table with specified styling
+    # Modified Function to create an HTML table with an additional header row
     def create_html_table(df_import, df_export):
         html = "<table border='1' style='border-collapse: collapse; width: 100%;'>"
         
-        # Add the header row with merged cells
+        # Top header row for Import and Export
         html += "<thead><tr>"
-        html += "<th rowspan='2' style='text-align: center; font-weight: normal;'></th>"
-        html += "<th rowspan='2' style='text-align: center; font-weight: normal;'></th>"
+        html += "<th rowspan='3' style='text-align: center; font-weight: normal;'></th>"
+        html += "<th rowspan='3' style='text-align: center; font-weight: normal;'></th>"
         
-        # Import table headers
-        html += "<th colspan='3' style='text-align: center; background-color: #D9EAD3;'>Import Revenue</th>"
-        html += "<th colspan='3' style='text-align: center; background-color: #D0E0E3;'>Import Profit</th>"
-        html += "<th colspan='3' style='text-align: center; background-color: #F9CB9C;'>Import Cargo</th>"
+        # Import header spanning its columns
+        html += "<th colspan='9' style='text-align: center; background-color: #D9EAD3;'>Import</th>"
         
-        # Export table headers
-        html += "<th colspan='3' style='text-align: center; background-color: #D9EAD3;'>Export Revenue</th>"
-        html += "<th colspan='3' style='text-align: center; background-color: #D0E0E3;'>Export Profit</th>"
-        html += "<th colspan='3' style='text-align: center; background-color: #F9CB9C;'>Export Cargo</th>"
-        
+        # Export header spanning its columns
+        html += "<th colspan='9' style='text-align: center; background-color: #D9EAD3;'>Export</th>"
         html += "</tr>"
         
-        # Second row of column headers
+        # Second header row for Revenue, Profit, Cargo under Import and Export
+        html += "<tr>"
+        for _ in range(2):  # Once for Import, once for Export
+            html += "<th colspan='3' style='text-align: center; background-color: #D9EAD3;'>Revenue</th>"
+            html += "<th colspan='3' style='text-align: center; background-color: #D0E0E3;'>Profit</th>"
+            html += "<th colspan='3' style='text-align: center; background-color: #F9CB9C;'>Cargo</th>"
+        html += "</tr>"
+        
+        # Third header row for "Ours", "Agency", and "Total"
         html += "<tr>"
         for _ in range(2):  # Once for Import, once for Export
             for category in ["Revenue", "Profit", "Cargo"]:
@@ -229,6 +233,7 @@ if st.session_state["authentication_status"]:
     
     # Display the combined HTML table in Streamlit
     st.markdown(combined_html_table, unsafe_allow_html=True)
+
 
 
 elif st.session_state["authentication_status"] is False:
