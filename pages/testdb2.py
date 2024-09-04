@@ -129,28 +129,7 @@ if st.session_state["authentication_status"]:
     import_combined_df = create_combined_df(import_data[0])
     export_combined_df = create_combined_df(export_data[0])
     
-# Merge the Import and Export DataFrames
-    def merge_dataframes(import_df, export_df):
-        # Add a column to identify the source of the data
-        import_df['Source'] = 'Import'
-        export_df['Source'] = 'Export'
-        
-        # Combine the dataframes
-        combined_df = pd.concat([import_df, export_df])
-        
-        # Add a multi-index level for Source
-        combined_df = combined_df.set_index(['Source'], append=True)
-        
-        return combined_df
-    
-    # Create a combined DataFrame
-    combined_df = merge_dataframes(import_combined_df, export_combined_df)
-    
-    # Generate the HTML table for combined data
-    combined_html_table = create_html_table(combined_df, "Import & Export 2024")
-    
-    # Display the combined HTML table in Streamlit
-    st.markdown(combined_html_table, unsafe_allow_html=True)
+
 
 
 
@@ -229,6 +208,30 @@ if st.session_state["authentication_status"]:
     # Display the HTML tables in Streamlit
     st.markdown(import_html_table, unsafe_allow_html=True)
     st.markdown(export_html_table, unsafe_allow_html=True)
+
+
+# Merge the Import and Export DataFrames
+    def merge_dataframes(import_df, export_df):
+        # Add a column to identify the source of the data
+        import_df['Source'] = 'Import'
+        export_df['Source'] = 'Export'
+        
+        # Combine the dataframes
+        combined_df = pd.concat([import_df, export_df])
+        
+        # Add a multi-index level for Source
+        combined_df = combined_df.set_index(['Source'], append=True)
+        
+        return combined_df
+    
+    # Create a combined DataFrame
+    combined_df = merge_dataframes(import_combined_df, export_combined_df)
+    
+    # Generate the HTML table for combined data
+    combined_html_table = create_html_table(combined_df, "Import & Export 2024")
+    
+    # Display the combined HTML table in Streamlit
+    st.markdown(combined_html_table, unsafe_allow_html=True)
 
 elif st.session_state["authentication_status"] is False:
     st.error('Username/password is incorrect')
