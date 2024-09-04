@@ -141,10 +141,10 @@ if st.session_state["authentication_status"]:
         html += "<th rowspan='3' style='text-align: center; font-weight: normal;'></th>"
         
         # Import header spanning its columns
-        html += "<th colspan='9' style='text-align: center; background-color: #D9EAD3;'>Import</th>"
+        html += "<th colspan='9' style='text-align: center; background-color: #EEFC5E;'>Import</th>"
         
         # Export header spanning its columns
-        html += "<th colspan='9' style='text-align: center; background-color: #D9EAD3;'>Export</th>"
+        html += "<th colspan='9' style='text-align: center; background-color: #EEFC5E;'>Export</th>"
         html += "</tr>"
         
         # Second header row for Revenue, Profit, Cargo under Import and Export
