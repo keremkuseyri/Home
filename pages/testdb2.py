@@ -5,12 +5,13 @@ import yaml
 from yaml.loader import SafeLoader
 import streamlit_authenticator as stauth
 import os
+
 # Set up Streamlit page configuration
 st.set_page_config(page_title='Genel Transport', page_icon="https://www.geneltransport.com.tr/wp-content/uploads/2021/03/favicon.png", layout='wide')
 st.image('https://www.geneltransport.com.tr/wp-content/uploads/2021/03/logo-color.png')
+
 with open('config.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
-
 
 authenticator = stauth.Authenticate(
     config['credentials'],
@@ -22,10 +23,8 @@ authenticator = stauth.Authenticate(
 
 authenticator.login()
 if st.session_state["authentication_status"]:
-    
-
     with st.sidebar.expander("Sea Trend Report ⛴"):
-        st.page_link("Home.py", label="Total", icon="📊" )
+        st.page_link("Home.py", label="Total", icon="📊")
     with st.sidebar.expander("Air Trend Report ✈️"):
         st.page_link("pages/Air.py",label="Total", icon="📊")
     with st.sidebar.expander("Air Export KPI 🎯"):
@@ -67,9 +66,9 @@ if st.session_state["authentication_status"]:
             percentage = month_data.get("percentage", 0)
             rows.extend([(month, 'Budget', budget), (month, 'Actual', actual), (month, '+/- %', f"{percentage}%")])
         
-        # Adding quarterly, half-yearly, and yearly data
+        # Adding quarterly and yearly data
         for period in [("Q1", "quarter_1"), ("Q2", "quarter_2"), ("Q3", "quarter_3"), ("Q4", "quarter_4"), 
-                       ("H1", "half_1"), ("H2", "half_2"), ("Year", "year")]:
+                       ("Year", "year")]:
             period_data = data.get(category, {}).get(period[1], {})
             budget = period_data.get("budget", 0)
             actual = period_data.get("actual", 0)
@@ -116,7 +115,7 @@ if st.session_state["authentication_status"]:
         row_tuples = [
             (month, status) for month in ["January", "February", "March", "April", "May", "June", 
                                           "July", "August", "September", "October", "November", "December", 
-                                          "Q1", "Q2", "Q3", "Q4", "H1", "H2", "Year"]
+                                          "Q1", "Q2", "Q3", "Q4", "Year"]
             for status in ['Budget', 'Actual', '+/- %']
         ]
         rows = pd.MultiIndex.from_tuples(row_tuples, names=["Period", "Status"])
@@ -150,14 +149,16 @@ if st.session_state["authentication_status"]:
         for col in df.columns:
             category, type_ = col
             if category == "Revenue":
-                color = "#D9EAD3"  # Light Blue
+                color = "#D9EAD3"  # Light Green
             elif category == "Profit":
-                color = "#D0E0E3"  # Light Green
+                color = "#D0E0E3"  # Light Blue
             elif category == "Cargo":
                 color = "#F9CB9C"  # Light Yellow
             else:
-                color = "#FFFFFF"  # Default
+            # Default color if not specified
+            color = "#FFFFFF"
             
+            # Ensure the background color of the header extends to all rows
             html += f"<th style='text-align: center; background-color: {color};'>{type_}</th>"
         html += "</tr></thead>"
         
@@ -192,13 +193,25 @@ if st.session_state["authentication_status"]:
         
         return html
     
-    # Generate the HTML tables
+    # Merge the DataFrames side-by-side
+    combined_df = pd.concat([import_combined_df, export_combined_df], axis=1, keys=["Import", "Export"])
+    
+    # Generate the HTML tables for both Import and Export
     import_html_table = create_html_table(import_combined_df, "Import 2024")
     export_html_table = create_html_table(export_combined_df, "Export 2024")
     
     # Display the HTML tables in Streamlit
-    st.markdown(import_html_table, unsafe_allow_html=True)
-    st.markdown(export_html_table, unsafe_allow_html=True)
+    st.markdown("<h1>Combined Import and Export Data</h1>", unsafe_allow_html=True)
+    st.markdown(f"""
+    <div style="display: flex; justify-content: space-around;">
+        <div style="flex: 1; margin-right: 10px;">
+            {import_html_table}
+        </div>
+        <div style="flex: 1; margin-left: 10px;">
+            {export_html_table}
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
 elif st.session_state["authentication_status"] is False:
     st.error('Username/password is incorrect')
