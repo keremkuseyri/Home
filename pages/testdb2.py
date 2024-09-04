@@ -130,77 +130,75 @@ if st.session_state["authentication_status"]:
     export_combined_df = create_combined_df(export_data[0])
     
 
-
-
-
-    # Function to create an HTML table with specified styling
     def create_html_table(df, title):
-        html = f"<h2 style='text-align: center;'>{title}</h2>"
-        html += "<table border='1' style='border-collapse: collapse; width: 100%;'>"
-        
-        # Add the header row with merged cells
-        html += "<thead><tr>"
-        html += "<th rowspan='2' style='text-align: center; font-weight: normal; width: 150px;'>Period</th>"
-        html += "<th rowspan='2' style='text-align: center; font-weight: normal; width: 150px;'>Status</th>"
-        
-        # First row of column headers
-        html += "<th colspan='3' style='text-align: center; background-color: #D9EAD3;'>Revenue</th>"
-        html += "<th colspan='3' style='text-align: center; background-color: #D0E0E3;'>Profit</th>"
-        html += "<th colspan='3' style='text-align: center; background-color: #F9CB9C;'>Cargo</th>"
-        html += "</tr>"
-        
-        # Second row of column headers
-        html += "<tr>"
-        for col in df.columns:
-            category, type_ = col
-            if category == "Revenue":
-                color = "#D9EAD3"  # Light Green
-            elif category == "Profit":
-                color = "#D0E0E3"  # Light Blue
-            elif category == "Cargo":
-                color = "#F9CB9C"  # Light Yellow
-            else:
-                color = "#FFFFFF"  # Default
-                
-            html += f"<th style='text-align: center; background-color: {color};'>{type_}</th>"
-        html += "</tr></thead>"
-        
-        # Add the rows with merged cells
-        html += "<tbody>"
-        
-        prev_period = None
-        rowspan = 1
-        for index, row in df.iterrows():
-            period, status = index
-            
-            # Skip rows for 'H1' and 'H2'
-            if period in ["H1", "H2"]:
-                continue
-            
-            # If period changes, close the previous row's cell
-            if period != prev_period:
-                if prev_period is not None:
-                    html = html.replace(f"ROWSPAN_{prev_period}", str(rowspan))
-                rowspan = 1
-                prev_period = period
-                html += f"<tr><td rowspan='ROWSPAN_{period}' style='text-align: center; font-weight: bold;'>{period}</td><td style='text-align: center;'>{status}</td>"
-            else:
-                rowspan += 1
-                html += f"<tr><td style='text-align: center;'>{status}</td>"
-            
-            for value in row:
-                html += f"<td style='text-align: center;'>{value}</td>"
-            html += "</tr>"
-        
-        # Final replacement for the last period
-        if prev_period is not None:
-            html = html.replace(f"ROWSPAN_{prev_period}", str(rowspan))
-        
-        html += "</tbody></table>"
-        
-        return html
-
+    html = f"<h2 style='text-align: center;'>{title}</h2>"
+    html += "<table border='1' style='border-collapse: collapse; width: 100%;'>"
     
+    # Add the header row with merged cells
+    html += "<thead><tr>"
+    html += "<th rowspan='2' style='text-align: center; font-weight: normal; width: 150px;'>Period</th>"
+    html += "<th rowspan='2' style='text-align: center; font-weight: normal; width: 150px;'>Status</th>"
+    
+    # First row of column headers
+    html += "<th colspan='3' style='text-align: center; background-color: #D9EAD3;'>Revenue</th>"
+    html += "<th colspan='3' style='text-align: center; background-color: #D0E0E3;'>Profit</th>"
+    html += "<th colspan='3' style='text-align: center; background-color: #F9CB9C;'>Cargo</th>"
+    html += "</tr>"
+    
+    # Second row of column headers
+    html += "<tr>"
+    for col in df.columns:
+        category, type_ = col
+        if category == "Revenue":
+            color = "#D9EAD3"  # Light Green
+        elif category == "Profit":
+            color = "#D0E0E3"  # Light Blue
+        elif category == "Cargo":
+            color = "#F9CB9C"  # Light Yellow
+        else:
+            color = "#FFFFFF"  # Default
+            
+        html += f"<th style='text-align: center; background-color: {color};'>{type_}</th>"
+    html += "</tr></thead>"
+    
+    # Add the rows with merged cells
+    html += "<tbody>"
+    
+    prev_period = None
+    rowspan = 1
+    for index, row in df.iterrows():
+        if len(index) == 2:
+            period, status = index
+        else:
+            period = index[0]
+            status = index[1]
+        
+        # Skip rows for 'H1' and 'H2'
+        if period in ["H1", "H2"]:
+            continue
+        
+        # If period changes, close the previous row's cell
+        if period != prev_period:
+            if prev_period is not None:
+                html = html.replace(f"ROWSPAN_{prev_period}", str(rowspan))
+            rowspan = 1
+            prev_period = period
+            html += f"<tr><td rowspan='ROWSPAN_{period}' style='text-align: center; font-weight: bold;'>{period}</td><td style='text-align: center;'>{status}</td>"
+        else:
+            rowspan += 1
+            html += f"<tr><td style='text-align: center;'>{status}</td>"
+        
+        for value in row:
+            html += f"<td style='text-align: center;'>{value}</td>"
+        html += "</tr>"
+    
+    # Final replacement for the last period
+    if prev_period is not None:
+        html = html.replace(f"ROWSPAN_{prev_period}", str(rowspan))
+    
+    html += "</tbody></table>"
+    
+    return html    
     # Generate the HTML tables
     import_html_table = create_html_table(import_combined_df, "Import 2024")
     export_html_table = create_html_table(export_combined_df, "Export 2024")
@@ -217,10 +215,7 @@ if st.session_state["authentication_status"]:
         export_df['Source'] = 'Export'
         
         # Combine the dataframes
-        combined_df = pd.concat([import_df, export_df])
-        
-        # Add a multi-index level for Source
-        combined_df = combined_df.set_index(['Source'], append=True)
+        combined_df = pd.concat([import_df, export_df], keys=['Import', 'Export'], names=['Source'])
         
         return combined_df
     
