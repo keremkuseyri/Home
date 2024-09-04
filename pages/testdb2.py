@@ -133,31 +133,35 @@ if st.session_state["authentication_status"]:
         html = f"<h2 style='text-align: center;'>{title}</h2>"
         html += "<table border='1' style='border-collapse: collapse; width: 100%;'>"
         
-        # Header row
+        # Add the header row with merged cells
         html += "<thead><tr>"
         html += "<th rowspan='2' style='text-align: center; font-weight: normal;'></th>"
         html += "<th rowspan='2' style='text-align: center; font-weight: normal;'></th>"
         
         # First row of column headers
-        category_colors = {
-            "Revenue": "#D9EAD3",  # Light Green
-            "Profit": "#D0E0E3",   # Light Blue
-            "Cargo": "#F9CB9C"     # Light Yellow
-        }
-        for level1 in df.columns.levels[0]:
-            for level2 in df.columns.levels[1]:
-                color = category_colors.get(level1, "#FFFFFF")
-                html += f"<th colspan='1' style='text-align: center; background-color: {color};'>{level2}</th>"
+        html += "<th colspan='3' style='text-align: center; background-color: #D9EAD3;'>Revenue</th>"
+        html += "<th colspan='3' style='text-align: center; background-color: #D0E0E3;'>Profit</th>"
+        html += "<th colspan='3' style='text-align: center; background-color: #F9CB9C;'>Cargo</th>"
         html += "</tr>"
         
         # Second row of column headers
         html += "<tr>"
-        for level1 in df.columns.levels[0]:
-            for level2 in df.columns.levels[1]:
-                html += f"<th style='text-align: center;'>{level2}</th>"
+        for col in df.columns:
+            category, type_ = col
+            if category == "Revenue":
+                color = "#D9EAD3"  # Light Green
+            elif category == "Profit":
+                color = "#D0E0E3"  # Light Blue
+            elif category == "Cargo":
+                color = "#F9CB9C"  # Light Yellow
+            else:
+                color = "#FFFFFF"
+            
+            # Ensure the background color of the header extends to all rows
+            html += f"<th style='text-align: center; background-color: {color};'>{type_}</th>"
         html += "</tr></thead>"
         
-        # Table body
+        # Add the rows with merged cells
         html += "<tbody>"
         
         prev_period = None
