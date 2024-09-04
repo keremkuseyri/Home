@@ -130,35 +130,41 @@ if st.session_state["authentication_status"]:
     export_combined_df = create_combined_df(export_data[0])
     
     # Function to create an HTML table with specified styling
-    def create_html_table(df, title):
-        html = f"<h2 style='text-align: center;'>{title}</h2>"
-        html += "<table border='1' style='border-collapse: collapse; width: 100%;'>"
+# Modified Function to create an HTML table with specified styling
+    def create_html_table(df_import, df_export):
+        html = "<table border='1' style='border-collapse: collapse; width: 100%;'>"
         
         # Add the header row with merged cells
         html += "<thead><tr>"
         html += "<th rowspan='2' style='text-align: center; font-weight: normal;'></th>"
         html += "<th rowspan='2' style='text-align: center; font-weight: normal;'></th>"
         
-        # First row of column headers
-        html += "<th colspan='3' style='text-align: center; background-color: #D9EAD3;'>Revenue</th>"
-        html += "<th colspan='3' style='text-align: center; background-color: #D0E0E3;'>Profit</th>"
-        html += "<th colspan='3' style='text-align: center; background-color: #F9CB9C;'>Cargo</th>"
+        # Import table headers
+        html += "<th colspan='3' style='text-align: center; background-color: #D9EAD3;'>Import Revenue</th>"
+        html += "<th colspan='3' style='text-align: center; background-color: #D0E0E3;'>Import Profit</th>"
+        html += "<th colspan='3' style='text-align: center; background-color: #F9CB9C;'>Import Cargo</th>"
+        
+        # Export table headers
+        html += "<th colspan='3' style='text-align: center; background-color: #D9EAD3;'>Export Revenue</th>"
+        html += "<th colspan='3' style='text-align: center; background-color: #D0E0E3;'>Export Profit</th>"
+        html += "<th colspan='3' style='text-align: center; background-color: #F9CB9C;'>Export Cargo</th>"
+        
         html += "</tr>"
         
         # Second row of column headers
         html += "<tr>"
-        for col in df.columns:
-            category, type_ = col
-            if category == "Revenue":
-                color = "#D9EAD3"  # Light Blue
-            elif category == "Profit":
-                color = "#D0E0E3"  # Light Green
-            elif category == "Cargo":
-                color = "#F9CB9C"  # Light Yellow
-            else:
-                color = "#FFFFFF"  # Default
-            
-            html += f"<th style='text-align: center; background-color: {color};'>{type_}</th>"
+        for _ in range(2):  # Once for Import, once for Export
+            for category in ["Revenue", "Profit", "Cargo"]:
+                for type_ in ["Ours", "Agency", "Total"]:
+                    if category == "Revenue":
+                        color = "#D9EAD3"  # Light Green
+                    elif category == "Profit":
+                        color = "#D0E0E3"  # Light Blue
+                    elif category == "Cargo":
+                        color = "#F9CB9C"  # Light Orange
+                    else:
+                        color = "#FFFFFF"  # Default
+                    html += f"<th style='text-align: center; background-color: {color};'>{type_}</th>"
         html += "</tr></thead>"
         
         # Add the rows with merged cells
@@ -166,8 +172,12 @@ if st.session_state["authentication_status"]:
         
         prev_period = None
         rowspan = 1
-        for index, row in df.iterrows():
+        for index in df_import.index:
             period, status = index
+            
+            # Skip H1 and H2 rows
+            if period in ["H1", "H2"]:
+                continue
             
             # If period changes, close the previous row's cell
             if period != prev_period:
@@ -180,8 +190,30 @@ if st.session_state["authentication_status"]:
                 rowspan += 1
                 html += f"<tr><td style='text-align: center;'>{status}</td>"
             
-            for value in row:
-                html += f"<td style='text-align: center;'>{value}</td>"
+            # Add the Import data cells
+            for category in ["Revenue", "Profit", "Cargo"]:
+                for type_ in ["Ours", "Agency", "Total"]:
+                    if category == "Revenue":
+                        color = "#D9EAD3"
+                    elif category == "Profit":
+                        color = "#D0E0E3"
+                    elif category == "Cargo":
+                        color = "#F9CB9C"
+                    value = df_import.loc[index, (category, type_)]
+                    html += f"<td style='text-align: center; background-color: {color};'>{value}</td>"
+            
+            # Add the Export data cells
+            for category in ["Revenue", "Profit", "Cargo"]:
+                for type_ in ["Ours", "Agency", "Total"]:
+                    if category == "Revenue":
+                        color = "#D9EAD3"
+                    elif category == "Profit":
+                        color = "#D0E0E3"
+                    elif category == "Cargo":
+                        color = "#F9CB9C"
+                    value = df_export.loc[index, (category, type_)]
+                    html += f"<td style='text-align: center; background-color: {color};'>{value}</td>"
+            
             html += "</tr>"
         
         # Final replacement for the last period
@@ -192,13 +224,12 @@ if st.session_state["authentication_status"]:
         
         return html
     
-    # Generate the HTML tables
-    import_html_table = create_html_table(import_combined_df, "Import 2024")
-    export_html_table = create_html_table(export_combined_df, "Export 2024")
+    # Use the modified function to generate the HTML tables
+    combined_html_table = create_html_table(import_combined_df, export_combined_df)
     
-    # Display the HTML tables in Streamlit
-    st.markdown(import_html_table, unsafe_allow_html=True)
-    st.markdown(export_html_table, unsafe_allow_html=True)
+    # Display the combined HTML table in Streamlit
+    st.markdown(combined_html_table, unsafe_allow_html=True)
+
 
 elif st.session_state["authentication_status"] is False:
     st.error('Username/password is incorrect')
