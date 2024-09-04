@@ -155,8 +155,7 @@ if st.session_state["authentication_status"]:
             elif category == "Cargo":
                 color = "#F9CB9C"  # Light Yellow
             else:
-            # Default color if not specified
-            color = "#FFFFFF"
+                color = "#FFFFFF"
             
             # Ensure the background color of the header extends to all rows
             html += f"<th style='text-align: center; background-color: {color};'>{type_}</th>"
@@ -196,22 +195,11 @@ if st.session_state["authentication_status"]:
     # Merge the DataFrames side-by-side
     combined_df = pd.concat([import_combined_df, export_combined_df], axis=1, keys=["Import", "Export"])
     
-    # Generate the HTML tables for both Import and Export
-    import_html_table = create_html_table(import_combined_df, "Import 2024")
-    export_html_table = create_html_table(export_combined_df, "Export 2024")
+    # Generate the HTML table for the combined DataFrame
+    combined_html_table = create_html_table(combined_df, "Combined Import and Export Data")
     
-    # Display the HTML tables in Streamlit
-    st.markdown("<h1>Combined Import and Export Data</h1>", unsafe_allow_html=True)
-    st.markdown(f"""
-    <div style="display: flex; justify-content: space-around;">
-        <div style="flex: 1; margin-right: 10px;">
-            {import_html_table}
-        </div>
-        <div style="flex: 1; margin-left: 10px;">
-            {export_html_table}
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    # Display the HTML table in Streamlit
+    st.markdown(combined_html_table, unsafe_allow_html=True)
 
 elif st.session_state["authentication_status"] is False:
     st.error('Username/password is incorrect')
