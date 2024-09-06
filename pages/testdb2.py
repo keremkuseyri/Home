@@ -232,7 +232,8 @@ if st.session_state["authentication_status"]:
     combined_html_table = create_html_table(import_combined_df, export_combined_df)
     
     # Display the combined HTML table in Streamlit
-    st.markdown(combined_html_table, unsafe_allow_html=True)
+    if st.session_state["pre-authorized"]:
+       st.markdown(combined_html_table, unsafe_allow_html=True)
 
 
 
