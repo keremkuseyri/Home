@@ -235,6 +235,9 @@ if st.session_state["authentication_status"]:
     if st.session_state["name"] == "Kerem Kuseyri":
        st.markdown(combined_html_table, unsafe_allow_html=True)
 
+    else :
+         st.error("You are not eligible to see this page.")
+
 
 
 elif st.session_state["authentication_status"] is False:
