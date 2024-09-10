@@ -195,14 +195,14 @@ if st.session_state["authentication_status"]:
                 rowspan += 1
                 html += f"<tr><td style='text-align: center;'>{status}</td>"
     
-            # Adding Export data with color styling for each category
+            # Adding Export data with correct color styling for each category
             for category in df_export.columns.levels[0]:
                 for type_ in df_export.columns.levels[1]:
                     value = df_export.loc[index, (category, type_)]
                     if isinstance(value, (float, int)) and not isinstance(value, str):
                         value = int(value)
     
-                    # Apply appropriate background color for each category
+                    # Correcting background colors for categories
                     if category == "Revenue":
                         html += f"<td style='text-align: center; background-color: #D9EAD3;'>{value}</td>"
                     elif category == "Profit":
@@ -210,14 +210,14 @@ if st.session_state["authentication_status"]:
                     elif category == "Cargo":
                         html += f"<td style='text-align: center; background-color: #F4CCCC;'>{value}</td>"
     
-            # Adding Import data with color styling for each category
+            # Adding Import data with correct color styling for each category
             for category in df_import.columns.levels[0]:
                 for type_ in df_import.columns.levels[1]:
                     value = df_import.loc[index, (category, type_)]
                     if isinstance(value, (float, int)) and not isinstance(value, str):
                         value = int(value)
     
-                    # Apply appropriate background color for each category
+                    # Correcting background colors for categories
                     if category == "Revenue":
                         html += f"<td style='text-align: center; background-color: #D9EAD3;'>{value}</td>"
                     elif category == "Profit":
@@ -234,6 +234,7 @@ if st.session_state["authentication_status"]:
         html += "</tbody>"
         html += "</table>"
         return html
+
 
 
 
