@@ -135,19 +135,19 @@ if st.session_state["authentication_status"]:
     def create_html_table(df_import, df_export):
         html = "<table border='1' style='border-collapse: collapse; width: 100%;'>"
     
-        # Top header row for Export and Import
+        # Top header row for Export and Import (switched)
         html += "<thead><tr>"
         html += "<th rowspan='3' style='text-align: center; font-weight: normal;'></th>"
         html += "<th rowspan='3' style='text-align: center; font-weight: normal;'></th>"
     
-        # Export header spanning its columns
+        # Export header spanning its columns (switched to the left)
         html += "<th colspan='9' style='text-align: center; background-color: #EEFC5E;'>Export</th>"
     
-        # Import header spanning its columns
+        # Import header spanning its columns (switched to the right)
         html += "<th colspan='9' style='text-align: center; background-color: #EEFC5E;'>Import</th>"
         html += "</tr>"
     
-        # Second header row for Revenue, Profit, Cargo under Export and Import
+        # Second header row for Revenue, Profit, Cargo under Export and Import (switched)
         html += "<tr>"
         for _ in range(2):  # Once for Export, once for Import
             html += "<th colspan='3' style='text-align: center; background-color: #D9EAD3;'>Revenue</th>"
@@ -155,7 +155,7 @@ if st.session_state["authentication_status"]:
             html += "<th colspan='3' style='text-align: center; background-color: #F4CCCC;'>Cargo</th>"
         html += "</tr>"
     
-        # Third header row for Ours, Agency, Total under Revenue, Profit, Cargo
+        # Third header row for Ours, Agency, Total under Revenue, Profit, Cargo (switched positions)
         html += "<tr>"
         for _ in range(2):  # Once for Export, once for Import
             html += "<th style='text-align: center;'>Ours</th>"
@@ -193,35 +193,23 @@ if st.session_state["authentication_status"]:
                 rowspan += 1
                 html += f"<tr><td style='text-align: center;'>{status}</td>"
     
-            # Adding Export data with color styling for each category
+            # Adding Export data (switched to appear before Import data)
             for category in df_export.columns.levels[0]:
                 for type_ in df_export.columns.levels[1]:
+                    # Convert float values to integers (leave percentages unchanged)
                     value = df_export.loc[index, (category, type_)]
                     if isinstance(value, (float, int)) and not isinstance(value, str):
                         value = int(value)
+                    html += f"<td style='text-align: center;'>{value}</td>"
     
-                    # Apply appropriate background color for each category
-                    if category == "Revenue":
-                        html += f"<td style='text-align: center; background-color: #D9EAD3;'>{value}</td>"
-                    elif category == "Profit":
-                        html += f"<td style='text-align: center; background-color: #D0E0E3;'>{value}</td>"
-                    elif category == "Cargo":
-                        html += f"<td style='text-align: center; background-color: #F4CCCC;'>{value}</td>"
-    
-            # Adding Import data with color styling for each category
+            # Adding Import data (switched to appear after Export data)
             for category in df_import.columns.levels[0]:
                 for type_ in df_import.columns.levels[1]:
+                    # Convert float values to integers (leave percentages unchanged)
                     value = df_import.loc[index, (category, type_)]
                     if isinstance(value, (float, int)) and not isinstance(value, str):
                         value = int(value)
-    
-                    # Apply appropriate background color for each category
-                    if category == "Revenue":
-                        html += f"<td style='text-align: center; background-color: #D9EAD3;'>{value}</td>"
-                    elif category == "Profit":
-                        html += f"<td style='text-align: center; background-color: #D0E0E3;'>{value}</td>"
-                    elif category == "Cargo":
-                        html += f"<td style='text-align: center; background-color: #F4CCCC;'>{value}</td>"
+                    html += f"<td style='text-align: center;'>{value}</td>"
     
             html += "</tr>"
     
@@ -232,7 +220,6 @@ if st.session_state["authentication_status"]:
         html += "</tbody>"
         html += "</table>"
         return html
-
 
 
 
