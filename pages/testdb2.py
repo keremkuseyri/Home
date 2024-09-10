@@ -158,10 +158,15 @@ if st.session_state["authentication_status"]:
         # Third header row for Ours, Agency, Total under Revenue, Profit, Cargo (switched positions)
         html += "<tr>"
         for _ in range(2):  # Once for Export, once for Import
-            for category in ["Ours", "Agency", "Total"]:
-                html += f"<th style='text-align: center;'>{category}</th>"
-            for category in ["Ours", "Agency", "Total"]:
-                html += f"<th style='text-align: center;'>{category}</th>"
+            html += "<th style='text-align: center;'>Ours</th>"
+            html += "<th style='text-align: center;'>Agency</th>"
+            html += "<th style='text-align: center;'>Total</th>"
+            html += "<th style='text-align: center;'>Ours</th>"
+            html += "<th style='text-align: center;'>Agency</th>"
+            html += "<th style='text-align: center;'>Total</th>"
+            html += "<th style='text-align: center;'>Ours</th>"
+            html += "<th style='text-align: center;'>Agency</th>"
+            html += "<th style='text-align: center;'>Total</th>"
         html += "</tr>"
         html += "</thead>"
     
@@ -215,6 +220,7 @@ if st.session_state["authentication_status"]:
         html += "</tbody>"
         html += "</table>"
         return html
+
 
 
     
