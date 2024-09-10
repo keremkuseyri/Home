@@ -134,7 +134,7 @@ if st.session_state["authentication_status"]:
     # Modified Function to create an HTML table with an additional header row
 
     
-    def create_html_table_fixed(df_import, df_export):
+    def create_html_table(df_import, df_export):
         html = "<table border='1' style='border-collapse: collapse; width: 100%;'>"
     
         # Top header row for Export and Import
@@ -195,33 +195,33 @@ if st.session_state["authentication_status"]:
                 rowspan += 1
                 html += f"<tr><td style='text-align: center;'>{status}</td>"
     
-            # Adding Export data with strict color matching for each category (based on headers)
+            # Adding Export data with correct color styling for each category
             for category in df_export.columns.levels[0]:
                 for type_ in df_export.columns.levels[1]:
                     value = df_export.loc[index, (category, type_)]
                     if isinstance(value, (float, int)) and not isinstance(value, str):
                         value = int(value)
     
-                    # Enforcing strict color rules
+                    # Swapping background colors between Revenue (now pink) and Cargo (now green)
                     if category == "Revenue":
                         html += f"<td style='text-align: center; background-color: #F4CCCC;'>{value}</td>"  # Pink for Revenue
                     elif category == "Profit":
-                        html += f"<td style='text-align: center; background-color: #D0E0E3;'>{value}</td>"  # Light Blue for Profit
+                        html += f"<td style='text-align: center; background-color: #D0E0E3;'>{value}</td>"  # Blue for Profit
                     elif category == "Cargo":
                         html += f"<td style='text-align: center; background-color: #D9EAD3;'>{value}</td>"  # Green for Cargo
     
-            # Adding Import data with strict color matching for each category (based on headers)
+            # Adding Import data with correct color styling for each category
             for category in df_import.columns.levels[0]:
                 for type_ in df_import.columns.levels[1]:
                     value = df_import.loc[index, (category, type_)]
                     if isinstance(value, (float, int)) and not isinstance(value, str):
                         value = int(value)
     
-                    # Enforcing strict color rules
+                    # Swapping background colors between Revenue (now pink) and Cargo (now green)
                     if category == "Revenue":
                         html += f"<td style='text-align: center; background-color: #F4CCCC;'>{value}</td>"  # Pink for Revenue
                     elif category == "Profit":
-                        html += f"<td style='text-align: center; background-color: #D0E0E3;'>{value}</td>"  # Light Blue for Profit
+                        html += f"<td style='text-align: center; background-color: #D0E0E3;'>{value}</td>"  # Blue for Profit
                     elif category == "Cargo":
                         html += f"<td style='text-align: center; background-color: #D9EAD3;'>{value}</td>"  # Green for Cargo
     
@@ -234,7 +234,6 @@ if st.session_state["authentication_status"]:
         html += "</tbody>"
         html += "</table>"
         return html
-
 
 
 
