@@ -152,9 +152,9 @@ if st.session_state["authentication_status"]:
         # Second header row for Revenue, Profit, Cargo under Export and Import
         html += "<tr>"
         for _ in range(2):  # Once for Export, once for Import
-            html += "<th colspan='3' style='text-align: center; background-color: #D9EAD3;'>Revenue</th>"
-            html += "<th colspan='3' style='text-align: center; background-color: #D0E0E3;'>Profit</th>"
-            html += "<th colspan='3' style='text-align: center; background-color: #F4CCCC;'>Cargo</th>"
+            html += "<th colspan='3' style='text-align: center; background-color: #F4CCCC;'>Revenue</th>"  # Pink for Revenue
+            html += "<th colspan='3' style='text-align: center; background-color: #D0E0E3;'>Profit</th>"  # Light Blue for Profit
+            html += "<th colspan='3' style='text-align: center; background-color: #D9EAD3;'>Cargo</th>"  # Green for Cargo
         html += "</tr>"
     
         # Third header row for Ours, Agency, Total under Revenue, Profit, Cargo
@@ -202,13 +202,13 @@ if st.session_state["authentication_status"]:
                     if isinstance(value, (float, int)) and not isinstance(value, str):
                         value = int(value)
     
-                    # Correcting background colors for categories
+                    # Correcting background colors for categories (swapped Revenue and Cargo colors)
                     if category == "Revenue":
-                        html += f"<td style='text-align: center; background-color: #D9EAD3;'>{value}</td>"  # Green for Revenue
+                        html += f"<td style='text-align: center; background-color: #F4CCCC;'>{value}</td>"  # Pink for Revenue
                     elif category == "Profit":
                         html += f"<td style='text-align: center; background-color: #D0E0E3;'>{value}</td>"  # Blue for Profit
                     elif category == "Cargo":
-                        html += f"<td style='text-align: center; background-color: #F4CCCC;'>{value}</td>"  # Pink for Cargo
+                        html += f"<td style='text-align: center; background-color: #D9EAD3;'>{value}</td>"  # Green for Cargo
     
             # Adding Import data with correct color styling for each category
             for category in df_import.columns.levels[0]:
@@ -217,13 +217,13 @@ if st.session_state["authentication_status"]:
                     if isinstance(value, (float, int)) and not isinstance(value, str):
                         value = int(value)
     
-                    # Correcting background colors for categories
+                    # Correcting background colors for categories (swapped Revenue and Cargo colors)
                     if category == "Revenue":
-                        html += f"<td style='text-align: center; background-color: #D9EAD3;'>{value}</td>"  # Green for Revenue
+                        html += f"<td style='text-align: center; background-color: #F4CCCC;'>{value}</td>"  # Pink for Revenue
                     elif category == "Profit":
                         html += f"<td style='text-align: center; background-color: #D0E0E3;'>{value}</td>"  # Blue for Profit
                     elif category == "Cargo":
-                        html += f"<td style='text-align: center; background-color: #F4CCCC;'>{value}</td>"  # Pink for Cargo
+                        html += f"<td style='text-align: center; background-color: #D9EAD3;'>{value}</td>"  # Green for Cargo
     
             html += "</tr>"
     
@@ -234,6 +234,7 @@ if st.session_state["authentication_status"]:
         html += "</tbody>"
         html += "</table>"
         return html
+
 
 
 
