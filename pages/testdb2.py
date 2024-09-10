@@ -202,7 +202,7 @@ if st.session_state["authentication_status"]:
                     if isinstance(value, (float, int)) and not isinstance(value, str):
                         value = int(value)
     
-                    # Correcting background colors for categories (swapped Revenue and Cargo colors)
+                    # Swapping background colors between Revenue (now pink) and Cargo (now green)
                     if category == "Revenue":
                         html += f"<td style='text-align: center; background-color: #F4CCCC;'>{value}</td>"  # Pink for Revenue
                     elif category == "Profit":
@@ -217,7 +217,7 @@ if st.session_state["authentication_status"]:
                     if isinstance(value, (float, int)) and not isinstance(value, str):
                         value = int(value)
     
-                    # Correcting background colors for categories (swapped Revenue and Cargo colors)
+                    # Swapping background colors between Revenue (now pink) and Cargo (now green)
                     if category == "Revenue":
                         html += f"<td style='text-align: center; background-color: #F4CCCC;'>{value}</td>"  # Pink for Revenue
                     elif category == "Profit":
@@ -234,6 +234,7 @@ if st.session_state["authentication_status"]:
         html += "</tbody>"
         html += "</table>"
         return html
+
 
 
 
