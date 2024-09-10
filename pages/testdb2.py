@@ -132,6 +132,8 @@ if st.session_state["authentication_status"]:
     # Function to create an HTML table with specified styling
     # Modified Function to create an HTML table with specified styling
     # Modified Function to create an HTML table with an additional header row
+
+    
     def create_html_table(df_import, df_export):
         html = "<table border='1' style='border-collapse: collapse; width: 100%;'>"
     
