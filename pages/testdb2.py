@@ -204,11 +204,11 @@ if st.session_state["authentication_status"]:
     
                     # Correcting background colors for categories
                     if category == "Revenue":
-                        html += f"<td style='text-align: center; background-color: #D9EAD3;'>{value}</td>"
+                        html += f"<td style='text-align: center; background-color: #D9EAD3;'>{value}</td>"  # Green for Revenue
                     elif category == "Profit":
-                        html += f"<td style='text-align: center; background-color: #D0E0E3;'>{value}</td>"
+                        html += f"<td style='text-align: center; background-color: #D0E0E3;'>{value}</td>"  # Blue for Profit
                     elif category == "Cargo":
-                        html += f"<td style='text-align: center; background-color: #F4CCCC;'>{value}</td>"
+                        html += f"<td style='text-align: center; background-color: #F4CCCC;'>{value}</td>"  # Pink for Cargo
     
             # Adding Import data with correct color styling for each category
             for category in df_import.columns.levels[0]:
@@ -219,11 +219,11 @@ if st.session_state["authentication_status"]:
     
                     # Correcting background colors for categories
                     if category == "Revenue":
-                        html += f"<td style='text-align: center; background-color: #D9EAD3;'>{value}</td>"
+                        html += f"<td style='text-align: center; background-color: #D9EAD3;'>{value}</td>"  # Green for Revenue
                     elif category == "Profit":
-                        html += f"<td style='text-align: center; background-color: #D0E0E3;'>{value}</td>"
+                        html += f"<td style='text-align: center; background-color: #D0E0E3;'>{value}</td>"  # Blue for Profit
                     elif category == "Cargo":
-                        html += f"<td style='text-align: center; background-color: #F4CCCC;'>{value}</td>"
+                        html += f"<td style='text-align: center; background-color: #F4CCCC;'>{value}</td>"  # Pink for Cargo
     
             html += "</tr>"
     
@@ -234,6 +234,7 @@ if st.session_state["authentication_status"]:
         html += "</tbody>"
         html += "</table>"
         return html
+
 
 
 
