@@ -216,6 +216,7 @@ if st.session_state["authentication_status"]:
         html += "</table>"
         return html
 
+
     
     # Use the modified function to generate the HTML tables
     combined_html_table = create_html_table(import_combined_df, export_combined_df)
