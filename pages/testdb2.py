@@ -132,27 +132,27 @@ if st.session_state["authentication_status"]:
     # Function to create an HTML table with specified styling
     def create_html_table(df_import, df_export):
         html = "<table border='1' style='border-collapse: collapse; width: 100%;'>"
-
-        # Top header row for Export and Import (switched positions)
+    
+        # Top header row for Export and Import (switched)
         html += "<thead><tr>"
         html += "<th rowspan='3' style='text-align: center; font-weight: normal;'></th>"
         html += "<th rowspan='3' style='text-align: center; font-weight: normal;'></th>"
-
-        # Export header spanning its columns
+    
+        # Export header spanning its columns (switched to the left)
         html += "<th colspan='9' style='text-align: center; background-color: #EEFC5E;'>Export</th>"
-
-        # Import header spanning its columns
+    
+        # Import header spanning its columns (switched to the right)
         html += "<th colspan='9' style='text-align: center; background-color: #EEFC5E;'>Import</th>"
         html += "</tr>"
-
-        # Second header row for Revenue, Profit, Cargo under Export and Import (switched positions)
+    
+        # Second header row for Revenue, Profit, Cargo under Export and Import (switched)
         html += "<tr>"
         for _ in range(2):  # Once for Export, once for Import
             html += "<th colspan='3' style='text-align: center; background-color: #D9EAD3;'>Revenue</th>"
             html += "<th colspan='3' style='text-align: center; background-color: #D0E0E3;'>Profit</th>"
             html += "<th colspan='3' style='text-align: center; background-color: #F4CCCC;'>Cargo</th>"
         html += "</tr>"
-
+    
         # Third header row for Ours, Agency, Total under Revenue, Profit, Cargo (switched positions)
         html += "<tr>"
         for _ in range(2):  # Once for Export, once for Import
@@ -162,34 +162,39 @@ if st.session_state["authentication_status"]:
                 html += f"<th style='text-align: center;'>{category}</th>"
         html += "</tr>"
         html += "</thead>"
-
+    
         # Table body
         html += "<tbody>"
-
+    
         # Iterate over DataFrame index (Period, Status)
         for index in df_import.index:
             html += "<tr>"
             html += f"<td>{index[0]}</td><td>{index[1]}</td>"
-
+    
             # Adding Export Data (switched to appear before Import data)
             for category in df_export.columns.levels[0]:
                 for type_ in df_export.columns.levels[1]:
-                    # Convert float values to integers and add them to the table
-                    value = int(df_export.loc[index, (category, type_)])
+                    # Convert float values to integers (leave percentages unchanged)
+                    value = df_export.loc[index, (category, type_)]
+                    if isinstance(value, (float, int)):  # If it's a number, convert to integer
+                        value = int(value)
                     html += f"<td style='text-align: center;'>{value}</td>"
-
+    
             # Adding Import Data (switched to appear after Export data)
             for category in df_import.columns.levels[0]:
                 for type_ in df_import.columns.levels[1]:
-                    # Convert float values to integers and add them to the table
-                    value = int(df_import.loc[index, (category, type_)])
+                    # Convert float values to integers (leave percentages unchanged)
+                    value = df_import.loc[index, (category, type_)]
+                    if isinstance(value, (float, int)):  # If it's a number, convert to integer
+                        value = int(value)
                     html += f"<td style='text-align: center;'>{value}</td>"
-
+    
             html += "</tr>"
-
+    
         html += "</tbody>"
         html += "</table>"
         return html
+
 
     # Generate HTML table from DataFrames
     html_table = create_html_table(import_combined_df, export_combined_df)
