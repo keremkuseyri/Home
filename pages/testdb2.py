@@ -136,27 +136,27 @@ if st.session_state["authentication_status"]:
     
     def create_html_table(df_import, df_export):
         html = "<table border='1' style='border-collapse: collapse; width: 100%;'>"
-    
+        
         # Top header row for Export and Import
         html += "<thead><tr>"
         html += "<th rowspan='3' style='text-align: center; font-weight: normal;'></th>"
         html += "<th rowspan='3' style='text-align: center; font-weight: normal;'></th>"
-    
+        
         # Export header spanning its columns
         html += "<th colspan='9' style='text-align: center; background-color: #EEFC5E;'>Export</th>"
-    
+        
         # Import header spanning its columns
         html += "<th colspan='9' style='text-align: center; background-color: #EEFC5E;'>Import</th>"
         html += "</tr>"
-    
-        # Second header row for Revenue, Profit, Cargo under Export and Import
+        
+        # Second header row for Revenue, Profit, Cargo under Export and Import (with Revenue now first)
         html += "<tr>"
         for _ in range(2):  # Once for Export, once for Import
             html += "<th colspan='3' style='text-align: center; background-color: #F4CCCC;'>Revenue</th>"  # Pink for Revenue
             html += "<th colspan='3' style='text-align: center; background-color: #D0E0E3;'>Profit</th>"  # Light Blue for Profit
             html += "<th colspan='3' style='text-align: center; background-color: #D9EAD3;'>Cargo</th>"  # Green for Cargo
         html += "</tr>"
-    
+        
         # Third header row for Ours, Agency, Total under Revenue, Profit, Cargo
         html += "<tr>"
         for _ in range(2):  # Once for Export, once for Import
@@ -171,19 +171,19 @@ if st.session_state["authentication_status"]:
             html += "<th style='text-align: center;'>Total</th>"
         html += "</tr>"
         html += "</thead>"
-    
+        
         # Add the rows with merged cells
         html += "<tbody>"
-    
+        
         prev_period = None
         rowspan = 1
         for index in df_import.index:
             period, status = index
-    
+        
             # Skip H1 and H2 rows
             if period in ["H1", "H2"]:
                 continue
-    
+        
             # If period changes, close the previous row's cell
             if period != prev_period:
                 if prev_period is not None:
@@ -194,43 +194,43 @@ if st.session_state["authentication_status"]:
             else:
                 rowspan += 1
                 html += f"<tr><td style='text-align: center;'>{status}</td>"
-    
+        
             # Adding Export data with correct color styling for each category
             for category in df_export.columns.levels[0]:
                 for type_ in df_export.columns.levels[1]:
                     value = df_export.loc[index, (category, type_)]
                     if isinstance(value, (float, int)) and not isinstance(value, str):
                         value = int(value)
-    
-                    # Swapping background colors between Revenue (now pink) and Cargo (now green)
+        
+                    # Adjusted the order so Revenue is first, followed by Profit and Cargo
                     if category == "Revenue":
                         html += f"<td style='text-align: center; background-color: #F4CCCC;'>{value}</td>"  # Pink for Revenue
                     elif category == "Profit":
                         html += f"<td style='text-align: center; background-color: #D0E0E3;'>{value}</td>"  # Blue for Profit
                     elif category == "Cargo":
                         html += f"<td style='text-align: center; background-color: #D9EAD3;'>{value}</td>"  # Green for Cargo
-    
+        
             # Adding Import data with correct color styling for each category
             for category in df_import.columns.levels[0]:
                 for type_ in df_import.columns.levels[1]:
                     value = df_import.loc[index, (category, type_)]
                     if isinstance(value, (float, int)) and not isinstance(value, str):
                         value = int(value)
-    
-                    # Swapping background colors between Revenue (now pink) and Cargo (now green)
+        
+                    # Adjusted the order so Revenue is first, followed by Profit and Cargo
                     if category == "Revenue":
                         html += f"<td style='text-align: center; background-color: #F4CCCC;'>{value}</td>"  # Pink for Revenue
                     elif category == "Profit":
                         html += f"<td style='text-align: center; background-color: #D0E0E3;'>{value}</td>"  # Blue for Profit
                     elif category == "Cargo":
                         html += f"<td style='text-align: center; background-color: #D9EAD3;'>{value}</td>"  # Green for Cargo
-    
+        
             html += "</tr>"
-    
+        
         # Final replacement for the last period
         if prev_period is not None:
             html = html.replace(f"ROWSPAN_{prev_period}", str(rowspan))
-    
+        
         html += "</tbody>"
         html += "</table>"
         return html
