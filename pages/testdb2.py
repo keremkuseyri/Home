@@ -195,35 +195,31 @@ if st.session_state["authentication_status"]:
                 rowspan += 1
                 html += f"<tr><td style='text-align: center;'>{status}</td>"
         
-            # Adding Export data with correct color styling for each category
-            for category in df_export.columns.levels[0]:
-                for type_ in df_export.columns.levels[1]:
-                    value = df_export.loc[index, (category, type_)]
-                    if isinstance(value, (float, int)) and not isinstance(value, str):
-                        value = int(value)
-        
-                    # Adjusted the order so Revenue is first, followed by Profit and Cargo
-                    if category == "Revenue":
-                        html += f"<td style='text-align: center; background-color: #F4CCCC;'>{value}</td>"  # Pink for Revenue
-                    elif category == "Profit":
-                        html += f"<td style='text-align: center; background-color: #D0E0E3;'>{value}</td>"  # Blue for Profit
-                    elif category == "Cargo":
-                        html += f"<td style='text-align: center; background-color: #D9EAD3;'>{value}</td>"  # Green for Cargo
-        
-            # Adding Import data with correct color styling for each category
-            for category in df_import.columns.levels[0]:
-                for type_ in df_import.columns.levels[1]:
-                    value = df_import.loc[index, (category, type_)]
-                    if isinstance(value, (float, int)) and not isinstance(value, str):
-                        value = int(value)
-        
-                    # Adjusted the order so Revenue is first, followed by Profit and Cargo
-                    if category == "Revenue":
-                        html += f"<td style='text-align: center; background-color: #F4CCCC;'>{value}</td>"  # Pink for Revenue
-                    elif category == "Profit":
-                        html += f"<td style='text-align: center; background-color: #D0E0E3;'>{value}</td>"  # Blue for Profit
-                    elif category == "Cargo":
-                        html += f"<td style='text-align: center; background-color: #D9EAD3;'>{value}</td>"  # Green for Cargo
+            # Adding Export data with correct order and styling
+            revenue_export = df_export.loc[index, ('Revenue', 'Ours')], df_export.loc[index, ('Revenue', 'Agency')], df_export.loc[index, ('Revenue', 'Total')]
+            profit_export = df_export.loc[index, ('Profit', 'Ours')], df_export.loc[index, ('Profit', 'Agency')], df_export.loc[index, ('Profit', 'Total')]
+            cargo_export = df_export.loc[index, ('Cargo', 'Ours')], df_export.loc[index, ('Cargo', 'Agency')], df_export.loc[index, ('Cargo', 'Total')]
+            
+            # Adjusted the order to ensure Revenue, Profit, Cargo data is correct
+            for value in revenue_export:
+                html += f"<td style='text-align: center; background-color: #F4CCCC;'>{int(value)}</td>"  # Pink for Revenue
+            for value in profit_export:
+                html += f"<td style='text-align: center; background-color: #D0E0E3;'>{int(value)}</td>"  # Blue for Profit
+            for value in cargo_export:
+                html += f"<td style='text-align: center; background-color: #D9EAD3;'>{int(value)}</td>"  # Green for Cargo
+    
+            # Adding Import data with correct order and styling
+            revenue_import = df_import.loc[index, ('Revenue', 'Ours')], df_import.loc[index, ('Revenue', 'Agency')], df_import.loc[index, ('Revenue', 'Total')]
+            profit_import = df_import.loc[index, ('Profit', 'Ours')], df_import.loc[index, ('Profit', 'Agency')], df_import.loc[index, ('Profit', 'Total')]
+            cargo_import = df_import.loc[index, ('Cargo', 'Ours')], df_import.loc[index, ('Cargo', 'Agency')], df_import.loc[index, ('Cargo', 'Total')]
+            
+            # Adjusted the order to ensure Revenue, Profit, Cargo data is correct
+            for value in revenue_import:
+                html += f"<td style='text-align: center; background-color: #F4CCCC;'>{int(value)}</td>"  # Pink for Revenue
+            for value in profit_import:
+                html += f"<td style='text-align: center; background-color: #D0E0E3;'>{int(value)}</td>"  # Blue for Profit
+            for value in cargo_import:
+                html += f"<td style='text-align: center; background-color: #D9EAD3;'>{int(value)}</td>"  # Green for Cargo
         
             html += "</tr>"
         
@@ -234,6 +230,7 @@ if st.session_state["authentication_status"]:
         html += "</tbody>"
         html += "</table>"
         return html
+
 
 
 
