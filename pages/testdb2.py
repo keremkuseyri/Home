@@ -195,6 +195,17 @@ if st.session_state["authentication_status"]:
                 rowspan += 1
                 html += f"<tr><td style='text-align: center;'>{status}</td>"
         
+            # Function to format numbers or percentages
+            def format_value(value):
+                try:
+                    # Check if the value contains a '%' symbol
+                    if isinstance(value, str) and '%' in value:
+                        return value  # Keep as is for percentage strings
+                    else:
+                        return int(value)  # Convert to integer for numeric values
+                except ValueError:
+                    return value  # Return the value as is if it cannot be converted
+    
             # Adding Export data with correct order and styling
             revenue_export = df_export.loc[index, ('Revenue', 'Ours')], df_export.loc[index, ('Revenue', 'Agency')], df_export.loc[index, ('Revenue', 'Total')]
             profit_export = df_export.loc[index, ('Profit', 'Ours')], df_export.loc[index, ('Profit', 'Agency')], df_export.loc[index, ('Profit', 'Total')]
@@ -202,11 +213,11 @@ if st.session_state["authentication_status"]:
             
             # Adjusted the order to ensure Revenue, Profit, Cargo data is correct
             for value in revenue_export:
-                html += f"<td style='text-align: center; background-color: #F4CCCC;'>{int(value)}</td>"  # Pink for Revenue
+                html += f"<td style='text-align: center; background-color: #F4CCCC;'>{format_value(value)}</td>"  # Pink for Revenue
             for value in profit_export:
-                html += f"<td style='text-align: center; background-color: #D0E0E3;'>{int(value)}</td>"  # Blue for Profit
+                html += f"<td style='text-align: center; background-color: #D0E0E3;'>{format_value(value)}</td>"  # Blue for Profit
             for value in cargo_export:
-                html += f"<td style='text-align: center; background-color: #D9EAD3;'>{int(value)}</td>"  # Green for Cargo
+                html += f"<td style='text-align: center; background-color: #D9EAD3;'>{format_value(value)}</td>"  # Green for Cargo
     
             # Adding Import data with correct order and styling
             revenue_import = df_import.loc[index, ('Revenue', 'Ours')], df_import.loc[index, ('Revenue', 'Agency')], df_import.loc[index, ('Revenue', 'Total')]
@@ -215,11 +226,11 @@ if st.session_state["authentication_status"]:
             
             # Adjusted the order to ensure Revenue, Profit, Cargo data is correct
             for value in revenue_import:
-                html += f"<td style='text-align: center; background-color: #F4CCCC;'>{int(value)}</td>"  # Pink for Revenue
+                html += f"<td style='text-align: center; background-color: #F4CCCC;'>{format_value(value)}</td>"  # Pink for Revenue
             for value in profit_import:
-                html += f"<td style='text-align: center; background-color: #D0E0E3;'>{int(value)}</td>"  # Blue for Profit
+                html += f"<td style='text-align: center; background-color: #D0E0E3;'>{format_value(value)}</td>"  # Blue for Profit
             for value in cargo_import:
-                html += f"<td style='text-align: center; background-color: #D9EAD3;'>{int(value)}</td>"  # Green for Cargo
+                html += f"<td style='text-align: center; background-color: #D9EAD3;'>{format_value(value)}</td>"  # Green for Cargo
         
             html += "</tr>"
         
@@ -230,6 +241,7 @@ if st.session_state["authentication_status"]:
         html += "</tbody>"
         html += "</table>"
         return html
+
 
 
 
