@@ -52,9 +52,18 @@ if st.session_state["authentication_status"]:
     collection_import = db["Import"]
     collection_export = db["Export"]
     
-    # Fetch data from collections
-    import_data = list(collection_import.find({}))
-    export_data = list(collection_export.find({}))
+    # Adding a selectbox for branch selection
+    branches = ["Total", "Istanbul", "Izmir", "Mersin"]
+    selected_branch = st.selectbox("Select a Branch", branches, index=0)
+
+    # Modify the query based on selected branch
+    branch_filter = {}  # Default, no filter for "Total"
+    if selected_branch != "Total":
+        branch_filter = {"branch": selected_branch}
+
+    # Fetch data from collections with the filter
+    import_data = list(collection_import.find(branch_filter))
+    export_data = list(collection_export.find(branch_filter))
     
     # Function to create DataFrames for 'ours', 'agency', and 'total'
     def create_category_df(data, category):
@@ -254,12 +263,19 @@ if st.session_state["authentication_status"]:
 
 
     
-    # Use the modified function to generate the HTML tables
-    combined_html_table = create_html_table(import_combined_df, export_combined_df)
+    # Create DataFrames for Import and Export data with the filtered branch data
+    if import_data:  # Ensure data exists
+        import_combined_df = create_combined_df(import_data[0])
+    if export_data:  # Ensure data exists
+        export_combined_df = create_combined_df(export_data[0])
     
     # Display the combined HTML table in Streamlit
     if st.session_state["name"] == "Kerem Kuseyri" or st.session_state["name"] == "Üveys Aydemir" or st.session_state["name"] == "Kubilay Cebeci":
-       st.markdown(combined_html_table, unsafe_allow_html=True)
+           if import_data and export_data:
+                combined_html_table = create_html_table(import_combined_df, export_combined_df)
+                st.markdown(combined_html_table, unsafe_allow_html=True)
+            else:
+                st.warning(f"No data found for branch: {selected_branch}")
 
     else :
          st.error("You are not eligible to see this page.")
