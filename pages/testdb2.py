@@ -135,8 +135,8 @@ if st.session_state["authentication_status"]:
         return df
     
     # Create DataFrames for Import and Export data
-    import_combined_df = create_combined_df(import_data[0])
-    export_combined_df = create_combined_df(export_data[0])
+    import_combined_df = create_combined_df(import_data)
+    export_combined_df = create_combined_df(export_data)
     
     # Function to create an HTML table with specified styling
     # Modified Function to create an HTML table with specified styling
