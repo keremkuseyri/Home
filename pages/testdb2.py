@@ -271,10 +271,10 @@ if st.session_state["authentication_status"]:
     
     # Display the combined HTML table in Streamlit
     if st.session_state["name"] == "Kerem Kuseyri" or st.session_state["name"] == "Üveys Aydemir" or st.session_state["name"] == "Kubilay Cebeci":
-           if import_data and export_data:
+        if import_data and export_data:
                 combined_html_table = create_html_table(import_combined_df, export_combined_df)
                 st.markdown(combined_html_table, unsafe_allow_html=True)
-            else:
+        else:
                 st.warning(f"No data found for branch: {selected_branch}")
 
     else :
