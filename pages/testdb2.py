@@ -52,10 +52,18 @@ if st.session_state["authentication_status"]:
     collection_import = db["Import"]
     collection_export = db["Export"]
     
-    # Adding a selectbox for branch selection
+    # Original branch list with lowercase values for logic
     branches = ["total", "istanbul", "izmir", "mersin"]
-    selected_branch = st.selectbox("Select a Branch", branches, index=0)
-
+    
+    # Create a new list for display purposes with uppercase first letters
+    display_branches = [branch.title() for branch in branches]
+    
+    # Use the display_branches in the selectbox but retrieve the corresponding value from the original list
+    selected_display_branch = st.selectbox("Select a Branch", display_branches, index=0)
+    
+    # Map the selected display branch back to the original branch value (lowercase)
+    selected_branch = branches[display_branches.index(selected_display_branch)]
+    
     # Modify the query based on selected branch
     branch_filter = {}  # Default, no filter for "Total"
     if selected_branch != "total":
