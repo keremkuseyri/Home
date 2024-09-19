@@ -38,7 +38,7 @@ if st.session_state["authentication_status"]:
         st.page_link("pages/Clientanalitics.py",label="Client Offer/Success Analysis", icon="📈")
         st.page_link("pages/Clientaircustomer.py",label="Client Air Customer Offer Analysis", icon="📈")
     with st.sidebar.expander("Air Import/Export Yearly 📊"):
-         st.page_link("pages/testdb2.py", label="Air Import/Export Yearly 📊")
+         st.page_link("pages/testdb2.py", label="Sea Import/Export Yearly Revenue 📊")
 
     st.sidebar.write(f'Welcome *{st.session_state["name"]}*')
     authenticator.logout("Logout", "sidebar")
