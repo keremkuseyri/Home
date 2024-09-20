@@ -140,7 +140,6 @@ if st.session_state["authentication_status"]:
     
         # Create the DataFrame
         df = pd.DataFrame(combined_data, columns=columns, index=rows)
-        df = df.map(format_int_with_commas)
         return df
     
     # Create DataFrames for Import and Export data
