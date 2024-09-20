@@ -154,7 +154,7 @@ if st.session_state["authentication_status"]:
           # If value is something unexpected, return it as is
           else:
               return value
-        except Exception as e:
+      except Exception as e:
             print(f"Error formatting value: {e}")  # Debugging statement
             return value
 
