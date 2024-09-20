@@ -137,14 +137,26 @@ if st.session_state["authentication_status"]:
         return df
 
     # Function to format the values (e.g. add commas for larger numbers)
-    def format_value(value):
-        try:
-            if isinstance(value, str) and '%' in value:
-                return value
-            else:
-                return "{:,}".format(int(value))  # Format with commas
-        except ValueError:
+ def format_value(value):
+    try:
+        print(f"Original value: {value} ({type(value)})")  # Debugging statement
+        
+        # Handle percentages as they are, assuming they're already formatted strings
+        if isinstance(value, str) and '%' in value:
             return value
+        
+        # Check if value is a float or int and format accordingly
+        elif isinstance(value, (int, float)):
+            formatted_value = "{:,.0f}".format(value)  # Format numbers with commas and no decimal places
+            print(f"Formatted value: {formatted_value}")  # Debugging statement
+            return formatted_value
+        
+        # If value is something unexpected, return it as is
+        else:
+            return value
+    except Exception as e:
+        print(f"Error formatting value: {e}")  # Debugging statement
+        return value
 
     # Function to create an HTML table to display the data
     def create_html_table(df_import, df_export):
