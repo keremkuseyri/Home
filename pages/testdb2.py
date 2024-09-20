@@ -154,9 +154,9 @@ if st.session_state["authentication_status"]:
           # If value is something unexpected, return it as is
           else:
               return value
-      except Exception as e:
-          print(f"Error formatting value: {e}")  # Debugging statement
-          return value
+        except Exception as e:
+            print(f"Error formatting value: {e}")  # Debugging statement
+            return value
 
     # Function to create an HTML table to display the data
     def create_html_table(df_import, df_export):
