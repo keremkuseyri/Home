@@ -13,9 +13,11 @@ st.set_page_config(page_title='Genel Transport',
 
 st.image('https://www.geneltransport.com.tr/wp-content/uploads/2021/03/logo-color.png')
 
+# Load authentication config
 with open('config.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
 
+# Set up authentication
 authenticator = stauth.Authenticate(
     config['credentials'],
     config['cookie']['name'],
@@ -26,8 +28,10 @@ authenticator = stauth.Authenticate(
 
 authenticator.login()
 
+# Authentication check
 if st.session_state["authentication_status"]:
 
+    # Sidebar with page navigation
     with st.sidebar.expander("Sea Trend Report ⛴"):
         st.page_link("Home.py", label="Total", icon="📊")
     with st.sidebar.expander("Air Trend Report ✈️"):
@@ -69,6 +73,7 @@ if st.session_state["authentication_status"]:
     import_data = list(collection_import.find(branch_filter))
     export_data = list(collection_export.find(branch_filter))
 
+    # Function to create a DataFrame for a specific category (budget, actual, percentage) and time period
     def create_category_df(data, category):
         rows = []
         for month in ["January", "February", "March", "April", "May", "June", 
@@ -89,6 +94,7 @@ if st.session_state["authentication_status"]:
 
         return rows
 
+    # Function to combine all categories into a single DataFrame
     def create_combined_df(data):
         revenue_ours = create_category_df(data.get("revenue", {}), "ours")
         revenue_agency = create_category_df(data.get("revenue", {}), "agency")
@@ -130,6 +136,7 @@ if st.session_state["authentication_status"]:
         df = pd.DataFrame(combined_data, columns=columns, index=rows)
         return df
 
+    # Function to format the values (e.g. add commas for larger numbers)
     def format_value(value):
         try:
             if isinstance(value, str) and '%' in value:
@@ -139,6 +146,7 @@ if st.session_state["authentication_status"]:
         except ValueError:
             return value
 
+    # Function to create an HTML table to display the data
     def create_html_table(df_import, df_export):
         html = "<table border='1' style='border-collapse: collapse; width: 100%;'>"
 
@@ -176,12 +184,15 @@ if st.session_state["authentication_status"]:
         html += "</tbody></table>"
         return html
 
+    # Generate the DataFrame for import and export
     df_import = create_combined_df(import_data)
     df_export = create_combined_df(export_data)
 
+    # Create the HTML table and display it
     html_table = create_html_table(df_import, df_export)
     st.markdown(html_table, unsafe_allow_html=True)
 
+# If not authenticated
 elif st.session_state["authentication_status"] is None:
     st.warning('Please enter your username and password')
 
@@ -193,7 +204,8 @@ elif st.session_state["authentication_status"] is None:
 
 else:
     st.error('Username/password is incorrect')
-  # Clear the session state
+  
+    # Clear the session state
     st.session_state.clear()
 
     # Set a trigger to rerun the app after session state is cleared
