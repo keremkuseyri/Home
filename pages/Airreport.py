@@ -31,7 +31,7 @@ if st.session_state["authentication_status"]:
          st.page_link("pages/Airreport.py", label="Air Profit Monthly 📊")
     with st.sidebar.expander("Road Report 🛣️"):
          st.page_link("pages/Roadreport.py", label="Road Profit Monthly 📊")
-        
+
     st.sidebar.write(f'Welcome *{st.session_state["name"]}*')
     authenticator.logout("Logout", "sidebar")
 
@@ -88,6 +88,61 @@ if st.session_state["authentication_status"]:
         return rows
     
     # Function to structure the data into a single DataFrame
+    def create_combined_df(data):
+        # Extracting the data for each category
+        revenue_ours = create_category_df(data.get("revenue", {}), "ours")
+        revenue_agency = create_category_df(data.get("revenue", {}), "agency")
+        revenue_total = create_category_df(data.get("revenue", {}), "total")
+    
+        profit_ours = create_category_df(data.get("profit", {}), "ours")
+        profit_agency = create_category_df(data.get("profit", {}), "agency")
+        profit_total = create_category_df(data.get("profit", {}), "total")
+    
+        cargo_ours = create_category_df(data.get("amount_of_cargo", {}), "ours")
+        cargo_agency = create_category_df(data.get("amount_of_cargo", {}), "agency")
+        cargo_total = create_category_df(data.get("amount_of_cargo", {}), "total")
+    
+        # Combining the data
+        combined_data = []
+        for r_ours, r_agency, r_total, p_ours, p_agency, p_total, c_ours, c_agency, c_total in zip(
+            revenue_ours, revenue_agency, revenue_total,
+            profit_ours, profit_agency, profit_total,
+            cargo_ours, cargo_agency, cargo_total
+        ):
+            combined_data.append([r_ours[2], r_agency[2], r_total[2], 
+                                  p_ours[2], p_agency[2], p_total[2], 
+                                  c_ours[2], c_agency[2], c_total[2]])
+    
+        # Define the multi-index for columns
+        column_tuples = [
+            ("Revenue", "Ours"), ("Revenue", "Agency"), ("Revenue", "Total"),
+            ("Profit", "Ours"), ("Profit", "Agency"), ("Profit", "Total"),
+            ("Cargo", "Ours"), ("Cargo", "Agency"), ("Cargo", "Total")
+        ]
+        columns = pd.MultiIndex.from_tuples(column_tuples, names=["Category", "Type"])
+    
+        # Define the multi-index for rows
+        row_tuples = [
+            (month, status) for month in ["January", "February", "March", "April", "May", "June", 
+                                          "July", "August", "September", "October", "November", "December", 
+                                          "Q1", "Q2", "Q3", "Q4", "H1", "H2", "Year"]
+            for status in ['Budget', 'Actual', '+/- %']
+        ]
+        rows = pd.MultiIndex.from_tuples(row_tuples, names=["Period", "Status"])
+    
+        # Create the DataFrame
+        df = pd.DataFrame(combined_data, columns=columns, index=rows)
+        return df
+    
+    # Create DataFrames for Import and Export data
+    import_combined_df = create_combined_df(import_data[0])
+    export_combined_df = create_combined_df(export_data[0])
+    
+    # Function to create an HTML table with specified styling
+    # Modified Function to create an HTML table with specified styling
+    # Modified Function to create an HTML table with an additional header row
+
+    
     def create_html_table(df_import, df_export):
         html = "<table border='1' style='border-collapse: collapse; width: 100%;'>"
         
@@ -197,8 +252,6 @@ if st.session_state["authentication_status"]:
 
 
 
-    import_combined_df = create_combined_df(import_data[0])
-    export_combined_df = create_combined_df(export_data[0])
 
 
 
@@ -207,6 +260,12 @@ if st.session_state["authentication_status"]:
 
 
 
+    
+    # Create DataFrames for Import and Export data with the filtered branch data
+    if import_data:  # Ensure data exists
+        import_combined_df = create_combined_df(import_data[0])
+    if export_data:  # Ensure data exists
+        export_combined_df = create_combined_df(export_data[0])
     
     # Display the combined HTML table in Streamlit
     if st.session_state["name"] == "Kerem Kuseyri" or st.session_state["name"] == "Üveys Aydemir" or st.session_state["name"] == "Kubilay Cebeci" or st.session_state["name"] == "Senem Çelik":
