@@ -211,7 +211,7 @@ if st.session_state["authentication_status"]:
                     if isinstance(value, str) and '%' in value:
                         return value  # Keep as is for percentage strings
                     else:
-                        return f"{int(value):,}"  # Format numbers with commas
+                        return f"{int(value):,}".replace(",",".")  # Format numbers with commas
                 except (ValueError, TypeError):
                     return value  # Return the value as is if it cannot be converted
     
