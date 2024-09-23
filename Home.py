@@ -129,12 +129,12 @@ if st.session_state["authentication_status"]:
     dataframe2 = pd.read_excel('reports/sea_raw_data/date_teu.xlsx')
 
     # Display dataframes
-    st.title("Sea TEU Analysis")
+    #st.title("Sea TEU Analysis")
     col1, col2= st.columns(2)
     with col1:
-        st.info("Historical Data")
+        #st.info("Historical Data")
     with col2:
-        st.success("Prediction")
+        #st.success("Prediction")
 
      # Merge dataframes
     merged_df = pd.concat([dataframe2, dataframe1])
@@ -344,8 +344,8 @@ if st.session_state["authentication_status"]:
 
         # Display DataFrame using st.write
 
-        st.header("Acenta:")
-        st.write(combined_df)
+        #st.header("Acenta:")
+        #st.write(combined_df)
 
         col1, col2, col3 = st.columns(3)
 
@@ -373,7 +373,7 @@ if st.session_state["authentication_status"]:
         )
 
         with col1:
-            st.plotly_chart(fig, use_container_width=True, width=100, height=100)
+            #st.plotly_chart(fig, use_container_width=True, width=100, height=100)
 
         grouped_data_import = city_df.groupby(['City', 'Date']).sum().reset_index()
 
@@ -398,7 +398,7 @@ if st.session_state["authentication_status"]:
         )
 
         with col2:
-            st.plotly_chart(fig_import, use_container_width=True, width=100, height=100)
+           # st.plotly_chart(fig_import, use_container_width=True, width=100, height=100)
 
         grouped_data_cross_trade = city_df.groupby(['City', 'Date']).sum().reset_index()
 
@@ -423,7 +423,7 @@ if st.session_state["authentication_status"]:
         )
 
         with col3:
-            st.plotly_chart(fig_cross_trade, use_container_width=True, width=100, height=100)
+           # st.plotly_chart(fig_cross_trade, use_container_width=True, width=100, height=100)
 
 
 
@@ -472,14 +472,14 @@ if st.session_state["authentication_status"]:
 
         # Display DataFrame using st.write
 
-        st.header("Bizim İşimiz:")
-        st.write(combined_df)
+        #st.header("Bizim İşimiz:")
+        #st.write(combined_df)
 
         col1, col2, col3 = st.columns(3)
 
         grouped_data = city_df.groupby(['City', 'Date']).sum().reset_index()
         max_value = city_df[['Export', 'Import', 'Cross Trade']].astype(float).values.max()
-        st.write(max_value)
+        #st.write(max_value)
         # Create figure and add bar chart trace
         fig = go.Figure()
 
@@ -526,7 +526,7 @@ if st.session_state["authentication_status"]:
         )
 
         with col2:
-            st.plotly_chart(fig_import, use_container_width=True, width=100, height=100)
+            #st.plotly_chart(fig_import, use_container_width=True, width=100, height=100)
 
         grouped_data_cross_trade = city_df.groupby(['City', 'Date']).sum().reset_index()
 
@@ -551,7 +551,7 @@ if st.session_state["authentication_status"]:
         )
 
         with col3:
-            st.plotly_chart(fig_cross_trade, use_container_width=True, width=100, height=100)
+            #st.plotly_chart(fig_cross_trade, use_container_width=True, width=100, height=100)
 
 
 
@@ -597,14 +597,14 @@ if st.session_state["authentication_status"]:
 
         # Display DataFrame using st.write
 
-        st.header("SUM:")
-        st.write(combined_df)
+        #st.header("SUM:")
+        #st.write(combined_df)
 
         col1, col2, col3 = st.columns(3)
 
         grouped_data = city_df.groupby(['City', 'Date']).sum().reset_index()
         max_value = city_df[['Export', 'Import', 'Cross Trade']].astype(float).values.max()
-        st.write(max_value)
+        #st.write(max_value)
         # Create figure and add bar chart trace
         fig = go.Figure()
 
@@ -626,7 +626,7 @@ if st.session_state["authentication_status"]:
         )
 
         with col1:
-            st.plotly_chart(fig, use_container_width=True, width=100, height=100)
+            #st.plotly_chart(fig, use_container_width=True, width=100, height=100)
 
         grouped_data_import = city_df.groupby(['City', 'Date']).sum().reset_index()
 
@@ -651,7 +651,7 @@ if st.session_state["authentication_status"]:
         )
 
         with col2:
-            st.plotly_chart(fig_import, use_container_width=True, width=100, height=100)
+            #st.plotly_chart(fig_import, use_container_width=True, width=100, height=100)
 
         grouped_data_cross_trade = city_df.groupby(['City', 'Date']).sum().reset_index()
 
@@ -676,7 +676,7 @@ if st.session_state["authentication_status"]:
         )
 
         with col3:
-            st.plotly_chart(fig_cross_trade, use_container_width=True, width=100, height=100)
+            #st.plotly_chart(fig_cross_trade, use_container_width=True, width=100, height=100)
 
             # Create figure and add line chart trace
         fig = px.line(grouped_data,markers=True, x='Date', y='Export', color='City', labels={'Export': 'Export Quantity'})
@@ -686,7 +686,7 @@ if st.session_state["authentication_status"]:
             yaxis_title="Export",
         )
         with col1:
-            st.plotly_chart(fig, use_container_width=True)
+            #st.plotly_chart(fig, use_container_width=True)
 
         # Repeat the same process for Import and Cross Trade plots
 
@@ -697,7 +697,7 @@ if st.session_state["authentication_status"]:
             yaxis_title="Import",
         )
         with col2:
-            st.plotly_chart(fig_import, use_container_width=True)
+            #st.plotly_chart(fig_import, use_container_width=True)
 
         fig_cross_trade = px.line(grouped_data_cross_trade,markers=True, x='Date', y='Cross Trade', color='City', labels={'Cross Trade': 'Cross Trade Quantity'})
         fig_cross_trade.update_layout(
@@ -706,7 +706,7 @@ if st.session_state["authentication_status"]:
             yaxis_title="Cross Trade",
         )
         with col3:
-            st.plotly_chart(fig_cross_trade, use_container_width=True)
+            #st.plotly_chart(fig_cross_trade, use_container_width=True)
 
     with tab2:
         # Read data from Excel file
@@ -859,8 +859,8 @@ if st.session_state["authentication_status"]:
 
         # Display DataFrame using st.write
 
-        st.header("Acenta:")
-        st.write(combined_df)
+        #st.header("Acenta:")
+        #st.write(combined_df)
 
         col1, col2, col3 = st.columns(3)
 
@@ -888,7 +888,7 @@ if st.session_state["authentication_status"]:
         )
 
         with col1:
-            st.plotly_chart(fig, use_container_width=True, width=100, height=100)
+            #st.plotly_chart(fig, use_container_width=True, width=100, height=100)
 
         grouped_data_import = city_df.groupby(['City', 'Date']).sum().reset_index()
 
@@ -913,7 +913,7 @@ if st.session_state["authentication_status"]:
         )
 
         with col2:
-            st.plotly_chart(fig_import, use_container_width=True, width=100, height=100)
+            #st.plotly_chart(fig_import, use_container_width=True, width=100, height=100)
 
         grouped_data_cross_trade = city_df.groupby(['City', 'Date']).sum().reset_index()
 
@@ -938,7 +938,7 @@ if st.session_state["authentication_status"]:
         )
 
         with col3:
-            st.plotly_chart(fig_cross_trade, use_container_width=True, width=100, height=100)
+            #st.plotly_chart(fig_cross_trade, use_container_width=True, width=100, height=100)
 
 
 
@@ -987,14 +987,14 @@ if st.session_state["authentication_status"]:
 
         # Display DataFrame using st.write
 
-        st.header("Bizim İşimiz:")
-        st.write(combined_df)
+        #st.header("Bizim İşimiz:")
+        #st.write(combined_df)
 
         col1, col2, col3 = st.columns(3)
 
         grouped_data = city_df.groupby(['City', 'Date']).sum().reset_index()
         max_value = city_df[['Export', 'Import', 'Cross Trade']].astype(float).values.max()
-        st.write(max_value)
+        #st.write(max_value)
         # Create figure and add bar chart trace
         fig = go.Figure()
 
@@ -1016,7 +1016,7 @@ if st.session_state["authentication_status"]:
         )
 
         with col1:
-            st.plotly_chart(fig, use_container_width=True, width=100, height=100)
+            #st.plotly_chart(fig, use_container_width=True, width=100, height=100)
 
         grouped_data_import = city_df.groupby(['City', 'Date']).sum().reset_index()
 
@@ -1041,7 +1041,7 @@ if st.session_state["authentication_status"]:
         )
 
         with col2:
-            st.plotly_chart(fig_import, use_container_width=True, width=100, height=100)
+            #st.plotly_chart(fig_import, use_container_width=True, width=100, height=100)
 
         grouped_data_cross_trade = city_df.groupby(['City', 'Date']).sum().reset_index()
 
@@ -1066,7 +1066,7 @@ if st.session_state["authentication_status"]:
         )
 
         with col3:
-            st.plotly_chart(fig_cross_trade, use_container_width=True, width=100, height=100)
+            #st.plotly_chart(fig_cross_trade, use_container_width=True, width=100, height=100)
 
 
 
@@ -1112,14 +1112,14 @@ if st.session_state["authentication_status"]:
 
         # Display DataFrame using st.write
 
-        st.header("SUM:")
-        st.write(combined_df)
+        #st.header("SUM:")
+        #st.write(combined_df)
 
         col1, col2, col3 = st.columns(3)
 
         grouped_data = city_df.groupby(['City', 'Date']).sum().reset_index()
         max_value = city_df[['Export', 'Import', 'Cross Trade']].astype(float).values.max()
-        st.write(max_value)
+        #st.write(max_value)
         # Create figure and add bar chart trace
         fig = go.Figure()
 
@@ -1141,7 +1141,7 @@ if st.session_state["authentication_status"]:
         )
 
         with col1:
-            st.plotly_chart(fig, use_container_width=True, width=100, height=100)
+            #st.plotly_chart(fig, use_container_width=True, width=100, height=100)
 
         grouped_data_import = city_df.groupby(['City', 'Date']).sum().reset_index()
 
@@ -1166,7 +1166,7 @@ if st.session_state["authentication_status"]:
         )
 
         with col2:
-            st.plotly_chart(fig_import, use_container_width=True, width=100, height=100)
+            #st.plotly_chart(fig_import, use_container_width=True, width=100, height=100)
 
         grouped_data_cross_trade = city_df.groupby(['City', 'Date']).sum().reset_index()
 
@@ -1191,7 +1191,7 @@ if st.session_state["authentication_status"]:
         )
 
         with col3:
-            st.plotly_chart(fig_cross_trade, use_container_width=True, width=100, height=100)
+            #st.plotly_chart(fig_cross_trade, use_container_width=True, width=100, height=100)
 
 
         # Create figure and add line chart trace
@@ -1202,7 +1202,7 @@ if st.session_state["authentication_status"]:
             yaxis_title="Export",
         )
         with col1:
-            st.plotly_chart(fig, use_container_width=True)
+         #   st.plotly_chart(fig, use_container_width=True)
 
         # Repeat the same process for Import and Cross Trade plots
 
@@ -1213,7 +1213,7 @@ if st.session_state["authentication_status"]:
             yaxis_title="Import",
         )
         with col2:
-            st.plotly_chart(fig_import, use_container_width=True)
+         #   st.plotly_chart(fig_import, use_container_width=True)
 
         fig_cross_trade = px.line(grouped_data_cross_trade,markers=True, x='Date', y='Cross Trade', color='City', labels={'Cross Trade': 'Cross Trade Teu'})
         fig_cross_trade.update_layout(
@@ -1222,7 +1222,7 @@ if st.session_state["authentication_status"]:
             yaxis_title="Cross Trade",
         )
         with col3:
-            st.plotly_chart(fig_cross_trade, use_container_width=True)
+           #   st.plotly_chart(fig_cross_trade, use_container_width=True)
 
         
 elif st.session_state["authentication_status"] is False:
