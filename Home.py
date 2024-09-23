@@ -205,17 +205,15 @@ if st.session_state["authentication_status"]:
                 html += f"<tr><td style='text-align: center;'>{status}</td>"
         
             # Function to format numbers or percentages
-# Function to format numbers or percentages with thousand separators using dots
-    def format_value(value):
-        try:
-            # Check if the value contains a '%' symbol
-            if isinstance(value, str) and '%' in value:
-                return value  # Keep as is for percentage strings
-            else:
-                return f"{int(value):,}" # Format numbers with commas
-        except (ValueError, TypeError):
-            return value
-
+            def format_value(value):
+                try:
+                    # Check if the value contains a '%' symbol
+                    if isinstance(value, str) and '%' in value:
+                        return value  # Keep as is for percentage strings
+                    else:
+                        return f"{int(value):,}"  # Format numbers with commas
+                except (ValueError, TypeError):
+                    return value  # Return the value as is if it cannot be converted
     
             # Adding Export data
             revenue_export = df_export.loc[index, ('Revenue', 'Ours')], df_export.loc[index, ('Revenue', 'Agency')], df_export.loc[index, ('Revenue', 'Total')]
