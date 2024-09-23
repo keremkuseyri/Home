@@ -155,111 +155,111 @@ if st.session_state["authentication_status"]:
     # Modified Function to create an HTML table with an additional header row
 
     
-def create_html_table(df_import, df_export):
-    html = "<table border='1' style='border-collapse: collapse; width: 100%;'>"
-    
-    # Top header row for Export and Import
-    html += "<thead><tr>"
-    html += "<th rowspan='3' style='text-align: center; font-weight: normal;'></th>"
-    html += "<th rowspan='3' style='text-align: center; font-weight: normal;'></th>"
-    
-    # Export header spanning its columns
-    html += "<th colspan='9' style='text-align: center; background-color: #EEFC5E;'>Export</th>"
-    
-    # Import header spanning its columns
-    html += "<th colspan='9' style='text-align: center; background-color: #EEFC5E;'>Import</th>"
-    html += "</tr>"
-    
-    # Second header row for Revenue, Profit, Cargo under Export and Import
-    html += "<tr>"
-    for _ in range(2):  # Once for Export, once for Import
-        html += "<th colspan='3' style='text-align: center; background-color: #F4CCCC;'>Revenue</th>"
-        html += "<th colspan='3' style='text-align: center; background-color: #D0E0E3;'>Profit</th>"
-        html += "<th colspan='3' style='text-align: center; background-color: #D9EAD3;'>Cargo</th>"
-    html += "</tr>"
-    
-    # Third header row for Ours, Agency, Total under Revenue, Profit, Cargo
-    html += "<tr>"
-    for _ in range(2):  # Once for Export, once for Import
-        html += "<th style='text-align: center;'>Ours</th>"
-        html += "<th style='text-align: center;'>Agency</th>"
-        html += "<th style='text-align: center;'>Total</th>"
-        html += "<th style='text-align: center;'>Ours</th>"
-        html += "<th style='text-align: center;'>Agency</th>"
-        html += "<th style='text-align: center;'>Total</th>"
-        html += "<th style='text-align: center;'>Ours</th>"
-        html += "<th style='text-align: center;'>Agency</th>"
-        html += "<th style='text-align: center;'>Total</th>"
-    html += "</tr>"
-    html += "</thead>"
-    
-    # Add the rows with merged cells
-    html += "<tbody>"
-    
-    prev_period = None
-    rowspan = 1
-    for index in df_import.index:
-        period, status = index
-    
-        # Skip H1 and H2 rows
-        if period in ["H1", "H2"]:
-            continue
-    
-        # If period changes, close the previous row's cell
-        if period != prev_period:
-            if prev_period is not None:
-                html = html.replace(f"ROWSPAN_{prev_period}", str(rowspan))
-            rowspan = 1
-            prev_period = period
-            html += f"<tr><td rowspan='ROWSPAN_{period}' style='text-align: center; font-weight: bold;'>{period}</td><td style='text-align: center;'>{status}</td>"
-        else:
-            rowspan += 1
-            html += f"<tr><td style='text-align: center;'>{status}</td>"
-    
-        # Function to format numbers or percentages
-        def format_value(value):
-            try:
-                # Check if the value contains a '%' symbol
-                if isinstance(value, str) and '%' in value:
-                    return value  # Keep as is for percentage strings
-                else:
-                    return f"{int(value):,}"  # Format numbers with commas
-            except (ValueError, TypeError):
-                return value  # Return the value as is if it cannot be converted
-
-        # Adding Export data
-        revenue_export = df_export.loc[index, ('Revenue', 'Ours')], df_export.loc[index, ('Revenue', 'Agency')], df_export.loc[index, ('Revenue', 'Total')]
-        profit_export = df_export.loc[index, ('Profit', 'Ours')], df_export.loc[index, ('Profit', 'Agency')], df_export.loc[index, ('Profit', 'Total')]
-        cargo_export = df_export.loc[index, ('Cargo', 'Ours')], df_export.loc[index, ('Cargo', 'Agency')], df_export.loc[index, ('Cargo', 'Total')]
+    def create_html_table(df_import, df_export):
+        html = "<table border='1' style='border-collapse: collapse; width: 100%;'>"
         
-        for value in revenue_export:
-            html += f"<td style='text-align: center; background-color: #F4CCCC;'>{format_value(value)}</td>"  # Pink for Revenue
-        for value in profit_export:
-            html += f"<td style='text-align: center; background-color: #D0E0E3;'>{format_value(value)}</td>"  # Blue for Profit
-        for value in cargo_export:
-            html += f"<td style='text-align: center; background-color: #D9EAD3;'>{format_value(value)}</td>"  # Green for Cargo
-
-        # Adding Import data
-        revenue_import = df_import.loc[index, ('Revenue', 'Ours')], df_import.loc[index, ('Revenue', 'Agency')], df_import.loc[index, ('Revenue', 'Total')]
-        profit_import = df_import.loc[index, ('Profit', 'Ours')], df_import.loc[index, ('Profit', 'Agency')], df_import.loc[index, ('Profit', 'Total')]
-        cargo_import = df_import.loc[index, ('Cargo', 'Ours')], df_import.loc[index, ('Cargo', 'Agency')], df_import.loc[index, ('Cargo', 'Total')]
+        # Top header row for Export and Import
+        html += "<thead><tr>"
+        html += "<th rowspan='3' style='text-align: center; font-weight: normal;'></th>"
+        html += "<th rowspan='3' style='text-align: center; font-weight: normal;'></th>"
         
-        for value in revenue_import:
-            html += f"<td style='text-align: center; background-color: #F4CCCC;'>{format_value(value)}</td>"  # Pink for Revenue
-        for value in profit_import:
-            html += f"<td style='text-align: center; background-color: #D0E0E3;'>{format_value(value)}</td>"  # Blue for Profit
-        for value in cargo_import:
-            html += f"<td style='text-align: center; background-color: #D9EAD3;'>{format_value(value)}</td>"  # Green for Cargo
-    
+        # Export header spanning its columns
+        html += "<th colspan='9' style='text-align: center; background-color: #EEFC5E;'>Export</th>"
+        
+        # Import header spanning its columns
+        html += "<th colspan='9' style='text-align: center; background-color: #EEFC5E;'>Import</th>"
         html += "</tr>"
+        
+        # Second header row for Revenue, Profit, Cargo under Export and Import
+        html += "<tr>"
+        for _ in range(2):  # Once for Export, once for Import
+            html += "<th colspan='3' style='text-align: center; background-color: #F4CCCC;'>Revenue</th>"
+            html += "<th colspan='3' style='text-align: center; background-color: #D0E0E3;'>Profit</th>"
+            html += "<th colspan='3' style='text-align: center; background-color: #D9EAD3;'>Cargo</th>"
+        html += "</tr>"
+        
+        # Third header row for Ours, Agency, Total under Revenue, Profit, Cargo
+        html += "<tr>"
+        for _ in range(2):  # Once for Export, once for Import
+            html += "<th style='text-align: center;'>Ours</th>"
+            html += "<th style='text-align: center;'>Agency</th>"
+            html += "<th style='text-align: center;'>Total</th>"
+            html += "<th style='text-align: center;'>Ours</th>"
+            html += "<th style='text-align: center;'>Agency</th>"
+            html += "<th style='text-align: center;'>Total</th>"
+            html += "<th style='text-align: center;'>Ours</th>"
+            html += "<th style='text-align: center;'>Agency</th>"
+            html += "<th style='text-align: center;'>Total</th>"
+        html += "</tr>"
+        html += "</thead>"
+        
+        # Add the rows with merged cells
+        html += "<tbody>"
+        
+        prev_period = None
+        rowspan = 1
+        for index in df_import.index:
+            period, status = index
+        
+            # Skip H1 and H2 rows
+            if period in ["H1", "H2"]:
+                continue
+        
+            # If period changes, close the previous row's cell
+            if period != prev_period:
+                if prev_period is not None:
+                    html = html.replace(f"ROWSPAN_{prev_period}", str(rowspan))
+                rowspan = 1
+                prev_period = period
+                html += f"<tr><td rowspan='ROWSPAN_{period}' style='text-align: center; font-weight: bold;'>{period}</td><td style='text-align: center;'>{status}</td>"
+            else:
+                rowspan += 1
+                html += f"<tr><td style='text-align: center;'>{status}</td>"
+        
+            # Function to format numbers or percentages
+            def format_value(value):
+                try:
+                    # Check if the value contains a '%' symbol
+                    if isinstance(value, str) and '%' in value:
+                        return value  # Keep as is for percentage strings
+                    else:
+                        return f"{int(value):,}"  # Format numbers with commas
+                except (ValueError, TypeError):
+                    return value  # Return the value as is if it cannot be converted
     
-    # Final replacement for the last period
-    if prev_period is not None:
-        html = html.replace(f"ROWSPAN_{prev_period}", str(rowspan))
+            # Adding Export data
+            revenue_export = df_export.loc[index, ('Revenue', 'Ours')], df_export.loc[index, ('Revenue', 'Agency')], df_export.loc[index, ('Revenue', 'Total')]
+            profit_export = df_export.loc[index, ('Profit', 'Ours')], df_export.loc[index, ('Profit', 'Agency')], df_export.loc[index, ('Profit', 'Total')]
+            cargo_export = df_export.loc[index, ('Cargo', 'Ours')], df_export.loc[index, ('Cargo', 'Agency')], df_export.loc[index, ('Cargo', 'Total')]
+            
+            for value in revenue_export:
+                html += f"<td style='text-align: center; background-color: #F4CCCC;'>{format_value(value)}</td>"  # Pink for Revenue
+            for value in profit_export:
+                html += f"<td style='text-align: center; background-color: #D0E0E3;'>{format_value(value)}</td>"  # Blue for Profit
+            for value in cargo_export:
+                html += f"<td style='text-align: center; background-color: #D9EAD3;'>{format_value(value)}</td>"  # Green for Cargo
     
-    html += "</tbody>"
-    html += "</table>"
-    return html
+            # Adding Import data
+            revenue_import = df_import.loc[index, ('Revenue', 'Ours')], df_import.loc[index, ('Revenue', 'Agency')], df_import.loc[index, ('Revenue', 'Total')]
+            profit_import = df_import.loc[index, ('Profit', 'Ours')], df_import.loc[index, ('Profit', 'Agency')], df_import.loc[index, ('Profit', 'Total')]
+            cargo_import = df_import.loc[index, ('Cargo', 'Ours')], df_import.loc[index, ('Cargo', 'Agency')], df_import.loc[index, ('Cargo', 'Total')]
+            
+            for value in revenue_import:
+                html += f"<td style='text-align: center; background-color: #F4CCCC;'>{format_value(value)}</td>"  # Pink for Revenue
+            for value in profit_import:
+                html += f"<td style='text-align: center; background-color: #D0E0E3;'>{format_value(value)}</td>"  # Blue for Profit
+            for value in cargo_import:
+                html += f"<td style='text-align: center; background-color: #D9EAD3;'>{format_value(value)}</td>"  # Green for Cargo
+        
+            html += "</tr>"
+        
+        # Final replacement for the last period
+        if prev_period is not None:
+            html = html.replace(f"ROWSPAN_{prev_period}", str(rowspan))
+        
+        html += "</tbody>"
+        html += "</table>"
+        return html
 
 
 
