@@ -197,6 +197,8 @@ if st.session_state["authentication_status"]:
 
 
 
+    import_combined_df = create_combined_df(import_data[0])
+    export_combined_df = create_combined_df(export_data[0])
 
 
 
@@ -205,12 +207,6 @@ if st.session_state["authentication_status"]:
 
 
 
-    
-    # Create DataFrames for Import and Export data with the filtered branch data
-    if import_data:  # Ensure data exists
-        import_combined_df = create_combined_df(import_data[0])
-    if export_data:  # Ensure data exists
-        export_combined_df = create_combined_df(export_data[0])
     
     # Display the combined HTML table in Streamlit
     if st.session_state["name"] == "Kerem Kuseyri" or st.session_state["name"] == "Üveys Aydemir" or st.session_state["name"] == "Kubilay Cebeci" or st.session_state["name"] == "Senem Çelik":
