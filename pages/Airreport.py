@@ -26,7 +26,7 @@ if st.session_state["authentication_status"]:
 
 
     with st.sidebar.expander("Sea Report ⛴"):
-         st.page_link("pages/testdb2.py", label="Sea Profit Monthly 📊")
+         st.page_link("pages/Home.py", label="Sea Profit Monthly 📊")
     with st.sidebar.expander("Air Report ✈️"):
          st.page_link("pages/Airreport.py", label="Air Profit Monthly 📊")
     with st.sidebar.expander("Road Report 🛣️"):
