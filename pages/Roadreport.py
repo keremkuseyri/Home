@@ -166,12 +166,12 @@ if st.session_state["authentication_status"]:
         html += "<th colspan='9' style='text-align: center; background-color: #EEFC5E;'>Import</th>"
         html += "</tr>"
         
-        # Second header row for Revenue, Profit, Cargo under Export and Import (with Revenue now first)
+        # Second header row for Revenue, Profit, Cargo under Export and Import
         html += "<tr>"
         for _ in range(2):  # Once for Export, once for Import
-            html += "<th colspan='3' style='text-align: center; background-color: #F4CCCC;'>Revenue</th>"  # Pink for Revenue
-            html += "<th colspan='3' style='text-align: center; background-color: #D0E0E3;'>Profit</th>"  # Light Blue for Profit
-            html += "<th colspan='3' style='text-align: center; background-color: #D9EAD3;'>Cargo</th>"  # Green for Cargo
+            html += "<th colspan='3' style='text-align: center; background-color: #F4CCCC;'>Revenue</th>"
+            html += "<th colspan='3' style='text-align: center; background-color: #D0E0E3;'>Profit</th>"
+            html += "<th colspan='3' style='text-align: center; background-color: #D9EAD3;'>Cargo</th>"
         html += "</tr>"
         
         # Third header row for Ours, Agency, Total under Revenue, Profit, Cargo
@@ -219,16 +219,15 @@ if st.session_state["authentication_status"]:
                     if isinstance(value, str) and '%' in value:
                         return value  # Keep as is for percentage strings
                     else:
-                        return int(value)  # Convert to integer for numeric values
-                except ValueError:
+                        return f"{int(value):,}"  # Format numbers with commas
+                except (ValueError, TypeError):
                     return value  # Return the value as is if it cannot be converted
     
-            # Adding Export data with correct order and styling
+            # Adding Export data
             revenue_export = df_export.loc[index, ('Revenue', 'Ours')], df_export.loc[index, ('Revenue', 'Agency')], df_export.loc[index, ('Revenue', 'Total')]
             profit_export = df_export.loc[index, ('Profit', 'Ours')], df_export.loc[index, ('Profit', 'Agency')], df_export.loc[index, ('Profit', 'Total')]
             cargo_export = df_export.loc[index, ('Cargo', 'Ours')], df_export.loc[index, ('Cargo', 'Agency')], df_export.loc[index, ('Cargo', 'Total')]
             
-            # Adjusted the order to ensure Revenue, Profit, Cargo data is correct
             for value in revenue_export:
                 html += f"<td style='text-align: center; background-color: #F4CCCC;'>{format_value(value)}</td>"  # Pink for Revenue
             for value in profit_export:
@@ -236,12 +235,11 @@ if st.session_state["authentication_status"]:
             for value in cargo_export:
                 html += f"<td style='text-align: center; background-color: #D9EAD3;'>{format_value(value)}</td>"  # Green for Cargo
     
-            # Adding Import data with correct order and styling
+            # Adding Import data
             revenue_import = df_import.loc[index, ('Revenue', 'Ours')], df_import.loc[index, ('Revenue', 'Agency')], df_import.loc[index, ('Revenue', 'Total')]
             profit_import = df_import.loc[index, ('Profit', 'Ours')], df_import.loc[index, ('Profit', 'Agency')], df_import.loc[index, ('Profit', 'Total')]
             cargo_import = df_import.loc[index, ('Cargo', 'Ours')], df_import.loc[index, ('Cargo', 'Agency')], df_import.loc[index, ('Cargo', 'Total')]
             
-            # Adjusted the order to ensure Revenue, Profit, Cargo data is correct
             for value in revenue_import:
                 html += f"<td style='text-align: center; background-color: #F4CCCC;'>{format_value(value)}</td>"  # Pink for Revenue
             for value in profit_import:
