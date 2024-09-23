@@ -100,61 +100,6 @@ if st.session_state["authentication_status"]:
         return rows
     
     # Function to structure the data into a single DataFrame
-    def create_combined_df(data):
-        # Extracting the data for each category
-        revenue_ours = create_category_df(data.get("revenue", {}), "ours")
-        revenue_agency = create_category_df(data.get("revenue", {}), "agency")
-        revenue_total = create_category_df(data.get("revenue", {}), "total")
-    
-        profit_ours = create_category_df(data.get("profit", {}), "ours")
-        profit_agency = create_category_df(data.get("profit", {}), "agency")
-        profit_total = create_category_df(data.get("profit", {}), "total")
-    
-        cargo_ours = create_category_df(data.get("amount_of_cargo", {}), "ours")
-        cargo_agency = create_category_df(data.get("amount_of_cargo", {}), "agency")
-        cargo_total = create_category_df(data.get("amount_of_cargo", {}), "total")
-    
-        # Combining the data
-        combined_data = []
-        for r_ours, r_agency, r_total, p_ours, p_agency, p_total, c_ours, c_agency, c_total in zip(
-            revenue_ours, revenue_agency, revenue_total,
-            profit_ours, profit_agency, profit_total,
-            cargo_ours, cargo_agency, cargo_total
-        ):
-            combined_data.append([r_ours[2], r_agency[2], r_total[2], 
-                                  p_ours[2], p_agency[2], p_total[2], 
-                                  c_ours[2], c_agency[2], c_total[2]])
-    
-        # Define the multi-index for columns
-        column_tuples = [
-            ("Revenue", "Ours"), ("Revenue", "Agency"), ("Revenue", "Total"),
-            ("Profit", "Ours"), ("Profit", "Agency"), ("Profit", "Total"),
-            ("Cargo", "Ours"), ("Cargo", "Agency"), ("Cargo", "Total")
-        ]
-        columns = pd.MultiIndex.from_tuples(column_tuples, names=["Category", "Type"])
-    
-        # Define the multi-index for rows
-        row_tuples = [
-            (month, status) for month in ["January", "February", "March", "April", "May", "June", 
-                                          "July", "August", "September", "October", "November", "December", 
-                                          "Q1", "Q2", "Q3", "Q4", "H1", "H2", "Year"]
-            for status in ['Budget', 'Actual', '+/- %']
-        ]
-        rows = pd.MultiIndex.from_tuples(row_tuples, names=["Period", "Status"])
-    
-        # Create the DataFrame
-        df = pd.DataFrame(combined_data, columns=columns, index=rows)
-        return df
-    
-    # Create DataFrames for Import and Export data
-    import_combined_df = create_combined_df(import_data[0])
-    export_combined_df = create_combined_df(export_data[0])
-    
-    # Function to create an HTML table with specified styling
-    # Modified Function to create an HTML table with specified styling
-    # Modified Function to create an HTML table with an additional header row
-
-    
     def create_html_table(df_import, df_export):
         html = "<table border='1' style='border-collapse: collapse; width: 100%;'>"
         
@@ -170,12 +115,12 @@ if st.session_state["authentication_status"]:
         html += "<th colspan='9' style='text-align: center; background-color: #EEFC5E;'>Import</th>"
         html += "</tr>"
         
-        # Second header row for Revenue, Profit, Cargo under Export and Import (with Revenue now first)
+        # Second header row for Revenue, Profit, Cargo under Export and Import
         html += "<tr>"
         for _ in range(2):  # Once for Export, once for Import
-            html += "<th colspan='3' style='text-align: center; background-color: #F4CCCC;'>Revenue</th>"  # Pink for Revenue
-            html += "<th colspan='3' style='text-align: center; background-color: #D0E0E3;'>Profit</th>"  # Light Blue for Profit
-            html += "<th colspan='3' style='text-align: center; background-color: #D9EAD3;'>Cargo</th>"  # Green for Cargo
+            html += "<th colspan='3' style='text-align: center; background-color: #F4CCCC;'>Revenue</th>"
+            html += "<th colspan='3' style='text-align: center; background-color: #D0E0E3;'>Profit</th>"
+            html += "<th colspan='3' style='text-align: center; background-color: #D9EAD3;'>Cargo</th>"
         html += "</tr>"
         
         # Third header row for Ours, Agency, Total under Revenue, Profit, Cargo
@@ -223,16 +168,15 @@ if st.session_state["authentication_status"]:
                     if isinstance(value, str) and '%' in value:
                         return value  # Keep as is for percentage strings
                     else:
-                        return int(value)  # Convert to integer for numeric values
-                except ValueError:
+                        return f"{int(value):,}"  # Format numbers with commas
+                except (ValueError, TypeError):
                     return value  # Return the value as is if it cannot be converted
     
-            # Adding Export data with correct order and styling
+            # Adding Export data
             revenue_export = df_export.loc[index, ('Revenue', 'Ours')], df_export.loc[index, ('Revenue', 'Agency')], df_export.loc[index, ('Revenue', 'Total')]
             profit_export = df_export.loc[index, ('Profit', 'Ours')], df_export.loc[index, ('Profit', 'Agency')], df_export.loc[index, ('Profit', 'Total')]
             cargo_export = df_export.loc[index, ('Cargo', 'Ours')], df_export.loc[index, ('Cargo', 'Agency')], df_export.loc[index, ('Cargo', 'Total')]
             
-            # Adjusted the order to ensure Revenue, Profit, Cargo data is correct
             for value in revenue_export:
                 html += f"<td style='text-align: center; background-color: #F4CCCC;'>{format_value(value)}</td>"  # Pink for Revenue
             for value in profit_export:
@@ -240,12 +184,11 @@ if st.session_state["authentication_status"]:
             for value in cargo_export:
                 html += f"<td style='text-align: center; background-color: #D9EAD3;'>{format_value(value)}</td>"  # Green for Cargo
     
-            # Adding Import data with correct order and styling
+            # Adding Import data
             revenue_import = df_import.loc[index, ('Revenue', 'Ours')], df_import.loc[index, ('Revenue', 'Agency')], df_import.loc[index, ('Revenue', 'Total')]
             profit_import = df_import.loc[index, ('Profit', 'Ours')], df_import.loc[index, ('Profit', 'Agency')], df_import.loc[index, ('Profit', 'Total')]
             cargo_import = df_import.loc[index, ('Cargo', 'Ours')], df_import.loc[index, ('Cargo', 'Agency')], df_import.loc[index, ('Cargo', 'Total')]
             
-            # Adjusted the order to ensure Revenue, Profit, Cargo data is correct
             for value in revenue_import:
                 html += f"<td style='text-align: center; background-color: #F4CCCC;'>{format_value(value)}</td>"  # Pink for Revenue
             for value in profit_import:
