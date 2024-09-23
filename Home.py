@@ -206,7 +206,7 @@ if st.session_state["authentication_status"]:
         
             # Function to format numbers or percentages
 # Function to format numbers or percentages with thousand separators using dots
-           def format_value(value):
+       def format_value(value):
             try:
                 # Check if the value contains a '%' symbol
                 if isinstance(value, str) and '%' in value:
