@@ -31,6 +31,10 @@ if st.session_state["authentication_status"]:
          st.page_link("pages/Airreport.py", label="Air Profit Monthly 📊")
     with st.sidebar.expander("Road Report 🛣️"):
          st.page_link("pages/Roadreport.py", label="Road Profit Monthly 📊")
+    with st.sidebar.expander("Proje Report 🛣️"):
+         st.page_link("pages/Proje.py", label="Proje Profit Monthly 📊")
+    with st.sidebar.expander("Aerospace Report 🛣️"):
+         st.page_link("pages/Aerospace.py", label="Aerospace Profit Monthly 📊")
 
     st.sidebar.write(f'Welcome *{st.session_state["name"]}*')
     authenticator.logout("Logout", "sidebar")
