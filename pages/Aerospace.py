@@ -48,7 +48,7 @@ if st.session_state["authentication_status"]:
     selected_collection = st.selectbox("Select a Collection", collection_options, index=0)
     
     # Access the selected collection
-    collection = client["GenelExportImport"][selected_collection]
+    collection = client["AerospaceImportExport"][selected_collection]
     
     # Original branch list with lowercase values for logic
     branches = ["total", "istanbul", "izmir", "mersin"]
