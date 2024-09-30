@@ -46,6 +46,23 @@ credentials:
       logged_in: False # Will be managed automatically
       name: Senem Çelik
       password: 'TuwZJdjx'
-
+    air :
+      email: air@geneltransport.com.tr
+      failed_login_attempts: 0 # Will be managed automatically
+      logged_in: False # Will be managed automatically
+      name: Air Report
+      password: 'gt1303'      
+    sea :
+      email: sea@geneltransport.com.tr
+      failed_login_attempts: 0 # Will be managed automatically
+      logged_in: False # Will be managed automatically
+      name: Sea Report
+      password: 'gt1303'       
+    road :
+      email: sea@geneltransport.com.tr
+      failed_login_attempts: 0 # Will be managed automatically
+      logged_in: False # Will be managed automatically
+      name: Road Report
+      password: 'gt1303'          
 pre-authorized:
   emails: 
