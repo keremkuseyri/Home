@@ -51,7 +51,7 @@ credentials:
       failed_login_attempts: 0 # Will be managed automatically
       logged_in: False # Will be managed automatically
       name: Air Report
-      password: 'gt1303'      
+      password: 'gt1302'      
     sea :
       email: sea@geneltransport.com.tr
       failed_login_attempts: 0 # Will be managed automatically
@@ -63,18 +63,18 @@ credentials:
       failed_login_attempts: 0 # Will be managed automatically
       logged_in: False # Will be managed automatically
       name: Road Report
-      password: 'gt1303' 
+      password: 'gt1304' 
     aerospace :
       email: aero@geneltransport.com.tr
       failed_login_attempts: 0 # Will be managed automatically
       logged_in: False # Will be managed automatically
       name: Aerospace Report
-      password: 'gt1303' 
+      password: 'gt1305' 
     project :
       email: project@geneltransport.com.tr
       failed_login_attempts: 0 # Will be managed automatically
       logged_in: False # Will be managed automatically
       name: Project Report
-      password: 'gt1303' 
+      password: 'gt1306' 
 pre-authorized:
   emails: 
