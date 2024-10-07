@@ -82,5 +82,4 @@ credentials:
       logged_in: False # Will be managed automatically
       name: Elif Erkeskin
       password: 'jMfLRw3p'
-pre-authorized:
-  emails: 
+
