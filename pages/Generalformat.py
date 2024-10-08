@@ -275,7 +275,7 @@ if st.session_state["authentication_status"]:
         export_combined_df = create_combined_df(export_data[0])
     
     # Display the combined HTML table in Streamlit
-    if st.session_state["name"] == "Kerem Kuseyri" or st.session_state["name"] == "Üveys Aydemir" or st.session_state["name"] == "Kubilay Cebeci" or st.session_state["name"] == "Senem Çelik" or st.session_state["name"] == "Project Report" or st.session_state["name"] == "Turgut Erkeskin":
+    if st.session_state["name"] == "Kerem Kuseyri" or st.session_state["name"] == "Üveys Aydemir" or st.session_state["name"] == "Kubilay Cebeci" or st.session_state["name"] == "Senem Çelik" or st.session_state["name"] == "Turgut Erkeskin":
         if import_data and export_data:
                 combined_html_table = create_html_table(import_combined_df, export_combined_df)
                 st.markdown(combined_html_table, unsafe_allow_html=True)
