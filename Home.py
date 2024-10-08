@@ -25,6 +25,7 @@ if st.session_state["authentication_status"]:
     
 
 
+
     with st.sidebar.expander("Sea Report ⛴"):
          st.page_link("Home.py", label="Sea Profit Monthly 📊")
     with st.sidebar.expander("Air Report ✈️"):
@@ -35,6 +36,10 @@ if st.session_state["authentication_status"]:
          st.page_link("pages/Project.py", label="Project Profit Monthly 📊")
     with st.sidebar.expander("Aerospace Report 🚀"):
          st.page_link("pages/Aerospace.py", label="Aerospace Profit Monthly 📊")
+    with st.sidebar.expander("Sales General Format 💵"):
+         st.page_link("pages/Generalformat.py", label="Sales General Format Monthly 📊")
+    with st.sidebar.expander("Key Account 🔑"):
+         st.page_link("pages/Keyaccount.py", label="Key Account Monthly 📊")
 
     st.sidebar.write(f'Welcome *{st.session_state["name"]}*')
     authenticator.logout("Logout", "sidebar")
