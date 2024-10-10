@@ -144,8 +144,8 @@ if st.session_state["authentication_status"]:
         return df
     
     # Create DataFrames for Import and Export data
-    import_combined_df = create_combined_df(import_data[0])
-    export_combined_df = create_combined_df(export_data[0])
+    import_combined_df = create_combined_df(import_data[0])  # Ensure import_data is properly formatted
+    export_combined_df = create_combined_df(export_data[0])  # Ensure export_data is properly formatted
     
     # Function to create an HTML table with specified styling
     def create_html_table(df_import, df_export):
@@ -160,14 +160,22 @@ if st.session_state["authentication_status"]:
         html += "<th colspan='9' style='text-align: center; background-color: #EEFC5E;'>Import</th>"
         
         # Export header spanning its columns
-        html += "<th colspan='9' style='text-align: center; background-color: #EEFC5E;'>Export</th>"
+        html += "<th colspan='9' style='text-align: center; background-color: #A2C4E2;'>Export</th>"
         
         # Total header spanning its columns
-        html += "<th colspan='9' style='text-align: center; background-color: #EEFC5E;'>Total</th>"
+        html += "<th colspan='9' style='text-align: center; background-color: #D9EAD3;'>Total</th>"
         html += "</tr>"
         
-        # Second header row for Revenue, Profit, Cargo under Import, Export, Total
+        # Second header row for Revenue, Profit, Cargo
         html += "<tr>"
+        for _ in range(3):  # For Import, Export, Total
+            html += "<th colspan='3' style='text-align: center; background-color: #EEFC5E;'>Revenue</th>"
+            html += "<th colspan='3' style='text-align: center; background-color: #EEFC5E;'>Profit</th>"
+            html += "<th colspan='3' style='text-align: center; background-color: #EEFC5E;'>Cargo</th>"
+        for _ in range(3):  # For Import, Export, Total
+            html += "<th colspan='3' style='text-align: center; background-color: #A2C4E2;'>Revenue</th>"
+            html += "<th colspan='3' style='text-align: center; background-color: #A2C4E2;'>Profit</th>"
+            html += "<th colspan='3' style='text-align: center; background-color: #A2C4E2;'>Cargo</th>"
         for _ in range(3):  # For Import, Export, Total
             html += "<th colspan='3' style='text-align: center; background-color: #D9EAD3;'>Revenue</th>"
             html += "<th colspan='3' style='text-align: center; background-color: #D9EAD3;'>Profit</th>"
@@ -190,19 +198,19 @@ if st.session_state["authentication_status"]:
         for idx in range(len(df_import)):
             row_data = []
             for category in ["Revenue", "Profit", "Cargo"]:
-                # Getting data for Export
-                export_ours = df_export[category]["Ours"][idx]
-                export_agency = df_export[category]["Agency"][idx]
-                export_total = export_ours + export_agency
-                
                 # Getting data for Import
                 import_ours = df_import[category]["Ours"][idx]
                 import_agency = df_import[category]["Agency"][idx]
                 import_total = import_ours + import_agency
                 
-                # Appending Export data
-                row_data.extend([import_ours, import_agency, import_total])
+                # Getting data for Export
+                export_ours = df_export[category]["Ours"][idx]
+                export_agency = df_export[category]["Agency"][idx]
+                export_total = export_ours + export_agency
+                
                 # Appending Import data
+                row_data.extend([import_ours, import_agency, import_total])
+                # Appending Export data
                 row_data.extend([export_ours, export_agency, export_total])
                 
                 # Calculate and append Overall Total
@@ -217,6 +225,9 @@ if st.session_state["authentication_status"]:
         
         html += "</tbody></table>"
         return html
+    
+    # Create the HTML table with both DataFrames
+
     
 
 
