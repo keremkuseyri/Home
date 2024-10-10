@@ -97,36 +97,79 @@ if st.session_state["authentication_status"]:
         return rows
     
     # Function to structure the data into a single DataFrame
-    def create_combined_df(data):
+# Function to structure the data into a single DataFrame including the Total (Import + Export)
+    def create_combined_df(import_data, export_data):
         # Extracting the data for each category
-        revenue_ours = create_category_df(data.get("revenue", {}), "ours")
-        revenue_agency = create_category_df(data.get("revenue", {}), "agency")
-        revenue_total = create_category_df(data.get("revenue", {}), "total")
+        revenue_ours_import = create_category_df(import_data.get("revenue", {}), "ours")
+        revenue_agency_import = create_category_df(import_data.get("revenue", {}), "agency")
+        revenue_total_import = create_category_df(import_data.get("revenue", {}), "total")
+        
+        profit_ours_import = create_category_df(import_data.get("profit", {}), "ours")
+        profit_agency_import = create_category_df(import_data.get("profit", {}), "agency")
+        profit_total_import = create_category_df(import_data.get("profit", {}), "total")
+        
+        cargo_ours_import = create_category_df(import_data.get("amount_of_cargo", {}), "ours")
+        cargo_agency_import = create_category_df(import_data.get("amount_of_cargo", {}), "agency")
+        cargo_total_import = create_category_df(import_data.get("amount_of_cargo", {}), "total")
+        
+        # Export data
+        revenue_ours_export = create_category_df(export_data.get("revenue", {}), "ours")
+        revenue_agency_export = create_category_df(export_data.get("revenue", {}), "agency")
+        revenue_total_export = create_category_df(export_data.get("revenue", {}), "total")
+        
+        profit_ours_export = create_category_df(export_data.get("profit", {}), "ours")
+        profit_agency_export = create_category_df(export_data.get("profit", {}), "agency")
+        profit_total_export = create_category_df(export_data.get("profit", {}), "total")
+        
+        cargo_ours_export = create_category_df(export_data.get("amount_of_cargo", {}), "ours")
+        cargo_agency_export = create_category_df(export_data.get("amount_of_cargo", {}), "agency")
+        cargo_total_export = create_category_df(export_data.get("amount_of_cargo", {}), "total")
     
-        profit_ours = create_category_df(data.get("profit", {}), "ours")
-        profit_agency = create_category_df(data.get("profit", {}), "agency")
-        profit_total = create_category_df(data.get("profit", {}), "total")
-    
-        cargo_ours = create_category_df(data.get("amount_of_cargo", {}), "ours")
-        cargo_agency = create_category_df(data.get("amount_of_cargo", {}), "agency")
-        cargo_total = create_category_df(data.get("amount_of_cargo", {}), "total")
-    
-        # Combining the data
+        # Combining the data, including the sum of Import + Export (Total)
         combined_data = []
-        for r_ours, r_agency, r_total, p_ours, p_agency, p_total, c_ours, c_agency, c_total in zip(
-            revenue_ours, revenue_agency, revenue_total,
-            profit_ours, profit_agency, profit_total,
-            cargo_ours, cargo_agency, cargo_total
+        for r_ours_imp, r_agency_imp, r_total_imp, p_ours_imp, p_agency_imp, p_total_imp, c_ours_imp, c_agency_imp, c_total_imp, \
+            r_ours_exp, r_agency_exp, r_total_exp, p_ours_exp, p_agency_exp, p_total_exp, c_ours_exp, c_agency_exp, c_total_exp in zip(
+            revenue_ours_import, revenue_agency_import, revenue_total_import,
+            profit_ours_import, profit_agency_import, profit_total_import,
+            cargo_ours_import, cargo_agency_import, cargo_total_import,
+            revenue_ours_export, revenue_agency_export, revenue_total_export,
+            profit_ours_export, profit_agency_export, profit_total_export,
+            cargo_ours_export, cargo_agency_export, cargo_total_export
         ):
-            combined_data.append([r_ours[2], r_agency[2], r_total[2], 
-                                  p_ours[2], p_agency[2], p_total[2], 
-                                  c_ours[2], c_agency[2], c_total[2]])
+            # Summing Import and Export values for the Total columns
+            total_revenue_ours = r_ours_imp[2] + r_ours_exp[2]
+            total_revenue_agency = r_agency_imp[2] + r_agency_exp[2]
+            total_revenue_total = r_total_imp[2] + r_total_exp[2]
+            
+            total_profit_ours = p_ours_imp[2] + p_ours_exp[2]
+            total_profit_agency = p_agency_imp[2] + p_agency_exp[2]
+            total_profit_total = p_total_imp[2] + p_total_exp[2]
+            
+            total_cargo_ours = c_ours_imp[2] + c_ours_exp[2]
+            total_cargo_agency = c_agency_imp[2] + c_agency_exp[2]
+            total_cargo_total = c_total_imp[2] + c_total_exp[2]
+            
+            combined_data.append([r_ours_imp[2], r_agency_imp[2], r_total_imp[2], 
+                                  p_ours_imp[2], p_agency_imp[2], p_total_imp[2], 
+                                  c_ours_imp[2], c_agency_imp[2], c_total_imp[2],
+                                  r_ours_exp[2], r_agency_exp[2], r_total_exp[2],
+                                  p_ours_exp[2], p_agency_exp[2], p_total_exp[2],
+                                  c_ours_exp[2], c_agency_exp[2], c_total_exp[2],
+                                  total_revenue_ours, total_revenue_agency, total_revenue_total,
+                                  total_profit_ours, total_profit_agency, total_profit_total,
+                                  total_cargo_ours, total_cargo_agency, total_cargo_total])
     
-        # Define the multi-index for columns
+        # Define the multi-index for columns, adding the new Total category
         column_tuples = [
             ("Revenue", "Ours"), ("Revenue", "Agency"), ("Revenue", "Total"),
             ("Profit", "Ours"), ("Profit", "Agency"), ("Profit", "Total"),
-            ("Cargo", "Ours"), ("Cargo", "Agency"), ("Cargo", "Total")
+            ("Cargo", "Ours"), ("Cargo", "Agency"), ("Cargo", "Total"),
+            ("Revenue", "Ours (Exp)"), ("Revenue", "Agency (Exp)"), ("Revenue", "Total (Exp)"),
+            ("Profit", "Ours (Exp)"), ("Profit", "Agency (Exp)"), ("Profit", "Total (Exp)"),
+            ("Cargo", "Ours (Exp)"), ("Cargo", "Agency (Exp)"), ("Cargo", "Total (Exp)"),
+            ("Total", "Revenue (Ours)"), ("Total", "Revenue (Agency)"), ("Total", "Revenue (Total)"),
+            ("Total", "Profit (Ours)"), ("Total", "Profit (Agency)"), ("Total", "Profit (Total)"),
+            ("Total", "Cargo (Ours)"), ("Total", "Cargo (Agency)"), ("Total", "Cargo (Total)")
         ]
         columns = pd.MultiIndex.from_tuples(column_tuples, names=["Category", "Type"])
     
@@ -142,6 +185,7 @@ if st.session_state["authentication_status"]:
         # Create the DataFrame
         df = pd.DataFrame(combined_data, columns=columns, index=rows)
         return df
+
     
     # Create DataFrames for Import and Export data
     import_combined_df = create_combined_df(import_data[0])
@@ -150,12 +194,20 @@ if st.session_state["authentication_status"]:
     # Function to create an HTML table with specified styling
     # Modified Function to create an HTML table with specified styling
     # Modified Function to create an HTML table with an additional header row
-
+    def format_value(value):
+        try:
+            # Check if the value contains a '%' symbol (indicating a percentage)
+            if isinstance(value, str) and '%' in value:
+                return value  # Keep as is for percentage strings
+            else:
+                return f"{int(value):,}".replace(",", ".")  # Replace commas with dots for thousand separator
+        except (ValueError, TypeError):
+            return value  # Return the value as is if it cannot be converted
     
-    def create_html_table(df_import, df_export):
+    def create_html_table(df_import, df_export, df_total):
         html = "<table border='1' style='border-collapse: collapse; width: 100%;'>"
         
-        # Top header row for Export and Import
+        # Top header row for Export, Import, and Total
         html += "<thead><tr>"
         html += "<th rowspan='3' style='text-align: center; font-weight: normal;'></th>"
         html += "<th rowspan='3' style='text-align: center; font-weight: normal;'></th>"
@@ -165,11 +217,14 @@ if st.session_state["authentication_status"]:
         
         # Import header spanning its columns
         html += "<th colspan='9' style='text-align: center; background-color: #EEFC5E;'>Import</th>"
+    
+        # Total (Import + Export) header spanning its columns
+        html += "<th colspan='9' style='text-align: center; background-color: #FFDDC1;'>Total</th>"
         html += "</tr>"
         
-        # Second header row for Revenue, Profit, Cargo under Export and Import
+        # Second header row for Revenue, Profit, Cargo under Export, Import, and Total
         html += "<tr>"
-        for _ in range(2):  # Once for Export, once for Import
+        for _ in range(3):  # Once for Export, Import, and Total
             html += "<th colspan='3' style='text-align: center; background-color: #F4CCCC;'>Revenue</th>"
             html += "<th colspan='3' style='text-align: center; background-color: #D0E0E3;'>Profit</th>"
             html += "<th colspan='3' style='text-align: center; background-color: #D9EAD3;'>Cargo</th>"
@@ -177,85 +232,35 @@ if st.session_state["authentication_status"]:
         
         # Third header row for Ours, Agency, Total under Revenue, Profit, Cargo
         html += "<tr>"
-        for _ in range(2):  # Once for Export, once for Import
-            html += "<th style='text-align: center;'>Ours</th>"
-            html += "<th style='text-align: center;'>Agency</th>"
-            html += "<th style='text-align: center;'>Total</th>"
-            html += "<th style='text-align: center;'>Ours</th>"
-            html += "<th style='text-align: center;'>Agency</th>"
-            html += "<th style='text-align: center;'>Total</th>"
-            html += "<th style='text-align: center;'>Ours</th>"
-            html += "<th style='text-align: center;'>Agency</th>"
-            html += "<th style='text-align: center;'>Total</th>"
-        html += "</tr>"
-        html += "</thead>"
+        for _ in range(3):  # Repeat for Export, Import, and Total
+            html += "<th style='text-align: center; background-color: #F4CCCC;'>Ours</th>"
+            html += "<th style='text-align: center; background-color: #F4CCCC;'>Agency</th>"
+            html += "<th style='text-align: center; background-color: #F4CCCC;'>Total</th>"
+            html += "<th style='text-align: center; background-color: #D0E0E3;'>Ours</th>"
+            html += "<th style='text-align: center; background-color: #D0E0E3;'>Agency</th>"
+            html += "<th style='text-align: center; background-color: #D0E0E3;'>Total</th>"
+            html += "<th style='text-align: center; background-color: #D9EAD3;'>Ours</th>"
+            html += "<th style='text-align: center; background-color: #D9EAD3;'>Agency</th>"
+            html += "<th style='text-align: center; background-color: #D9EAD3;'>Total</th>"
+        html += "</tr></thead>"
         
-        # Add the rows with merged cells
+        # Populate table rows from the DataFrame
         html += "<tbody>"
-        
-        prev_period = None
-        rowspan = 1
-        for index in df_import.index:
-            period, status = index
-        
-            # Skip H1 and H2 rows
-            if period in ["H1", "H2"]:
-                continue
-        
-            # If period changes, close the previous row's cell
-            if period != prev_period:
-                if prev_period is not None:
-                    html = html.replace(f"ROWSPAN_{prev_period}", str(rowspan))
-                rowspan = 1
-                prev_period = period
-                html += f"<tr><td rowspan='ROWSPAN_{period}' style='text-align: center; font-weight: bold;'>{period}</td><td style='text-align: center;'>{status}</td>"
-            else:
-                rowspan += 1
-                html += f"<tr><td style='text-align: center;'>{status}</td>"
-        
-            # Function to format numbers or percentages
-            def format_value(value):
-                try:
-                    # Check if the value contains a '%' symbol
-                    if isinstance(value, str) and '%' in value:
-                        return value  # Keep as is for percentage strings
-                    else:
-                        return f"{int(value):,}".replace(",",".")  # Format numbers with commas
-                except (ValueError, TypeError):
-                    return value  # Return the value as is if it cannot be converted
-    
-            # Adding Export data
-            revenue_export = df_export.loc[index, ('Revenue', 'Ours')], df_export.loc[index, ('Revenue', 'Agency')], df_export.loc[index, ('Revenue', 'Total')]
-            profit_export = df_export.loc[index, ('Profit', 'Ours')], df_export.loc[index, ('Profit', 'Agency')], df_export.loc[index, ('Profit', 'Total')]
-            cargo_export = df_export.loc[index, ('Cargo', 'Ours')], df_export.loc[index, ('Cargo', 'Agency')], df_export.loc[index, ('Cargo', 'Total')]
+        for period, period_data in df_total.iterrows():
+            period_name = period[0]
+            status = period[1]
             
-            for value in revenue_export:
-                html += f"<td style='text-align: center; background-color: #F4CCCC;'>{format_value(value)}</td>"  # Pink for Revenue
-            for value in profit_export:
-                html += f"<td style='text-align: center; background-color: #D0E0E3;'>{format_value(value)}</td>"  # Blue for Profit
-            for value in cargo_export:
-                html += f"<td style='text-align: center; background-color: #D9EAD3;'>{format_value(value)}</td>"  # Green for Cargo
-    
-            # Adding Import data
-            revenue_import = df_import.loc[index, ('Revenue', 'Ours')], df_import.loc[index, ('Revenue', 'Agency')], df_import.loc[index, ('Revenue', 'Total')]
-            profit_import = df_import.loc[index, ('Profit', 'Ours')], df_import.loc[index, ('Profit', 'Agency')], df_import.loc[index, ('Profit', 'Total')]
-            cargo_import = df_import.loc[index, ('Cargo', 'Ours')], df_import.loc[index, ('Cargo', 'Agency')], df_import.loc[index, ('Cargo', 'Total')]
+            # First two columns (Period and Status)
+            html += f"<tr><td style='text-align: center;'>{period_name}</td>"
+            html += f"<td style='text-align: center;'>{status}</td>"
             
-            for value in revenue_import:
-                html += f"<td style='text-align: center; background-color: #F4CCCC;'>{format_value(value)}</td>"  # Pink for Revenue
-            for value in profit_import:
-                html += f"<td style='text-align: center; background-color: #D0E0E3;'>{format_value(value)}</td>"  # Blue for Profit
-            for value in cargo_import:
-                html += f"<td style='text-align: center; background-color: #D9EAD3;'>{format_value(value)}</td>"  # Green for Cargo
-        
+            # Add Export, Import, and Total data with the dot-based thousand separator
+            for value in period_data:
+                html += f"<td style='text-align: center;'>{format_value(value)}</td>"
+            
             html += "</tr>"
         
-        # Final replacement for the last period
-        if prev_period is not None:
-            html = html.replace(f"ROWSPAN_{prev_period}", str(rowspan))
-        
-        html += "</tbody>"
-        html += "</table>"
+        html += "</tbody></table>"
         return html
 
 
