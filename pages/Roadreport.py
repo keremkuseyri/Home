@@ -332,7 +332,6 @@ if st.session_state["authentication_status"]:
         if import_data and export_data:
                 combined_html_table = create_html_table(import_combined_df, export_combined_df)
                 st.markdown(combined_html_table, unsafe_allow_html=True)
-                st.write("Hello")
         else:
                 st.warning(f"No data found for branch: {selected_branch}")
 
