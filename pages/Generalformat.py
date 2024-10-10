@@ -239,10 +239,11 @@ if st.session_state["authentication_status"]:
                     value1 = float(value1.replace('%', '')) if isinstance(value1, str) and '%' in value1 else float(value1)
                     value2 = float(value2.replace('%', '')) if isinstance(value2, str) and '%' in value2 else float(value2)
                     
-                    # Calculate the mean and return the formatted percentage
-                    return f"{(value1 + value2) / 2:.2f}%"
+                    # Calculate the mean and return as an integer percentage
+                    return f"{int((value1 + value2) / 2)}%"  # Convert float to int and append '%'
                 except (ValueError, TypeError):
                     return ""  # Return empty string if conversion fails
+
             
             # Adding Export data
             revenue_export = df_export.loc[index, ('Revenue', 'Ours')], df_export.loc[index, ('Revenue', 'Agency')], df_export.loc[index, ('Revenue', 'Total')]
