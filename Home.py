@@ -97,6 +97,7 @@ if st.session_state["authentication_status"]:
         return rows
     
     # Function to structure the data into a single DataFrame
+# Function to structure the data into a single DataFrame
     def create_combined_df(data):
         # Extracting the data for each category
         revenue_ours = create_category_df(data.get("revenue", {}), "ours")
@@ -144,8 +145,10 @@ if st.session_state["authentication_status"]:
         return df
     
     # Create DataFrames for Import and Export data
-    import_combined_df = create_combined_df(import_data[0])  # Ensure import_data is properly formatted
-    export_combined_df = create_combined_df(export_data[0])  # Ensure export_data is properly formatted
+    # Ensure you're passing the full data object instead of only the first element
+    import_combined_df = create_combined_df(import_data)  # Pass the whole import_data
+    export_combined_df = create_combined_df(export_data)  # Pass the whole export_data
+
     
     # Function to create an HTML table with specified styling
     def create_html_table(df_import, df_export):
