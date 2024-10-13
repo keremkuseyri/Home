@@ -41,6 +41,7 @@ if st.session_state["authentication_status"]:
     with st.sidebar.expander("Key Account 🔑"):
          st.page_link("pages/Keyaccount.py", label="Key Account Monthly 📊")
 
+
     st.sidebar.write(f'Welcome *{st.session_state["name"]}*')
     authenticator.logout("Logout", "sidebar")
 
@@ -161,41 +162,23 @@ if st.session_state["authentication_status"]:
         html += "<th rowspan='3' style='text-align: center; font-weight: normal;'></th>"
         
         # Export header spanning its columns
-        html += "<th colspan='9' style='text-align: center; background-color: #EEFC5E;'>Export</th>"
+        html += "<th colspan='3' style='text-align: center; background-color: #EEFC5E;'>Export</th>"
         
         # Import header spanning its columns
-        html += "<th colspan='9' style='text-align: center; background-color: #EEFC5E;'>Import</th>"
+        html += "<th colspan='3' style='text-align: center; background-color: #EEFC5E;'>Import</th>"
         
         # Total header spanning its columns
-        html += "<th colspan='9' style='text-align: center; background-color: #EEFC5E;'>Total</th>"
+        html += "<th colspan='3' style='text-align: center; background-color: #EEFC5E;'>Total</th>"
         html += "</tr>"
         
         # Second header row for Revenue, Profit, Cargo under Export, Import, and Total
         html += "<tr>"
         for _ in range(3):  # Once for Export, Import, and Total
-            html += "<th colspan='3' style='text-align: center; background-color: #F4CCCC;'>Revenue</th>"
-            html += "<th colspan='3' style='text-align: center; background-color: #D0E0E3;'>Profit</th>"
-            html += "<th colspan='3' style='text-align: center; background-color: #D9EAD3;'>Cargo</th>"
+            html += "<th colspan='1' style='text-align: center; background-color: #F4CCCC;'>Revenue</th>"
+            html += "<th colspan='1' style='text-align: center; background-color: #D0E0E3;'>Profit</th>"
+            html += "<th colspan='1' style='text-align: center; background-color: #D9EAD3;'>Cargo</th>"
         html += "</tr>"
         
-        # Third header row for Ours, Agency, Total under Revenue, Profit, Cargo
-        html += "<tr>"
-        for _ in range(3):  # Once for Export, Import, and Total
-            # Ours, Agency, Total for Revenue
-            html += "<th style='text-align: center;'>Ours</th>"
-            html += "<th style='text-align: center;'>Agency</th>"
-            html += "<th style='text-align: center;'>Total</th>"
-        
-            # Ours, Agency, Total for Profit
-            html += "<th style='text-align: center;'>Ours</th>"
-            html += "<th style='text-align: center;'>Agency</th>"
-            html += "<th style='text-align: center;'>Total</th>"
-        
-            # Ours, Agency, Total for Cargo
-            html += "<th style='text-align: center;'>Ours</th>"
-            html += "<th style='text-align: center;'>Agency</th>"
-            html += "<th style='text-align: center;'>Total</th>"
-        html += "</tr>"
         html += "</thead>"
         
         # Add the rows with merged cells
@@ -224,89 +207,61 @@ if st.session_state["authentication_status"]:
             # Function to format numbers or percentages
             def format_value(value):
                 try:
-                    # Check if the value contains a '%' symbol
                     if isinstance(value, str) and '%' in value:
-                        return value  # Keep as is for percentage strings
+                        return value  # Keep percentage format
                     else:
-                        return f"{int(value):,}".replace(",", ".")  # Format numbers with commas
+                        return f"{int(value):,}".replace(",", ".")  # Format numbers with commas as dots
                 except (ValueError, TypeError):
-                    return value  # Return the value as is if it cannot be converted
+                    return value
             
-            # Function to handle percentages
+            # Function to calculate the mean of percentages if needed
             def calculate_percentage_mean(value1, value2):
                 try:
-                    # Remove the '%' symbol and convert to float
+                    # Remove '%' and calculate the average
                     value1 = float(value1.replace('%', '')) if isinstance(value1, str) and '%' in value1 else float(value1)
                     value2 = float(value2.replace('%', '')) if isinstance(value2, str) and '%' in value2 else float(value2)
-                    
-                    # Calculate the mean and return as an integer percentage
-                    return f"{int((value1 + value2) / 2)}%"  # Convert float to int and append '%'
+                    return f"{(value1 + value2) / 2:.0f}%"  # Average as integer with '%' appended
                 except (ValueError, TypeError):
-                    return ""  # Return empty string if conversion fails
-
+                    return ""
             
-            # Adding Export data
-            revenue_export = df_export.loc[index, ('Revenue', 'Ours')], df_export.loc[index, ('Revenue', 'Agency')], df_export.loc[index, ('Revenue', 'Total')]
-            profit_export = df_export.loc[index, ('Profit', 'Ours')], df_export.loc[index, ('Profit', 'Agency')], df_export.loc[index, ('Profit', 'Total')]
-            cargo_export = df_export.loc[index, ('Cargo', 'Ours')], df_export.loc[index, ('Cargo', 'Agency')], df_export.loc[index, ('Cargo', 'Total')]
+            # Adding Export data (only Ours)
+            revenue_export = df_export.loc[index, ('Revenue', 'Ours')]
+            profit_export = df_export.loc[index, ('Profit', 'Ours')]
+            cargo_export = df_export.loc[index, ('Cargo', 'Ours')]
             
-            for value in revenue_export:
-                html += f"<td style='text-align: center; background-color: #F4CCCC;'>{format_value(value)}</td>"  # Pink for Revenue
-            for value in profit_export:
-                html += f"<td style='text-align: center; background-color: #D0E0E3;'>{format_value(value)}</td>"  # Blue for Profit
-            for value in cargo_export:
-                html += f"<td style='text-align: center; background-color: #D9EAD3;'>{format_value(value)}</td>"  # Green for Cargo
+            html += f"<td style='text-align: center; background-color: #F4CCCC;'>{format_value(revenue_export)}</td>"  # Revenue Ours
+            html += f"<td style='text-align: center; background-color: #D0E0E3;'>{format_value(profit_export)}</td>"  # Profit Ours
+            html += f"<td style='text-align: center; background-color: #D9EAD3;'>{format_value(cargo_export)}</td>"  # Cargo Ours
             
-            # Adding Import data
-            revenue_import = df_import.loc[index, ('Revenue', 'Ours')], df_import.loc[index, ('Revenue', 'Agency')], df_import.loc[index, ('Revenue', 'Total')]
-            profit_import = df_import.loc[index, ('Profit', 'Ours')], df_import.loc[index, ('Profit', 'Agency')], df_import.loc[index, ('Profit', 'Total')]
-            cargo_import = df_import.loc[index, ('Cargo', 'Ours')], df_import.loc[index, ('Cargo', 'Agency')], df_import.loc[index, ('Cargo', 'Total')]
+            # Adding Import data (only Ours)
+            revenue_import = df_import.loc[index, ('Revenue', 'Ours')]
+            profit_import = df_import.loc[index, ('Profit', 'Ours')]
+            cargo_import = df_import.loc[index, ('Cargo', 'Ours')]
             
-            for value in revenue_import:
-                html += f"<td style='text-align: center; background-color: #F4CCCC;'>{format_value(value)}</td>"  # Pink for Revenue
-            for value in profit_import:
-                html += f"<td style='text-align: center; background-color: #D0E0E3;'>{format_value(value)}</td>"  # Blue for Profit
-            for value in cargo_import:
-                html += f"<td style='text-align: center; background-color: #D9EAD3;'>{format_value(value)}</td>"  # Green for Cargo
+            html += f"<td style='text-align: center; background-color: #F4CCCC;'>{format_value(revenue_import)}</td>"  # Revenue Ours
+            html += f"<td style='text-align: center; background-color: #D0E0E3;'>{format_value(profit_import)}</td>"  # Profit Ours
+            html += f"<td style='text-align: center; background-color: #D9EAD3;'>{format_value(cargo_import)}</td>"  # Cargo Ours
 
-            # Adding Total data by summing Export and Import values
-            total_revenue_ours = revenue_export[0] + revenue_import[0]
-            total_revenue_agency = revenue_export[1] + revenue_import[1]
-            total_revenue_total = revenue_export[2] + revenue_import[2]
-
-            total_profit_ours = profit_export[0] + profit_import[0]
-            total_profit_agency = profit_export[1] + profit_import[1]
-            total_profit_total = profit_export[2] + profit_import[2]
-
-            total_cargo_ours = cargo_export[0] + cargo_import[0]
-            total_cargo_agency = cargo_export[1] + cargo_import[1]
-            total_cargo_total = cargo_export[2] + cargo_import[2]
+            # Add Total data (only Ours) by summing or averaging Export and Import values
+            if '%' in str(revenue_export) or '%' in str(revenue_import):
+                total_revenue_ours = calculate_percentage_mean(revenue_export, revenue_import)
+            else:
+                total_revenue_ours = revenue_export + revenue_import
             
-            # Check if any total value is a percentage and calculate the mean
-            total_revenue_ours = calculate_percentage_mean(revenue_export[0], revenue_import[0]) if '%' in str(revenue_export[0]) or '%' in str(revenue_import[0]) else total_revenue_ours
-            total_revenue_agency = calculate_percentage_mean(revenue_export[1], revenue_import[1]) if '%' in str(revenue_export[1]) or '%' in str(revenue_import[1]) else total_revenue_agency
-            total_revenue_total = calculate_percentage_mean(revenue_export[2], revenue_import[2]) if '%' in str(revenue_export[2]) or '%' in str(revenue_import[2]) else total_revenue_total
-
-            total_profit_ours = calculate_percentage_mean(profit_export[0], profit_import[0]) if '%' in str(profit_export[0]) or '%' in str(profit_import[0]) else total_profit_ours
-            total_profit_agency = calculate_percentage_mean(profit_export[1], profit_import[1]) if '%' in str(profit_export[1]) or '%' in str(profit_import[1]) else total_profit_agency
-            total_profit_total = calculate_percentage_mean(profit_export[2], profit_import[2]) if '%' in str(profit_export[2]) or '%' in str(profit_import[2]) else total_profit_total
-
-            total_cargo_ours = calculate_percentage_mean(cargo_export[0], cargo_import[0]) if '%' in str(cargo_export[0]) or '%' in str(cargo_import[0]) else total_cargo_ours
-            total_cargo_agency = calculate_percentage_mean(cargo_export[1], cargo_import[1]) if '%' in str(cargo_export[1]) or '%' in str(cargo_import[1]) else total_cargo_agency
-            total_cargo_total = calculate_percentage_mean(cargo_export[2], cargo_import[2]) if '%' in str(cargo_export[2]) or '%' in str(cargo_import[2]) else total_cargo_total
+            if '%' in str(profit_export) or '%' in str(profit_import):
+                total_profit_ours = calculate_percentage_mean(profit_export, profit_import)
+            else:
+                total_profit_ours = profit_export + profit_import
             
-            # Add Total data to the table
+            if '%' in str(cargo_export) or '%' in str(cargo_import):
+                total_cargo_ours = calculate_percentage_mean(cargo_export, cargo_import)
+            else:
+                total_cargo_ours = cargo_export + cargo_import
+            
+            # Render Total Ours for Revenue, Profit, and Cargo
             html += f"<td style='text-align: center; background-color: #F4CCCC;'>{format_value(total_revenue_ours)}</td>"  # Total Revenue Ours
-            html += f"<td style='text-align: center; background-color: #F4CCCC;'>{format_value(total_revenue_agency)}</td>"  # Total Revenue Agency
-            html += f"<td style='text-align: center; background-color: #F4CCCC;'>{format_value(total_revenue_total)}</td>"  # Total Revenue Total
-            
             html += f"<td style='text-align: center; background-color: #D0E0E3;'>{format_value(total_profit_ours)}</td>"  # Total Profit Ours
-            html += f"<td style='text-align: center; background-color: #D0E0E3;'>{format_value(total_profit_agency)}</td>"  # Total Profit Agency
-            html += f"<td style='text-align: center; background-color: #D0E0E3;'>{format_value(total_profit_total)}</td>"  # Total Profit Total
-            
             html += f"<td style='text-align: center; background-color: #D9EAD3;'>{format_value(total_cargo_ours)}</td>"  # Total Cargo Ours
-            html += f"<td style='text-align: center; background-color: #D9EAD3;'>{format_value(total_cargo_agency)}</td>"  # Total Cargo Agency
-            html += f"<td style='text-align: center; background-color: #D9EAD3;'>{format_value(total_cargo_total)}</td>"  # Total Cargo Total
             
             html += "</tr>"
         
@@ -326,9 +281,12 @@ if st.session_state["authentication_status"]:
 
 
 
+
+
+
     
     # Display the combined HTML table in Streamlit
-    if st.session_state["name"] == "Kerem Kuseyri" or st.session_state["name"] == "Üveys Aydemir" or st.session_state["name"] == "Kubilay Cebeci" or st.session_state["name"] == "Senem Çelik" or st.session_state["name"] == "Turgut Erkeskin" or st.session_state["name"] == "Özkan Sakar":
+    if st.session_state["name"] == "Kerem Kuseyri" or st.session_state["name"] == "Üveys Aydemir" or st.session_state["name"] == "Kubilay Cebeci" or st.session_state["name"] == "Senem Çelik" or st.session_state["name"] == "Özkan Sakar" or st.session_state["name"] == "Turgut Erkeskin":
         if import_data and export_data:
                 combined_html_table = create_html_table(import_combined_df, export_combined_df)
                 st.markdown(combined_html_table, unsafe_allow_html=True)
