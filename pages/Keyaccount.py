@@ -51,8 +51,8 @@ if st.session_state["authentication_status"]:
     
     # Access the database and collections
     db = client["GTProductImpExp"]
-    collection_import = db["import_sea"]
-    collection_export = db["export_sea"]
+    collection_import = db["import_key_account"]
+    collection_export = db["export_key_account"]
     
     # Original branch list with lowercase values for logic
     branches = ["total", "istanbul", "izmir", "mersin"]
